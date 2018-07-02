@@ -1,0 +1,55 @@
+
+[v-cloak] {
+  display: none;
+}
+
+.b_back{
+    flex-direction: column;
+    text-align: center;
+    align-content: center;
+    min-width: 800px;
+    
+}
+
+.nums{
+    align-content: center;
+    text-align: center;
+    justify-content: center;
+}
+
+.floatleft{
+    float: left;
+}
+
+.floatright{
+    float: right;
+}
+
+.col{
+    display:flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 14px;
+    margin-left: 20px;  
+    margin-right: 20px;  
+}
+
+.abc{
+    display:flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 640;
+    margin: 10px;   
+}
+
+
+
+
+
+
+
+
+
+
+
+

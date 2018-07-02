@@ -1,0 +1,111 @@
+<html>
+	<head>
+		<title>Chess</title>
+		<link href="style.css" rel="stylesheet">
+  		<link href="vuetify.min.css" rel="stylesheet">
+	</head>
+	<body>
+        
+		<div id="app" >
+                
+            
+            <v-container class="b_back" color = blue>
+                    <v-card><v-card-text>Black</v-card-text></v-card>
+                    <v-card class= "b_back" color = blue>
+                        
+  
+                            <v-layout class="nums">
+                                <div class = "abc" >
+                                        <h1>a</h1> 
+                                        <h1>b</h1> 
+                                        <h1>c</h1> 
+                                        <h1>d</h1> 
+                                        <h1>e</h1> 
+                                        <h1>f</h1> 
+                                        <h1>g</h1> 
+                                        <h1>h</h1> 
+                                </div>
+                            </v-layout>
+                            
+                            <v-layout  width = 640 class= "nums" row> 
+                                
+                                <div class = "col" >
+                                        <h1>1</h1> 
+                                        <h1>2</h1> 
+                                        <h1>3</h1> 
+                                        <h1>4</h1> 
+                                        <h1>5</h1> 
+                                        <h1>6</h1> 
+                                        <h1>7</h1> 
+                                        <h1>8</h1> 
+
+                                </div>
+                                
+                                    <v-card class= "nums" column  v-for = "i in 8" >
+                                        <v-card center  width = 80 height = 80  dark v-for ="j in 8" v-bind:color= "getColor(i, j)">
+                                            <v-btn @click="getSelected(j,i), getMove(j,i)" flat fab>
+                                                <img width = 50 height = 50 v-bind:src = "getImage(j, i)" >
+                                            </v-btn> 
+                                        </v-card>
+                                    </v-card>
+                                
+                                <div class = "col" >
+                                        <h1>1</h1> 
+                                        <h1>2</h1> 
+                                        <h1>3</h1> 
+                                        <h1>4</h1> 
+                                        <h1>5</h1> 
+                                        <h1>6</h1> 
+                                        <h1>7</h1> 
+                                        <h1>8</h1> 
+                                </div>
+                            </v-layout>  
+                        
+                            <v-layout class="nums">
+                                <div class = "abc" >
+                                        <h1>a</h1> 
+                                        <h1>b</h1> 
+                                        <h1>c</h1> 
+                                        <h1>d</h1> 
+                                        <h1>e</h1> 
+                                        <h1>f</h1> 
+                                        <h1>g</h1> 
+                                        <h1>h</h1> 
+                                </div>
+                            </v-layout>
+                    
+            
+                    </v-card>
+                        
+                   
+                
+                    <v-card><v-card-text>White</v-card-text></v-card>
+                        
+                    
+            </v-container>
+            
+            <v-container>
+                <v-card>Selected: <img width= 10 height = 10 v-bind:src= "selected"> {{selected}}</v-card>
+            </v-container>
+            
+             
+
+		</div>
+        
+        
+        
+        
+
+		<script src="vue.js"></script>
+		<script src="vuetify.js"></script>
+		<script src="moment.js"></script>
+
+
+		<script src="data.js" type="module"></script>
+		<script src="main.js" type="module"></script>
+		<script src="api.js" type="module"></script>
+		
+
+	</body>
+
+</html>
