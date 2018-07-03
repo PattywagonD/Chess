@@ -1,5 +1,5 @@
 import data from './data.js'
-//import {Piece, Pawn} from './pieces.js'
+import {Piece, Pawn, Rook, Knight, Bishop, Queen, King} from './pieces.js'
 
 
 
@@ -19,56 +19,12 @@ const app = new Vue({
 	},
 	methods: {
         
-
-        
         getImage: function (index1, index2){
+            var in1 = index1 - 1
+            var in2 = index2 - 1
+            return this.board[in2][in1].getImg()     
+        },
 
-            var num = this.getType(index1, index2)
-    
-            if (num == 1)
-                return "img/bpawn.png"
-                
-            else if (num == 2)
-                return "img/brook.png"
-                
-            else if (num == 3)
-                return "img/bknight.png"
-                
-            else if (num == 4)
-                return "img/bbishop.png"
-                
-            else if (num == 5)
-                return "img/bqueen.png"
-                
-            else if (num == 6)
-                return "img/bking.png"
-                
-            else if (num == 11)
-                return "img/wpawn.png"
-                
-            else if (num == 12)
-                return "img/wrook.png"
-                
-            else if (num == 13)
-                return "img/wknight.png"
-                
-            else if (num == 14)
-                return "img/wbishop.png"
-                
-            else if (num == 15)
-                return "img/wqueen.png"
-                
-            else if (num == 16)
-                return "img/wking.png"
-                
-            else
-                return "img/blank.png"
-        },
-        
-        getType: function(i, j){
-            var num = this.items[i-1][j-1]
-            return num
-        },
     
         getColor: function (num, start) {
             if (start % 2 == 0)    
@@ -87,20 +43,27 @@ const app = new Vue({
         },
         
         getSelected: function(i, j){
-            var image = this.getType(i, j)
+            var image = this.getImage(i, j)
             this.selected = image
             console.log("clicked")
         },
         
-        getMove: function(i, j){
-    
-            var num = this.items[i-1][j-1]
-            console.log("this is the piece", num)
-            if (num != 0)
-                this.current = num
-            //else
-                //this.items[i-1][j-1] = this.current
+        displayMoves: function(i, j){
+            console.log("called")
+
+            for (var x = 0; x < this.moves.length; x++) { 
+                console.log(i,j , "=", this.moves[x][0],this.moves[x][1], x)
+                if (i == this.moves[x][0] && j == this.moves[x][1])
+                     return true
+            }
             
+        },
+        
+        getMoves: function(i, j){
+            var in1 = i - 1
+            var in2 = j - 1
+            console.log(this.board[in2][in1].getId())
+            this.moves = this.board[in2][in1].getMoves(i,j)
             
         }
         
