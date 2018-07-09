@@ -1,43 +1,48 @@
- export class Tile {
-     constructor(id) {
-         this.id = id;
+/*July 9th, 2018 GMKW *****
+* Changed id to use a alpha-numeric design. Chess pieces have a coordinate address
+* a1, b7, h4, etc. Constructers, getters, and setters use this binomial system to
+* make changes. */
+export class Tile {
+     constructor(alpha, numeric) {
+         this.alpha = alpha;
+         this.numeric = numeric;
      }
  }
 export class Piece extends Tile {
     constructor(type, color, alpha, numeric){
         this.type = type;
         this.color = color;
-        super(id);
+        super(alpha, numeric);
     }
 }
 export class Pawn extends Piece {
-    constructor(type, color, id) {
-        super("Pawn", color, id);
+    constructor(type, color, alpha, numeric) {
+        super("Pawn", color, alpha, numeric);
     }
 }
 export class Rook extends Piece {
-    constructor(type, color, id) {
-        super("Rook", color, id);
+    constructor(type, color, alpha, numeric) {
+        super("Rook", color, alpha, numeric);
     }
 }
 export class Knight extends Piece {
-    constructor(type, color, id) {
-        super("Knight", color, id);
+    constructor(type, color, alpha, numeric) {
+        super("Knight", color, alpha, numeric);
     }
 }
 export class Bishop extends Piece {
-    constructor(type, color, id) {
-        super("Bishop", color, id);
+    constructor(type, color, alpha, numeric) {
+        super("Bishop", color, alpha, numeric);
     }
 }
 export class Queen extends Piece {
-    constructor(type, color, id) {
-        super("Queen", color, id);
+    constructor(type, color, alpha, numeric) {
+        super("Queen", color, alpha, numeric);
     }
 }
 export class King extends Piece {
-    constructor(type, color, id) {
-        super("King", color, id);
+    constructor(type, color, alpha, numeric) {
+        super("King", color, alpha, numeric);
     }
 }
 // export class Piece {
