@@ -17,13 +17,6 @@
     justify-content: center;
 }
 
-.floatleft{
-    float: left;
-}
-
-.floatright{
-    float: right;
-}
 
 .col{
     display:flex;
@@ -42,8 +35,10 @@
     margin: 10px;   
 }
 
-.border{
-    outline: inherit;
+
+.black{
+    background-color: black;
+    color: white;
 }
 
 
