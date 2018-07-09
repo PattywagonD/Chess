@@ -9,7 +9,7 @@ export class Tile {
     }
     getMoves(x, y){
         return [[]]
-    }
+    }//kkkkk
     getOccupied(){
         return this.occupied
     }
