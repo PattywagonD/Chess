@@ -1,8 +1,5 @@
 import data from './data.js'
-import {Piece, Pawn, Rook, Knight, Bishop, Queen, King, Blank} from './pieces.js'
-
-
-
+import {Pawn, Rook, Knight, Bishop, Queen, King, Tile} from './pieces.js'
 
 const app = new Vue({
 	el: '#app', 
@@ -18,6 +15,11 @@ const app = new Vue({
 
 	},
 	methods: {
+        
+        gameLogic: function(i , j){
+            //this.selected = 
+            //this.moves = this.board[in2][in1].getMoves(i,j)
+        },
         
         getImage: function (index1, index2){
             var in1 = index1 - 1
@@ -44,7 +46,7 @@ const app = new Vue({
         
         getSelected: function(i, j){
             var image = this.getImage(i, j)
-            if (this.board[j-1][i-1].getId() != 0){
+            if (this.board[j-1][i-1].getOccupied() == true){
                 this.selected = this.board[j-1][i-1].getImg()
                 this.current = this.board[j-1][i-1]
                 return
@@ -79,14 +81,16 @@ const app = new Vue({
                 if(this.moves[move][0] == i && this.moves[move][1] == j){
                     this.board[j-1][i-1] = this.current
                     // Need to delete old piece and change current piece x and ys 
-                    console.log(this.current.getX(), this.current.getY())
-                    this.board[this.current.getX()][this.current.getY()] = new Blank()
-                    this.current = new Blank()
-                }
-            }
+                    console.log(this.current.getX()) //this.current.getY())
+                    //this.board[this.current.getX()][this.current.getY()] = new Tile()
+                    //this.current = new Tile()
+                    
 
+                    }
+            }
         }
-    }
+
+}
 
 })
 
