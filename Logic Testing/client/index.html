@@ -44,7 +44,7 @@
                                     <v-card class= "nums" column  v-for = "i in 8" >
                                         <v-card center  width = 80 height = 80  dark v-for ="j in 8" v-bind:color= "getColor(i, j)" >
                                             <v-card v-if= "displayMoves(i, j)">Moves</v-card>
-                                            <v-btn @click="getSelected(i,j), getMoves(i, j)" flat fab>
+                                            <v-btn @click="getGameLogic(i, j)" flat fab>
                                                 <img width = 50 height = 50 v-bind:src = "getImage(i, j)" >
                                             </v-btn> 
                                         </v-card>
