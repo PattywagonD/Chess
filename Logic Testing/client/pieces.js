@@ -6,18 +6,30 @@ export class Tile {
      constructor(alpha, numeric) {
          this.alpha = alpha;
          this.numeric = numeric;
+         this.occupied = false;
      }
  }
 export class Piece extends Tile {
-    constructor(type, color, alpha, numeric){
+    constructor(type, color, alpha, numeric) {
         this.type = type;
         this.color = color;
+        this.occupied = true;
         super(alpha, numeric);
     }
+    getOccupationStatus() {
+        return this.occupied;
+    }
+    getMoves(type, alpha, numeric) {
+
+    }
+}
+export class Blank extends Piece {
+
 }
 export class Pawn extends Piece {
     constructor(type, color, alpha, numeric) {
         super("Pawn", color, alpha, numeric);
+        
     }
 }
 export class Rook extends Piece {
