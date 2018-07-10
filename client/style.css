@@ -2,4 +2,46 @@
   display: none;
 }
 
-.
+.b_back {
+ 	flex-direction: row;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    min-width: 800px;
+    min-height: 800px;
+
+}
+
+.tile {
+	flex-flow: row wrap;
+	display: flex;
+	margin: 0px;
+	min-width: 90px;
+	min-height: 90px;
+	flex-basis: content;
+	align-items: center;
+    justify-content: center;
+}
+
+.nums{
+    align-content: center;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.letts{
+    display:flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin: 10px;  
+    width: 640px; 
+}
+.col{
+    display:flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 14px;
+    margin-left: 20px;  
+    margin-right: 20px;  
+}
