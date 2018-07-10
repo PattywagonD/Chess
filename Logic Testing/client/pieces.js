@@ -25,6 +25,7 @@ export class Tile {
     setNumeric(n){
         this.numeric = n
     }
+
 }
 
 

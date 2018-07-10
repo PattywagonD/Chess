@@ -66,12 +66,38 @@ const app = new Vue({
             console.log("called getMoves")
             this.moves = this.board[in2][in1].getMoves(i,j)
             //Refine moves from all moves to moves based off pieces on board
-            //var collision = []
-            //for (var i = 0; i < this.moves.length; x++){
-                //if(this.board[this.moves[i][0] == ??? && this.board[this.moves[i][1] == ???]]){
+
+            // Original List for debugging
+            for (var x = 0; x < this.moves.length; x++){
+                console.log("x position is " + this.moves[x][0] + " and y position is " + this.moves[x][1])
+            }
+            
+            //Moves only inside board
+            this.moves = this.moves.filter(function(move) { 
+                var x = 0
+                var y = 1
+                if ((move[x] > 8 || move[x] < 1) || (move[y] > 8 || move[y] < 1)) {
+                    return false
+                }
+                return true
+            })
+            
+            console.log("Moves only inside board")
+            //List for debugging after first filter for debuggin
+            for (var k = 0; k < this.moves.length; k++){
+                console.log("x position is " + this.moves[k][0] + " and y position is " + this.moves[k][1])
+            }
+            
+           for (var move = 0; move < this.moves.length; move++){
+                var x = 0
+                var y = 1
+                if(this.board[this.moves[move][y]-1][this.moves[move][x]-1].getOccupied() == true){
+                    console.log("Collision index is "+ this.moves[move][y] + ' ' + this.moves[move][x])
+                    
+                } 
                     //if the board index is the same as the move index flag a collision               
-                //}
-            //}
+            }
+    
             
             
         },
