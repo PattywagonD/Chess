@@ -14,11 +14,40 @@ export class Piece extends Tile {
         this.type = type;
         this.color = color;
         this.occupied = true;
+        this.numberMoves = 0;
         super(alpha, numeric);
     }
     getOccupationStatus() {
         return this.occupied;
     }
+    /* validAddress()
+    * validAddress returns a list alpha-numeric addresses that can be occupied by this piece.
+    * It calculates these addresses based on piece type. It serves as a helper function to
+    * getMoves()
+    * */
+    validAddress() {
+        var alphaArray = new Array();
+        var numericArray = new Array();
+        /**
+         * How to check for valid moves. A guide.
+         * 1. Check what type of piece
+         * 2. Check what Color that piece is
+         * 3. Check it's alpha address, can you capture left or right? Is it on the edge?
+         * 4. Check it's numeric address, can you move forward?
+         */
+        if (this.type == "Pawn") {
+            // Numeric address is incremented if the color is "White"
+            if(this.color == "White") {
+                alphaArray.push(this.alpha);
+                
+            }
+        } 
+    }
+    /*getMoves()
+    * getMoves is called on clicking a chess piece. It highlights available
+    * tiles for movement or capture. It makes this decision based on piece type and
+    * address on the board 
+    * */
     getMoves(type, alpha, numeric) {
 
     }
