@@ -9,15 +9,21 @@ export class Tile {
     }
     getMoves(x, y){
         return [[]]
-    }//kkkkk
+    }
     getOccupied(){
         return this.occupied
     }
-    getY(){
-        return null
+    getNumeric(){
+        return this.numeric
     }
-    getX(){
-        return null
+    getAlpha(){
+        return this.alpha
+    }
+    setAlpha(a){
+        this.alpha = a
+    }
+    setNumeric(n){
+        this.numeric = n
     }
 }
 
@@ -144,7 +150,6 @@ export class Queen extends Piece {
         else
             return "img/bqueen.png"
     }
-    
     getMoves(x, y){     
         var tx = x
         var ty = y
@@ -165,17 +170,17 @@ export class Queen extends Piece {
                 [x-5, y+5], [x-6, y+6], [x-7, y+7]]
         
         for (var m = 0; m < moves.length; m++){
-            console.log("in for loop")
-            console.log(moves[m] + " =? " + [x,y])
+            //console.log("in for loop")
+            //console.log(moves[m] + " =? " + [x,y])
             if (moves[m][0] == x && moves[m][1] == y){
-
-                console.log("does equal")
+                //console.log("does equal")
                 moves.splice(m, 1)
             }
         }
         return  moves
     }
 }
+
 export class King extends Piece {
     constructor(color, alpha, numeric, type="King") {
         super(color, alpha, numeric, type)

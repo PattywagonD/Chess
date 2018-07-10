@@ -15,12 +15,7 @@ const app = new Vue({
 
 	},
 	methods: {
-        
-        gameLogic: function(i , j){
-            //this.selected = 
-            //this.moves = this.board[in2][in1].getMoves(i,j)
-        },
-        
+                
         getImage: function (index1, index2){
             var in1 = index1 - 1
             var in2 = index2 - 1
@@ -58,9 +53,7 @@ const app = new Vue({
         
         displayMoves: function(i, j){
             console.log("called displayMoves")
-
             for (var x = 0; x < this.moves.length; x++) { 
-                //console.log(i,j , "=", this.moves[x][0],this.moves[x][1], x)
                 if (i == this.moves[x][0] && j == this.moves[x][1])
                      return true
             }
@@ -72,7 +65,14 @@ const app = new Vue({
             var in2 = j - 1
             console.log("called getMoves")
             this.moves = this.board[in2][in1].getMoves(i,j)
-            console.log(this.moves  )
+            //Refine moves from all moves to moves based off pieces on board
+            //var collision = []
+            //for (var i = 0; i < this.moves.length; x++){
+                //if(this.board[this.moves[i][0] == ??? && this.board[this.moves[i][1] == ???]]){
+                    //if the board index is the same as the move index flag a collision               
+                //}
+            //}
+            
             
         },
         
@@ -80,14 +80,18 @@ const app = new Vue({
             for(var move = 0; move < this.moves.length; move++){
                 if(this.moves[move][0] == i && this.moves[move][1] == j){
                     this.board[j-1][i-1] = this.current
-                    // Need to delete old piece and change current piece x and ys 
-                    console.log(this.current.getX()) //this.current.getY())
-                    //this.board[this.current.getX()][this.current.getY()] = new Tile()
-                    //this.current = new Tile()
-                    
-
+                    // Delete piece that was just moved and set the new pieces' x and y 
+                    this.board[this.current.getNumeric()-1][this.current.getAlpha()-1] = new Tile()
+                    this.current = new Tile(0,0)
+                    this.board[j-1][i-1].setAlpha(i)
+                    this.board[j-1][i-1].setNumeric(j)
                     }
             }
+        },
+        
+        gameLogic: function(i , j){
+            this.getSelected(i, j)
+            this.getMoves(i, j)
         }
 
 }
