@@ -91,11 +91,34 @@ const app = new Vue({
            for (var move = 0; move < this.moves.length; move++){
                 var x = 0
                 var y = 1
+                var blockerx = i
+                var blockery = j
+                // Find every piece that collides
                 if(this.board[this.moves[move][y]-1][this.moves[move][x]-1].getOccupied() == true){
                     console.log("Collision index is "+ this.moves[move][y] + ' ' + this.moves[move][x])
                     
-                } 
-                    //if the board index is the same as the move index flag a collision               
+                    //Filter everything behind blocked piece
+                    //this.moves = this.moves.filter(function(move) { 
+                        //var x = 0
+                       // var y = 1
+                        //if (move[x] > this.moves[move][x]){
+                         //   return false
+                       // }
+                       // return true
+                   // })
+                    
+                    
+                    
+                  //  blockery = this.moves[move][y]
+                  //  blockerx = this.moves[move][x]
+                   // console.log(blockery, blockerx)
+                    
+            }}
+            
+            console.log("Final set of Possible moves")
+            //List for debugging after first filter for debuggin
+            for (var k = 0; k < this.moves.length; k++){
+                console.log("x position is " + this.moves[k][0] + " and y position is " + this.moves[k][1])
             }
     
             
@@ -103,15 +126,18 @@ const app = new Vue({
         },
         
         movePiece: function(i, j){
+            // Loop through each possible move
             for(var move = 0; move < this.moves.length; move++){
-                if(this.moves[move][0] == i && this.moves[move][1] == j){
+                // compare the current moves x & y with the square's x and y that was clicked 
+                if(this.moves[move][0] == i && this.moves[move][1] == j && this.board[j-1][i-1].getOccupied() == false){
+                    // if they match set the board to the piece that is the current
                     this.board[j-1][i-1] = this.current
                     // Delete piece that was just moved and set the new pieces' x and y 
                     this.board[this.current.getNumeric()-1][this.current.getAlpha()-1] = new Tile()
                     this.current = new Tile(0,0)
                     this.board[j-1][i-1].setAlpha(i)
                     this.board[j-1][i-1].setNumeric(j)
-                    }
+                }
             }
         },
         
