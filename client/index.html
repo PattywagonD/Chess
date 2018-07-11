@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CHESS</title>
+  <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
+  <link href="vuetify.min.css" rel="stylesheet">
+  <link href="style.css" rel="stylesheet">
+</head>
+<body>
+  <div id="app">
+    <v-app >
+        <v-content>
+          <v-container grid-list-xl text-xs-center>
+            <v-layout wrap row align-center justify-center>
+              <v-card>
+                <v-card row flat color="transparent" class="nums" height="850px" width="850px">
+                  <v-layout class="nums">
+                    <div class="letts">
+                      <h2>a</h2>
+                      <h2>b</h2>
+                      <h2>c</h2>
+                      <h2>d</h2>
+                      <h2>e</h2>
+                      <h2>f</h2>
+                      <h2>g</h2>
+                      <h2>h</h2>
+                    </div>
+                  </v-layout>
+
+                  <v-layout wrap row align-center justify-center>
+                    <div class="col">
+                      <h2>1</h2>
+                      <h2>2</h2>
+                      <h2>3</h2>
+                      <h2>4</h2>
+                      <h2>5</h2>
+                      <h2>6</h2>
+                      <h2>7</h2>
+                      <h2>8</h2>
+                    </div>
+
+                    <v-flex xs1 v-for="i in 8" class="tile">
+                      <v-card class="tile" v-for="j in 8" dark tile v-bind:color="getColor(i, j)">
+                        <v-btn @click= "sendClick(i, j)" flat fab>
+                      </v-card>
+                    </v-flex>
+                  </v-layout>
+                </v-card>
+              </v-card>
+            </v-layout>
+          </v-container>
+        </v-content>
+    </v-app>
+  </div>
+ 
+  <script src="vue.js"></script>
+  <script src="vuetify.js"></script>
+  <script src="index.js"></script>
+</body>
+</html>
