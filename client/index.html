@@ -1,48 +1,56 @@
 <!DOCTYPE html>
 <html>
 <head>
+<title>CHESS</title>
   <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
   <link href="vuetify.min.css" rel="stylesheet">
   <link href="style.css" rel="stylesheet">
 </head>
 <body>
-
-
-<div class="nums">
-<h3>1</h3>
-<h3>2</h3>
-<h3>3</h3>
-<h3>4</h3>
-<h3>5</h3>
-<h3>6</h3>
-<h3>7</h3>
-<h3>8</h3>
-</div>
-  <div id="app">
+<div id="app">
     <v-app >
       <v-content>
+      </v-container>
         <v-container grid-list-xl text-xs-center>
-        <v-card class="b_back">
+        <v-layout wrap row align-center justify-center>
+        <v-card>
+        <v-card row flat color="transparent" class="nums" height="850px" width="850px">
         <v-layout class="nums">
         <div class="letts">
-<h3>a</h3>
-<h3>b</h3>
-<h3>c</h3>
-<h3>d</h3>
-<h3>e</h3>
-<h3>f</h3>
-<h3>g</h3>
-<h3>h</h3>
+<h2>a</h2>
+<h2>b</h2>
+<h2>c</h2>
+<h2>d</h2>
+<h2>e</h2>
+<h2>f</h2>
+<h2>g</h2>
+<h2>h</h2>
 </div>
 </v-layout>
-          <v-layout  wrap row align-center justify-center fill-height/>
+
+          <v-layout wrap row align-center justify-center>
+<div class="col">
+<h2>1</h2>
+<h2>2</h2>
+<h2>3</h2>
+<h2>4</h2>
+<h2>5</h2>
+<h2>6</h2>
+<h2>7</h2>
+<h2>8</h2>
+</div>
           <v-flex xs1 v-for="i in 8" class="tile">
           <v-card class="tile" v-for="j in 8" dark tile v-bind:color="getColor(i, j)">
+          <v-btn @click="getSelected(i,j), getMoves(i, j)" flat fab>
+          <img width = 50 height = 50 v-bind:src = "getImage(i, j)" >
           </v-card>
           </v-flex>
           </v-layout>
           </v-card>
           </v-card>
+          </v-layout>
+          </v-card>
+          </v-layout>
         </v-container>
       </v-content>
     </v-app>
