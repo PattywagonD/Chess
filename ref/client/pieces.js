@@ -1,49 +1,47 @@
-export class Piece {
-  constructor(x, y, type, color) {
-      this.x = x;
-      this.y = y;
-      this.type = type;
-      this.color = color;
-  }
-    getId(){
-        return this.color + " " + this.type
-    }
-    getType(){
-        return this.type
-    }
-    getX(){
-        return this.x
-    }
-    getY(){
-        return this.y
-    }
-}
-
-export class Blank{
-    constructor(){
-    }
-    
+export class Tile {
+     constructor(alpha, numeric) {
+         this.alpha = alpha
+         this.numeric = numeric
+         this.occupied = false
+     }
     getImg(){
         return "img/blank.png"
     }
     getMoves(x, y){
         return [[]]
     }
-    getId(){
-        return 0
+    getOccupied(){
+        return this.occupied
     }
-    getY(){
-        return null
+    getNumeric(){
+        return this.numeric
     }
-    getX(){
-        return null
+    getAlpha(){
+        return this.alpha
     }
+    setAlpha(a){
+        this.alpha = a
+    }
+    setNumeric(n){
+        this.numeric = n
+    }
+
 }
 
-export class Pawn extends Piece{
-    constructor(x, y, type, color, id){
-        super(x, y, type="Pawn", color)
-        this.id = id
+
+export class Piece extends Tile {
+    constructor(color, alpha, numeric, type){
+        super(alpha, numeric);
+        this.type = type;
+        this.color = color;
+        this.occupied = true
+    }
+
+}
+export class Pawn extends Piece {
+    constructor(color, alpha, numeric, type="Pawn") {
+        super(color, alpha, numeric, type);
+
     }
     
     getImg(){
@@ -64,13 +62,13 @@ export class Pawn extends Piece{
             return [[x, y+1]]
     }
 }
-        
-export class Rook extends Piece{
-    constructor(x, y, type, color, id){
-        super(x, y, type="Rook", color)
-        this.id = id
+
+
+
+export class Rook extends Piece {
+    constructor(color, alpha, numeric, type="Rook") {
+        super(color, alpha, numeric, type);
     }
-    
     getImg(){
         if (this.color == "white")
             return "img/wrook.png"
@@ -101,13 +99,10 @@ export class Rook extends Piece{
         return  moves
     }
 }
-     
-export class Knight extends Piece{
-    constructor(x, y, type, color, id){
-        super(x, y, type="Knight", color)
-        this.id = id
+export class Knight extends Piece {
+    constructor(color, alpha, numeric, type="Knight") {
+        super(color, alpha, numeric, type);
     }
-    
     getImg(){
         if (this.color == "white")
             return "img/wknight.png"
@@ -120,11 +115,11 @@ export class Knight extends Piece{
 
     }
 }
-        
-export class Bishop extends Piece{
-    constructor(x, y, type, color, id){
-        super(x, y, type="Bishop", color)
-        this.id = id
+
+export class Bishop extends Piece {
+    constructor(color, alpha, numeric, type="Bishop") {
+        super(color, alpha, numeric, type)
+        this.occupied = true
     }
     getImg(){
         if (this.color == "white")
@@ -145,23 +140,17 @@ export class Bishop extends Piece{
                
                ]
     }
-    
-
 }
-        
-export class Queen extends Piece{
-    constructor(x, y, type, color, id){
-        super(x, y, type="Queen", color)
-        this.id = id
+export class Queen extends Piece {
+    constructor(color, alpha, numeric, type="Queen") {
+        super(color, alpha, numeric, type)
     }
-    
     getImg(){
         if (this.color == "white")
             return "img/wqueen.png"
         else
             return "img/bqueen.png"
     }
-    
     getMoves(x, y){     
         var tx = x
         var ty = y
@@ -182,24 +171,21 @@ export class Queen extends Piece{
                 [x-5, y+5], [x-6, y+6], [x-7, y+7]]
         
         for (var m = 0; m < moves.length; m++){
-            console.log("in for loop")
-            console.log(moves[m] + " =? " + [x,y])
+            //console.log("in for loop")
+            //console.log(moves[m] + " =? " + [x,y])
             if (moves[m][0] == x && moves[m][1] == y){
-
-                console.log("does equal")
+                //console.log("does equal")
                 moves.splice(m, 1)
             }
         }
         return  moves
     }
 }
-        
-export class King extends Piece{
-    constructor(x, y, type, color, id){
-        super(x, y, type="King", color)
-        this.id = id
-    } 
-    
+
+export class King extends Piece {
+    constructor(color, alpha, numeric, type="King") {
+        super(color, alpha, numeric, type)
+    }
     getImg(){
         if (this.color == "white")
             return "img/wking.png"
@@ -210,6 +196,7 @@ export class King extends Piece{
     getMoves(x, y){
         return [[x+1, y], [x-1, y], [x, y-1], [x, y+1], [x-1, y-1], [x+1, y-1], [x-1, y+1], [x+1, y+1]] 
     }
-    
 }
+
+
 
