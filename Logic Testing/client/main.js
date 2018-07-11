@@ -43,7 +43,6 @@ const app = new Vue({
         },
         
         getSelected: function(i, j){
-            var image = this.getImage(i, j)
             if (this.board[j-1][i-1].getId() != 0){
                 this.selected = this.board[j-1][i-1].getImg()
                 this.current = this.board[j-1][i-1]
@@ -78,10 +77,6 @@ const app = new Vue({
             for(var move = 0; move < this.moves.length; move++){
                 if(this.moves[move][0] == i && this.moves[move][1] == j){
                     this.board[j-1][i-1] = this.current
-                    // Need to delete old piece and change current piece x and ys 
-                    console.log(this.current.getX(), this.current.getY())
-                    this.board[this.current.getX()][this.current.getY()] = new Blank()
-                    this.current = new Blank()
                 }
             }
 
