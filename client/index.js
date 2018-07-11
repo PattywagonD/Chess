@@ -27,7 +27,12 @@ const app = new Vue({
                  else
                      return "blue-grey lighten-4"
         },
-     
+     	 change: function () { 
+  
+  		var linkElement = document.getElementById("link");
+  		linkElement.href = "index.html";
+   
+}
         }
 	})
 
