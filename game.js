@@ -13,8 +13,10 @@
  *      -> CheckMate
  *  There is a game object in main.js.
  */
+import {Tile, Piece, Blank, Pawn, Rook, Knight, Bishop, Queen, King } from './pieces.js'
+
 export class gameApp {
-    constructor(gameState, yourTurn, board){
+    constructor(gameState, yourTurn){
         /**
          * Let gameState be defined as
          * 0 = Beginning of the game (implies we need to set-up the board)
@@ -34,6 +36,12 @@ export class gameApp {
         /**
          * Board is an array of tiles representing the chess board.
          */
-        this.board = board;
+        this.board = new Array();
+        for(var x = 1; x < 9; x++) {
+            for(var y = 1; y < 9; y++) {
+                board.push(new Tile(0, x, y));
+            }
+        }
+
     }
 }
