@@ -1,8 +1,11 @@
 
+
 const app = new Vue({ 
   
 	el: '#app',
 	data: {
+    socket: io.connect('http://localhost:3000'),
+
     board: [
               [2,3,4,6,5,4,3,2],
               [1,1,1,1,1,1,1,1],
