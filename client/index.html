@@ -2,7 +2,7 @@
 <html>
 <head>
   <title>CHESS</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.dev.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.dev.js"></script> 
   <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
   <link href="vuetify.min.css" rel="stylesheet">
   <link href="style.css" rel="stylesheet">
@@ -43,7 +43,9 @@
 
                     <v-flex xs1 v-for="i in 8" class="tile">
                       <v-card class="tile" v-for="j in 8" dark tile v-bind:color="getColor(i, j)">
-                        <v-btn @click= "sendClick(i, j)" flat fab>
+                        <v-btn flat fab @click= "sendClick(i,j)">                        
+                          <img width = 50 height = 50 v-bind:src = "getImage(i, j)">
+                        </v-btn>
                       </v-card>
                     </v-flex>
                   </v-layout>
