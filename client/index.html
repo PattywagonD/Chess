@@ -1,57 +1,107 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>CHESS</title>
+  <title>CHESS</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.dev.js"></script> 
   <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
   <link href="vuetify.min.css" rel="stylesheet">
   <link href="style.css" rel="stylesheet">
+
 </head>
 <body>
-<div id="app">
+  <div id="app">
     <v-app >
-      <v-content>
-      </v-container>
-        <v-container grid-list-xl text-xs-center>
+      <v-content v-if="noGame">
+       <v-container>
         <v-layout wrap row align-center justify-center>
-        <v-card>
-        <v-card row flat color="transparent" class="nums" height="850px" width="850px">
-        <v-layout class="nums">
-        <div class="letts">
-<h2>a</h2>
-<h2>b</h2>
-<h2>c</h2>
-<h2>d</h2>
-<h2>e</h2>
-<h2>f</h2>
-<h2>g</h2>
-<h2>h</h2>
-</div>
-</v-layout>
+          <v-card height="300px" width="500px" margin="100px">
+            <h2>Let's Play Chess!!</h2>
+            <v-form ref="form" v-model="username" lazy-validation>
+              <v-text-field label="Username" required></v-text-field>
+              <v-btn @click="startGame()"> Start Game! </v-btn>
+              <v-btn @click="clear">clear</v-btn>
+            </v-form>
+          </v-card>
+        </v-layout>
+      </v-container>
+    </v-content>
 
-          <v-layout wrap row align-center justify-center>
-<div class="col">
-<h2>1</h2>
-<h2>2</h2>
-<h2>3</h2>
-<h2>4</h2>
-<h2>5</h2>
-<h2>6</h2>
-<h2>7</h2>
-<h2>8</h2>
-</div>
-          <v-flex xs1 v-for="i in 8" class="tile">
-          <v-card class="tile" v-for="j in 8" dark tile v-bind:color="getColor(i, j)">
-          <v-btn @click="" flat fab>
-          </v-card>
-          </v-flex>
-          </v-layout>
-          </v-card>
-          </v-card>
-          </v-layout>
-          </v-card>
-          </v-layout>
-        </v-container>
-      </v-content>
+
+        <v-content v-if = "isGame">
+            
+
+          <v-container grid-list-xl text-xs-center>
+          
+           <v-layout wrap row align-center justify-center>
+          <v-flex>
+          <v-card>
+        <h3>Username: {{ username }}</h3> <v-spacer></v-spacer>
+        Peices Captured: None</h3>
+      </v-card>
+      </v-flex>
+      </v-layout>
+            <v-layout wrap row align-center justify-center>
+
+            <v-flex xs2>
+              <v-card height="850px">
+                <h3>Chat</h3>
+              </v-card>
+              </v-flex>
+            <v-flex xs8  height="800px" width="800px">
+              <v-card class="white_b">
+                <v-card row flat color="transparent" class="b_back" >
+                  <v-layout class="nums">
+                    <div class="letts">
+                      <h2>a</h2>
+                      <h2>b</h2>
+                      <h2>c</h2>
+                      <h2>d</h2>
+                      <h2>e</h2>
+                      <h2>f</h2>
+                      <h2>g</h2>
+                      <h2>h</h2>
+                    </div>
+                  </v-layout>
+
+                  <v-layout wrap row align-center justify-center>
+                    <div class="col">
+                      <h2>1</h2>
+                      <h2>2</h2>
+                      <h2>3</h2>
+                      <h2>4</h2>
+                      <h2>5</h2>
+                      <h2>6</h2>
+                      <h2>7</h2>
+                      <h2>8</h2>
+                    </div>
+
+                    <v-flex xs1 v-for="i in 8" class="tile">
+                      <v-card class="tile" v-for="j in 8" dark tile v-bind:color="getColor(i, j)">
+                        <v-btn flat fab @click= "sendClick(i,j)">                        
+                          <img width = 50 height = 50 v-bind:src = "getImage(i, j)">
+                        </v-btn>
+                      </v-card>
+                    </v-flex>
+                   </v-layout>
+                </v-card>
+              </v-card>
+              </v-flex>
+              <v-flex xs2>
+              <v-card height="850px">
+                <h3>Moves Made:</h3>
+              </v-card>
+              </v-flex>
+            </v-layout>
+            <v-layout wrap row align-center justify-center>
+          <v-flex>
+          <v-card>
+        <h3>Username: {{ username }}</h3> <v-spacer></v-spacer>
+        Peices Captured: None</h3>
+      </v-card>
+      </v-flex>
+      </v-layout>
+          </v-container>
+        </v-content>
     </v-app>
   </div>
  
