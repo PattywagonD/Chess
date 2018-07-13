@@ -101,6 +101,7 @@ const app = new Vue({
       this.socket.emit('username', {username: this.username})
       this.socket.on('color', function(data){
         app.color = data.playerColor
+        app.board = data.newBoard
         console.log(app.color, "check")
       })
     },
