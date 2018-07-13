@@ -98,7 +98,7 @@ const app = new Vue({
           console.log("Client recieved board! ", data)
           console.log(data.updated)
           app.board = data.updated
-          console.log("client new board! ",this.board)
+
 
 
     })

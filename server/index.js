@@ -29,7 +29,6 @@ var io = socket(server)
 
 io.on('connection', function(socket){
 	console.log('Made socket connection', socket.id)
-	console.log(board)
 	socket.emit('board', {newBoard: board})
 	socket.on('coordinates', function (data) {
     	console.log("Server recieved coordinates! ", data)
@@ -37,3 +36,29 @@ io.on('connection', function(socket){
     	socket.emit('board', {updated: board})
   })
 })
+
+
+gameLogic = function(coordinates){
+	if(coordinates[0] < 4)
+		board = [
+              [2,3,4,6,5,4,3,2],
+              [1,1,1,1,1,1,1,1],
+              [0,0,0,0,0,0,0,0],
+              [0,0,0,5,0,0,0,0],
+              [0,0,0,0,15,0,0,0],
+              [0,0,0,0,0,0,0,0],
+              [11,11,11,11,11,11,11,11],
+              [12,13,14,16,15,14,13,12]
+          	]
+	else
+		board =[
+              [2,3,4,6,5,4,3,2],
+              [1,1,1,1,1,1,1,1],
+              [0,0,0,0,0,0,0,0],
+              [0,0,0,0,6,0,0,0],
+              [0,0,0,16,0,0,0,0],
+              [0,0,0,0,0,0,0,0],
+              [11,11,11,11,11,11,11,11],
+              [12,13,14,16,15,14,13,12]
+          	]
+}
