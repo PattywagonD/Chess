@@ -19,6 +19,7 @@ const app = new Vue({
           ],
 
     username: "",
+    color: "",
     noGame: true,
     isGame: false
   },
@@ -97,14 +98,20 @@ const app = new Vue({
       app.noGame = false
       app.isGame = true
       console.log(app.username)
+      this.socket.emit('username', {username: this.username})
+      this.socket.on('color', function(data){
+        app.color = data.playerColor
+        console.log(app.color, "check")
+      })
     },
 
     //send the server the x, y of clicked square
     sendClick: function (i, j) {
         //var coordinates = [i, j]
-        console.log("Client sending coordinates!", [i, j])
-        this.socket.emit('coordinates', {coordinates: [i,j]})
-        this.socket.on('board', function(data){
+        console.log(app.color, "test")
+        console.log("Client sending coordinates!", [i, j, this.color])
+        this.socket.emit('coordinates', {coordinates: [i,j, this.color]})
+        this.socket.on(this.color+'board', function(data){
           console.log("Client recieved board! ", data)
           console.log(data.updated)
           app.board = data.updated
