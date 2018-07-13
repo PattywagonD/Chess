@@ -15,11 +15,10 @@
        <v-container>
         <v-layout wrap row align-center justify-center>
           <v-card height="300px" width="500px" margin="100px">
-            <h2>Let's Play Chess!!</h2>
-            <v-form ref="form" lazy-validation>
+            <h2>Let's Play Chess</h2>
+            <v-form ref="form">
               <v-text-field v-model="username" label="Username" required></v-text-field>
-              <v-btn @click="startGame()"> Start Game! </v-btn>
-              <v-btn @click="">clear</v-btn>
+              <v-btn @click="startGame()" color=blue> PLAY </v-btn>
             </v-form>
           </v-card>
         </v-layout>
@@ -29,7 +28,26 @@
 
         <v-content v-if = "isGame">
           <v-container grid-list-xl text-xs-center>
+
+          <!-- Opponent's Display -->
             <v-layout wrap row align-center justify-center>
+              <v-flex>
+                <v-card>
+                  <h3>Username: {{ opponent }}</h3> <v-spacer></v-spacer>Peices Captured: None</h3>
+                </v-card>
+               </v-flex>
+            </v-layout>
+
+            <v-layout wrap row align-center justify-center>
+
+          <!-- Chat -->
+            <v-flex xs2>
+              <v-card height="850px">
+                <h3>Chat</h3>
+              </v-card>
+              </v-flex>
+
+          <!-- Board -->
               <v-card>
                 <v-card row flat color="transparent" class="nums" height="850px" width="850px">
                   <v-layout class="nums">
@@ -67,7 +85,26 @@
                   </v-layout>
                 </v-card>
               </v-card>
+
+          <!-- Move History -->
+              <v-flex xs2>
+              <v-card height="850px">
+                <h3>Moves Made:</h3>
+              </v-card>
+              </v-flex>
+
             </v-layout>
+
+
+            <v-layout wrap row align-center justify-center>
+              <v-flex>
+                <v-card>
+                  <h3>Username: {{ username }}</h3> <v-spacer></v-spacer>Peices Captured: None</h3>
+                </v-card>
+              </v-flex>
+            </v-layout>
+
+
           </v-container>
         </v-content>
     </v-app>

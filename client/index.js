@@ -19,6 +19,7 @@ const app = new Vue({
           ],
 
     username: "",
+    opponent: "something",
     color: "",
     noGame: true,
     isGame: false
@@ -31,6 +32,7 @@ const app = new Vue({
     board() {
       console.log("the board just changed")
     }
+    //If oppopnent hasnt changed set socket to ping out 
   },
 
 	methods: {
@@ -95,15 +97,22 @@ const app = new Vue({
     },
 
     startGame: function(i, j){
-      app.noGame = false
-      app.isGame = true
-      console.log(app.username)
-      this.socket.emit('username', {username: this.username})
-      this.socket.on('color', function(data){
-        app.color = data.playerColor
-        app.board = data.newBoard
-        console.log(app.color, "check")
-      })
+      //Make sure they entered a valid username
+      if(this.username){
+        app.noGame = false
+        app.isGame = true
+        //send username to server
+        this.socket.emit('username', {username: this.username})
+        //recieves their color, board and opponent
+        this.socket.on('color', function(data){
+          app.color = data.playerColor
+          app.board = data.newBoard
+          // set the opponents user name
+          console.log(app.color, "current color")
+          app.opponent = data.opponent
+          console.log(app.opponent, "and their opponent")
+        })
+      }
     },
 
     //send the server the x, y of clicked square
@@ -116,8 +125,6 @@ const app = new Vue({
           console.log("Client recieved board! ", data)
           console.log(data.updated)
           app.board = data.updated
-
-
 
     })
     },

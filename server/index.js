@@ -10,7 +10,7 @@ var board = [
               [0,0,0,0,0,0,0,0],
               [0,0,0,0,0,0,0,0],
               [0,0,0,0,0,0,0,0],
-              [0,0,0,0,0,1,0,0],
+              [0,0,0,0,0,0,0,0],
               [11,11,11,11,11,11,11,11],
               [12,13,14,16,15,14,13,12]
           	]
@@ -40,7 +40,6 @@ app.use(express.static('../client'))
 
 //Socket setup to work on server(3000)
 var io = socket(server)
-
 var ids = []
 
 io.on('connection', function(socket){
@@ -56,10 +55,12 @@ io.on('connection', function(socket){
 		//give the players the color they are playing
 		//send them their starting board
 		if(game.getPlayers().length == 1){
-			socket.emit("color", {playerColor: "white", newBoard: board})
+			socket.emit("color", {playerColor: "white", newBoard: board, opponent: "finding..."})
 		}
 		else if (game.getPlayers().length == 2) {
-			socket.emit("color", {playerColor: "black", newBoard: board2})
+			console.log("opponent!", game.getPlayers()[1])
+			socket.emit("color", {playerColor: "black", newBoard: board2, opponent: game.getPlayers()[0]})
+			//socket.emit("wopponent", {whiteOpponent: game.getPlayers()[1]})
 		}
 	})
 
@@ -78,7 +79,4 @@ gameLogic = function(coordinates){
 	board = game.evaluateClick(coordinates)
 	game.checkGameOver()
 
-	// if they are white board stays the same
-
-	// if they are black change display for them
 }

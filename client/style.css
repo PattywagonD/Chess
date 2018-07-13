@@ -1,22 +1,31 @@
 [v-cloak] {
   display: none;
 }
+.white_b {
+    height: 900px;
+    width: 900px;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    display: inline-flex;
+}
 
 .b_back {
-    text-align: center;
     align-items: center;
     justify-content: center;
     flex-basis: content;
     vertical-align: middle;
     max-height: 860px;
-    max-width: 860px;}
+    max-width: 860px;
+    min-height: 850px;
+    min-width: 850px;}
 
 .tile {
-	flex-flow: row wrap;
-	display: flex;
-	min-width: 90px;
-	min-height: 90px;
-	align-items: center;
+    flex-flow: row wrap;
+    display: flex;
+    min-width: 90px;
+    min-height: 90px;
+    align-items: center;
     justify-content: center;
     text-align: center;
     align-content: center;

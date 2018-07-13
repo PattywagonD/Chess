@@ -43,9 +43,9 @@ class Game{
 	}
 	evaluateClick(coordinates){
 		if(coordinates[2]== "white"){
-			return display
+			return this.display
 		}else if(coordinates[2]=="black"){
-			return translateBoard(display)
+			return this.translateBoard(this.display)
 		}
 	} 
 }
