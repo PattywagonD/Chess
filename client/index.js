@@ -17,6 +17,10 @@ const app = new Vue({
               [11,11,11,11,11,11,11,11],
               [12,13,14,16,15,14,13,12]
           ],
+
+    username: "",
+    noGame: true,
+    isGame: false
   },
 
   created: {
@@ -87,6 +91,12 @@ const app = new Vue({
       else
         return 'img/blank.png' 
 
+    },
+
+    startGame: function(i, j){
+      app.noGame = false
+      app.isGame = true
+      console.log(app.username)
     },
 
     //send the server the x, y of clicked square

@@ -5,9 +5,9 @@ var board = [
               [2,3,4,6,5,4,3,2],
               [1,1,1,1,1,1,1,1],
               [0,0,0,0,0,0,0,0],
-              [0,0,0,5,15,0,0,0],
-              [0,0,0,16,6,0,0,0],
               [0,0,0,0,0,0,0,0],
+              [0,0,0,0,0,0,0,0],
+              [0,0,0,0,0,1,0,0],
               [11,11,11,11,11,11,11,11],
               [12,13,14,16,15,14,13,12]
           	]
@@ -31,6 +31,7 @@ io.on('connection', function(socket){
 	console.log('Made socket connection', socket.id)
 	socket.emit('board', {newBoard: board})
 	socket.on('coordinates', function (data) {
+		gameLogic(data.coordinates)
     	console.log("Server recieved coordinates! ", data)
     	console.log("Server now sending a new board! ", board)
     	socket.emit('board', {updated: board})

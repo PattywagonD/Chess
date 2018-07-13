@@ -11,7 +11,23 @@
 <body>
   <div id="app">
     <v-app >
-        <v-content>
+      <v-content v-if="noGame">
+       <v-container>
+        <v-layout wrap row align-center justify-center>
+          <v-card height="300px" width="500px" margin="100px">
+            <h2>Let's Play Chess!!</h2>
+            <v-form ref="form" v-model="username" lazy-validation>
+              <v-text-field label="Username" required></v-text-field>
+              <v-btn @click="startGame()"> Start Game! </v-btn>
+              <v-btn @click="clear">clear</v-btn>
+            </v-form>
+          </v-card>
+        </v-layout>
+      </v-container>
+    </v-content>
+
+
+        <v-content v-if = "isGame">
           <v-container grid-list-xl text-xs-center>
             <v-layout wrap row align-center justify-center>
               <v-card>
