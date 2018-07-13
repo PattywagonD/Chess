@@ -14,8 +14,8 @@
       <v-content v-if="noGame">
        <v-container>
         <v-layout wrap row align-center justify-center>
-          <v-card height="300px" width="500px" margin="100px">
-            <h2>Let's Play Chess!!</h2>
+          <v-card height="300px" width="500px" margin="100px" class="side_bars">
+            <h2 >Let's Play Chess!!</h2>
             <v-form ref="form" v-model="username" lazy-validation>
               <v-text-field label="Username" required></v-text-field>
               <v-btn @click="startGame()"> Start Game! </v-btn>
@@ -35,23 +35,23 @@
            <v-layout wrap row align-center justify-center>
           <v-flex>
           <v-card>
-        <h3>Username: {{ username }}</h3> <v-spacer></v-spacer>
+        <h3>Username: {{ username }} <v-spacer></v-spacer>
         Peices Captured: None</h3>
-      </v-card>
+        </v-card-media>
       </v-flex>
       </v-layout>
-            <v-layout wrap row align-center justify-center>
+            <v-layout>
 
             <v-flex xs2>
-              <v-card height="850px">
-                <h3>Chat</h3>
+            <v-card height="860px" hidden-lg-and-down> 
+                <h3><u>Chat</u></h3>
               </v-card>
               </v-flex>
-            <v-flex xs8  height="800px" width="800px">
-              <v-card class="white_b">
-                <v-card row flat color="transparent" class="b_back" >
-                  <v-layout class="nums">
-                    <div class="letts">
+            <v-flex xs8  height="850px" width="850px">
+              <v-card class="white_b" height="850px" width="860px">
+                <v-card row flat color="transparent" class="nums" >
+                  <v-layout wrap row align-center justify-center>
+                    <div class="letts" >
                       <h2>a</h2>
                       <h2>b</h2>
                       <h2>c</h2>
@@ -61,10 +61,7 @@
                       <h2>g</h2>
                       <h2>h</h2>
                     </div>
-                  </v-layout>
-
-                  <v-layout wrap row align-center justify-center>
-                    <div class="col">
+                       <div class="col">
                       <h2>1</h2>
                       <h2>2</h2>
                       <h2>3</h2>
@@ -82,20 +79,41 @@
                         </v-btn>
                       </v-card>
                     </v-flex>
+                    <div class="col">
+                      <h2>&nbsp;</h2>
+                      <h2>&nbsp;</h2>
+                      <h2>&nbsp;</h2>
+                      <h2>&nbsp;</h2>
+                      <h2>&nbsp;</h2>
+                      <h2>&nbsp;</h2>
+                      <h2>&nbsp;</h2>
+                      <h2>&nbsp;</h2>
+                    </div>
+                    <div class="letts" >
+                      <h2>&nbsp;</h2>
+                      <h2>&nbsp;</h2>
+                      <h2>&nbsp;</h2>
+                      <h2>&nbsp;</h2>
+                      <h2>&nbsp;</h2>
+                      <h2>&nbsp;</h2>
+                      <h2>&nbsp;</h2>
+                      <h2>&nbsp;</h2>
+                    </div>
                    </v-layout>
                 </v-card>
               </v-card>
               </v-flex>
+
               <v-flex xs2>
-              <v-card height="850px">
-                <h3>Moves Made:</h3>
+              <v-card height="860px" class="side_bars" hidden-lg-and-down>
+                <h3><u>Moves Made</u></h3>
               </v-card>
               </v-flex>
             </v-layout>
             <v-layout wrap row align-center justify-center>
           <v-flex>
           <v-card>
-        <h3>Username: {{ username }}</h3> <v-spacer></v-spacer>
+        <h3>Username: {{ username }} <v-spacer></v-spacer>
         Peices Captured: None</h3>
       </v-card>
       </v-flex>
