@@ -6,6 +6,7 @@
   <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
   <link href="vuetify.min.css" rel="stylesheet">
   <link href="style.css" rel="stylesheet">
+  
 
 </head>
 <body>
@@ -14,8 +15,8 @@
       <v-content v-if="noGame">
        <v-container>
         <v-layout wrap row align-center justify-center>
-          <v-card height="300px" width="500px" margin="100px" class="side_bars">
-            <h2 >Let's Play Chess!!</h2>
+          <v-card color="blue-grey lighten-5">
+            <h2>Let's Play Chess!!</h2>
             <v-form ref="form" v-model="username" lazy-validation>
               <v-text-field label="Username" required></v-text-field>
               <v-btn @click="startGame()"> Start Game! </v-btn>
@@ -34,7 +35,7 @@
           
            <v-layout wrap row align-center justify-center>
           <v-flex>
-          <v-card>
+          <v-card color="blue-grey lighten-5">
         <h3>Username: {{ username }} <v-spacer></v-spacer>
         Peices Captured: None</h3>
         </v-card-media>
@@ -43,12 +44,12 @@
             <v-layout>
 
             <v-flex xs2>
-            <v-card height="860px" hidden-lg-and-down> 
+            <v-card color="blue-grey lighten-5" class="sidebars"> 
                 <h3><u>Chat</u></h3>
               </v-card>
               </v-flex>
-            <v-flex xs8  height="850px" width="850px">
-              <v-card class="white_b" height="850px" width="860px">
+            <v-flex xs8 >
+              <v-card class="white_b" >
                 <v-card row flat color="transparent" class="nums" >
                   <v-layout wrap row align-center justify-center>
                     <div class="letts" >
@@ -75,7 +76,7 @@
                     <v-flex xs1 v-for="i in 8" class="tile">
                       <v-card class="tile" v-for="j in 8" dark tile v-bind:color="getColor(i, j)">
                         <v-btn flat fab @click= "sendClick(i,j)">                        
-                          <img width = 50 height = 50 v-bind:src = "getImage(i, j)">
+                          <img v-bind:src = "getImage(i, j)">
                         </v-btn>
                       </v-card>
                     </v-flex>
@@ -105,24 +106,34 @@
               </v-flex>
 
               <v-flex xs2>
-              <v-card height="860px" class="side_bars" hidden-lg-and-down>
+              <v-card class="sidebars"  color="blue-grey lighten-5">
                 <h3><u>Moves Made</u></h3>
               </v-card>
               </v-flex>
             </v-layout>
             <v-layout wrap row align-center justify-center>
           <v-flex>
-          <v-card>
+          <v-card color="blue-grey lighten-5">
         <h3>Username: {{ username }} <v-spacer></v-spacer>
         Peices Captured: None</h3>
       </v-card>
       </v-flex>
+            <v-flex xs12>
+      <v-card class="mobile"  color="blue-grey lighten-5">
+                <h3><u>Moves Made</u></h3>
+              </v-card>
+              </v-flex>
+               <v-flex xs12>
+      <v-card class="mobile"  color="blue-grey lighten-5">
+                <h3><u>Chat</u></h3>
+              </v-card>
+              </v-flex>
       </v-layout>
+
           </v-container>
         </v-content>
     </v-app>
   </div>
- 
   <script src="vue.js"></script>
   <script src="vuetify.js"></script>
   <script src="index.js"></script>
