@@ -196,12 +196,12 @@ export class King extends Piece {
 //         this.id = id
 //     }
     
-//     getImg(){
-//         if (this.color == "white")
-//             return "img/wknight.png"
-//         else
-//             return "img/bknight.png"
-//     }
+    getImg(){
+        if (this.color == "white")
+            return "img/wknight.png"
+        else
+            return "img/bknight.png"
+    }
     
 //     getMoves(x, y){
 //         return [[x-1, y-2], [x+1, y-2], [x-1, y+2], [x+1, y+2], [x-2, y+1], [x-2, y-1], [x+2, y-1], [x+2, y+1]]
