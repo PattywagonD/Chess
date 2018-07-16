@@ -16,19 +16,11 @@ img {
 }
 
 .tile {
-<<<<<<< HEAD
 	flex-flow: row wrap;
 	display: flex;
 	min-width: 90px;
 	min-height: 90px;
 	align-items: center;
-=======
-    flex-flow: row wrap;
-    display: flex;
-    min-width: 90px;
-    min-height: 90px;
-    align-items: center;
->>>>>>> master
     justify-content: center;
     text-align: center;
     align-content: center;
