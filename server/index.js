@@ -52,19 +52,18 @@ io.on('connection', function(socket){
 		game.addPlayer(newUsername.username)
 		console.log(newUsername.username)
 		console.log(game.getPlayers())
+
 		//give the players the color they are playing
 		//send them their starting board
-		if(game.getPlayers().length == 1){
-			socket.emit("color", {playerColor: "white", newBoard: board, opponent: "finding..."})
-		}
-		else if (game.getPlayers().length == 2) {
-			console.log("opponent!", game.getPlayers()[1])
-			socket.emit("color", {playerColor: "black", newBoard: board2, opponent: game.getPlayers()[0]})
-			//socket.emit("wopponent", {whiteOpponent: game.getPlayers()[1]})
+		if (game.getPlayers().length == 2) {
+			//console.log("opponent!", game.getPlayers()[1])... send both players
+			io.emit("color", {newBoard: [board, board2] , opponent: [game.getPlayers()[0], game.getPlayers()[1]]  })
 		}
 	})
 
 
+	//Pull this out of the connection 
+	//Listen for a new click to update the board
 	socket.on('coordinates', function (data) {
 		gameLogic(data.coordinates)
     	console.log("Server recieved coordinates! ", data)

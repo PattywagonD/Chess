@@ -31,6 +31,9 @@ const app = new Vue({
   watch: {
     board() {
       console.log("the board just changed")
+    },
+    oppopnent(){
+      console.log("the oppopnent has changed")
     }
     //If oppopnent hasnt changed set socket to ping out 
   },
@@ -99,18 +102,25 @@ const app = new Vue({
     startGame: function(i, j){
       //Make sure they entered a valid username
       if(this.username){
+        console.log(this.username)
         app.noGame = false
         app.isGame = true
         //send username to server
         this.socket.emit('username', {username: this.username})
         //recieves their color, board and opponent
         this.socket.on('color', function(data){
-          app.color = data.playerColor
-          app.board = data.newBoard
-          // set the opponents user name
-          console.log(app.color, "current color")
-          app.opponent = data.opponent
-          console.log(app.opponent, "and their opponent")
+          console.log("ON COLOR ", app.username, data.opponent[0])
+          if(app.username == data.opponent[0]){
+            app.color = "white"
+            app.board = data.newBoard[0]
+            app.opponent = data.opponent[1]
+            console.log("This should be player 1" , app.color, app.username, app. opponent)
+          }else if(app.username == data.opponent[1]){
+            app.color = "black"
+            app.board = data.newBoard[1]
+            app.opponent = data.opponent[0]
+            console.log("This should be player 2" , app.color, app.username, app.opponent)
+          }
         })
       }
     },
@@ -121,7 +131,7 @@ const app = new Vue({
         console.log(app.color, "test")
         console.log("Client sending coordinates!", [i, j, this.color])
         this.socket.emit('coordinates', {coordinates: [i,j, this.color]})
-        this.socket.on(this.color+'board', function(data){
+        this.socket.on(app.color+'board', function(data){
           console.log("Client recieved board! ", data)
           console.log(data.updated)
           app.board = data.updated
