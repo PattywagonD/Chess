@@ -107,7 +107,7 @@ const app = new Vue({
         app.isGame = true
         //send username to server
         this.socket.emit('username', {username: this.username})
-        //recieves their color, board and opponent
+        //Receives two boards and both usernames, routes data to correct person
         this.socket.on('color', function(data){
           console.log("ON COLOR ", app.username, data.opponent[0])
           if(app.username == data.opponent[0]){
