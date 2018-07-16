@@ -13,6 +13,7 @@ var board = [
               [0,0,0,0,0,0,0,0],
               [11,11,11,11,11,11,11,11],
               [12,13,14,16,15,14,13,12]
+
           	]
 var board2 = [
 	            [12,13,14,16,15,14,13,12],
@@ -25,6 +26,8 @@ var board2 = [
 	            [2,3,4,6,5,4,3,2]
 	          	]
 
+// a moves variable to show avaliable moves for a piece 
+var moves = []
 
 //App setup
 var app = express()
@@ -63,9 +66,12 @@ io.on('connection', function(socket){
 
 
 	//Pull this out of the connection 
-	//Listen for a new click to update the board
+	//Listen for a new click to update the board ie change socket to io
 	socket.on('coordinates', function (data) {
-		gameLogic(data.coordinates)
+		var x = data.coordinates[0]
+		var y = data.coordinates[1]
+		var color = data.coordinates[2]
+		gameLogic(x, y, color)
     	console.log("Server recieved coordinates! ", data)
     	console.log("Server now sending a new board! ", board)
     	socket.emit(data.coordinates[2]+'board', {updated: board})
@@ -73,10 +79,14 @@ io.on('connection', function(socket){
 })
 
 
-gameLogic = function(coordinates){
-	
-	//game.checkGameOver()
-	board = game.evaluateClick(coordinates)
-	//game.checkGameOver()
+gameLogic = function(x, y, color){
 
+	//game.checkGameOver()
+	board = game.evaluateClick(x, y, color)
+	moves = game.updateMoves(x, y, color)
+	//game.checkGameOver()
+}
+
+translateData = function(){
+	
 }

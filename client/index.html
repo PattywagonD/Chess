@@ -33,6 +33,7 @@
             <v-layout wrap row align-center justify-center>
               <v-flex>
                 <v-card color="blue-grey lighten-5">
+                  <v-progress-linear :active= 'opp' :indeterminate= 'opp'></v-progress-linear>
                   <h3>Username: {{ opponent }} </h3> <v-spacer></v-spacer>Pieces Captured: None</h3>
                 </v-card>
                </v-flex>
@@ -72,9 +73,12 @@
 
                     <v-flex xs1 v-for="i in 8" class="tile">
                       <v-card class="tile" v-for="j in 8" dark tile v-bind:color="getColor(i, j)">
-                        <v-btn flat fab @click= "sendClick(i,j)">                        
+                        <div>
+                        <div v-if = "getMoves(i,j)" class="overlay">Moveable</div> 
+                        <v-btn flat fab @click= "sendClick(i,j)">                       
                           <img v-bind:src = "getImage(i, j)">
                         </v-btn>
+                        </div>
                       </v-card>
                     </v-flex>
                     <div class="col">

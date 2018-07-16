@@ -87,13 +87,16 @@ class Game{
 	            [2,3,4,6,5,4,3,2]
 	          	]
 	}
-	evaluateClick(coordinates){
+	evaluateClick(x, y, color){
 		if(coordinates[2]== "white"){
 			return this.display
 		}else if(coordinates[2]=="black"){
 			return this.translateBoard(this.display)
 		}
 	} 
+	updateMoves(x, y, color){
+		return [[2,2], [6,8]]
+	}
 }
 
 
