@@ -72,10 +72,11 @@ io.on('connection', function(socket){
   })
 })
 
-gameLogic = function(coordinates){
 
-	game.checkGameOver()
+gameLogic = function(coordinates){
+	
+	//game.checkGameOver()
 	board = game.evaluateClick(coordinates)
-	game.checkGameOver()
+	//game.checkGameOver()
 
 }
