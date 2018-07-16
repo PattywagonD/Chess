@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CHESS</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.dev.js"></script> 
+  <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
+  <link href="vuetify.min.css" rel="stylesheet">
+  <link href="style.css" rel="stylesheet">
+
+</head>
+<body>
+  <div id="app">
+    <v-app>
+      <v-content v-if="noGame">
+       <v-container>
+        <v-layout wrap row align-center justify-center>
+          <v-card color="blue-grey lighten-5">
+            <h2>Let's Play Chess</h2>
+            <v-form ref="form" lazy-validation>
+              <v-text-field v-model="username" label="Username" required></v-text-field>
+              <v-btn @click="startGame()" color=blue> PLAY </v-btn>
+            </v-form>
+          </v-card>
+        </v-layout>
+      </v-container>
+    </v-content>
+
+
+        <v-content v-if = "isGame">
+          <v-container grid-list-xl text-xs-center>
+
+          <!-- Opponent's Display -->
+            <v-layout wrap row align-center justify-center>
+              <v-flex>
+                <v-card color="blue-grey lighten-5">
+                  <h3>Username: {{ opponent }} </h3> <v-spacer></v-spacer>Pieces Captured: None</h3>
+                </v-card>
+               </v-flex>
+            </v-layout>
+          <!-- Layout for Chat Game and Moves -->
+             <v-layout>
+
+            <v-flex xs2>
+            <v-card color="blue-grey lighten-5" class="sidebars"> 
+                <h3><u>Chat</u></h3>
+              </v-card>
+              </v-flex>
+            <v-flex xs8 >
+              <v-card class="white_b" >
+                <v-card row flat color="transparent" class="nums" >
+                  <v-layout wrap row align-center justify-center>
+                    <div class="letts" >
+                      <h2>a</h2>
+                      <h2>b</h2>
+                      <h2>c</h2>
+                      <h2>d</h2>
+                      <h2>e</h2>
+                      <h2>f</h2>
+                      <h2>g</h2>
+                      <h2>h</h2>
+                    </div>
+                       <div class="col">
+                      <h2>1</h2>
+                      <h2>2</h2>
+                      <h2>3</h2>
+                      <h2>4</h2>
+                      <h2>5</h2>
+                      <h2>6</h2>
+                      <h2>7</h2>
+                      <h2>8</h2>
+                    </div>
+
+                    <v-flex xs1 v-for="i in 8" class="tile">
+                      <v-card class="tile" v-for="j in 8" dark tile v-bind:color="getColor(i, j)">
+                        <v-btn flat fab @click= "sendClick(i,j)">                        
+                          <img v-bind:src = "getImage(i, j)">
+                        </v-btn>
+                      </v-card>
+                    </v-flex>
+                    <div class="col">
+                      <h2>&nbsp;</h2>
+                      <h2>&nbsp;</h2>
+                      <h2>&nbsp;</h2>
+                      <h2>&nbsp;</h2>
+                      <h2>&nbsp;</h2>
+                      <h2>&nbsp;</h2>
+                      <h2>&nbsp;</h2>
+                      <h2>&nbsp;</h2>
+                    </div>
+                    <div class="letts" >
+                      <h2>&nbsp;</h2>
+                      <h2>&nbsp;</h2>
+                      <h2>&nbsp;</h2>
+                      <h2>&nbsp;</h2>
+                      <h2>&nbsp;</h2>
+                      <h2>&nbsp;</h2>
+                      <h2>&nbsp;</h2>
+                      <h2>&nbsp;</h2>
+                    </div>
+                   </v-layout>
+                </v-card>
+              </v-card>
+              </v-flex>
+
+              <v-flex xs2>
+              <v-card class="sidebars"  color="blue-grey lighten-5">
+                <h3><u>Moves Made</u></h3>
+              </v-card>
+              </v-flex>
+            </v-layout>
+            <v-layout wrap row align-center justify-center>
+          <v-flex>
+          <v-card color="blue-grey lighten-5">
+        <h3>Username: {{ username }} <v-spacer></v-spacer>
+        Peices Captured: None</h3>
+      </v-card>
+      </v-flex>
+            <v-flex xs12>
+      <v-card class="mobile"  color="blue-grey lighten-5">
+                <h3><u>Moves Made</u></h3>
+              </v-card>
+              </v-flex>
+               <v-flex xs12>
+      <v-card class="mobile"  color="blue-grey lighten-5">
+                <h3><u>Chat</u></h3>
+              </v-card>
+              </v-flex>
+      </v-layout>
+
+          </v-container>
+        </v-content>
+    </v-app>
+  </div>
+  <script src="vue.js"></script>
+  <script src="vuetify.js"></script>
+  <script src="index.js"></script>
+</body>
+</html>
