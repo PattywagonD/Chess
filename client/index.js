@@ -19,6 +19,11 @@ const app = new Vue({
           ],
 
     username: "",
+<<<<<<< HEAD
+=======
+    opponent: "something",
+    color: "",
+>>>>>>> master
     noGame: true,
     isGame: false
   },
@@ -29,7 +34,15 @@ const app = new Vue({
   watch: {
     board() {
       console.log("the board just changed")
+<<<<<<< HEAD
     }
+=======
+    },
+    oppopnent(){
+      console.log("the oppopnent has changed")
+    }
+    //If oppopnent hasnt changed set socket to ping out 
+>>>>>>> master
   },
 
 	methods: {
@@ -94,23 +107,59 @@ const app = new Vue({
     },
 
     startGame: function(i, j){
+<<<<<<< HEAD
       app.noGame = false
       app.isGame = true
       console.log(app.username)
+=======
+      //Make sure they entered a valid username
+      if(this.username){
+        console.log(this.username)
+        app.noGame = false
+        app.isGame = true
+        //send username to server
+        this.socket.emit('username', {username: this.username})
+        //Receives two boards and both usernames, routes data to correct person
+        this.socket.on('color', function(data){
+          console.log("ON COLOR ", app.username, data.opponent[0])
+          if(app.username == data.opponent[0]){
+            app.color = "white"
+            app.board = data.newBoard[0]
+            app.opponent = data.opponent[1]
+            console.log("This should be player 1" , app.color, app.username, app. opponent)
+          }else if(app.username == data.opponent[1]){
+            app.color = "black"
+            app.board = data.newBoard[1]
+            app.opponent = data.opponent[0]
+            console.log("This should be player 2" , app.color, app.username, app.opponent)
+          }
+        })
+      }
+>>>>>>> master
     },
 
     //send the server the x, y of clicked square
     sendClick: function (i, j) {
         //var coordinates = [i, j]
+<<<<<<< HEAD
         console.log("Client sending coordinates!", [i, j])
         this.socket.emit('coordinates', {coordinates: [i,j]})
         this.socket.on('board', function(data){
+=======
+        console.log(app.color, "test")
+        console.log("Client sending coordinates!", [i, j, this.color])
+        this.socket.emit('coordinates', {coordinates: [i,j, this.color]})
+        this.socket.on(app.color+'board', function(data){
+>>>>>>> master
           console.log("Client recieved board! ", data)
           console.log(data.updated)
           app.board = data.updated
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> master
     })
     },
   } 
