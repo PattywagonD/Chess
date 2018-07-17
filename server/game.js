@@ -54,13 +54,19 @@ class Game{
           	]
 	}
 	boardInitialize() {
-        
 		for(var x = 1; x < 9; x++) {
 			for(var y = 1; y < 9; y++) {
 				this.board[x][y] = new Tile(0, x, y);
 			}
 		}
-	}	
+	}
+	getMoves(xCoordinate, yCoordinate) {
+		var movesArray;
+		if (this.board[xCoordinate][yCoordinate].getPiece().getColor() != "Blank") {
+			movesArray = this.board[xCoordinate][yCoordinate].getPiece().getMoves(this.board);
+		}
+		return movesArray;
+	}
 	addPlayer(username){
 		if(this.players.length < 2)
 			this.players.push(username)

@@ -1,3 +1,4 @@
+// VARIABLES DEPARTMENT
 var express = require('express')
 var socket = require('socket.io')
 const gameClass = require('./game.js')
@@ -72,7 +73,7 @@ io.on('connection', function(socket){
   })
 })
 
-
+// LOGIC DEPARTMENT
 gameLogic = function(coordinates){
 	
 	//game.checkGameOver()

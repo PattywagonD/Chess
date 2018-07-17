@@ -1,3 +1,10 @@
+/**
+ * WELCOME TO...
+ * P I E C E S . J S
+ * pieces.js contains class declarations for each individual chess piece. For our implementation,
+ * a "blank" is as much a piece as any rook or king or queen. Individual methods and properties pertaining to
+ * each individual piece is also defined here, on the server side.
+ */
 class Tile {
     constructor(occupationStatus, xCoordinate, yCoordinate) {
         this.occupied = occupationStatus;
@@ -127,7 +134,7 @@ class Rook extends Piece {
      * This mean moves are added Up, Right, Down, and then Left. Important to keep in mind for other objects
      * that will be using these pieces.
      */
-    getMyMoves(board) {
+    getMoves(board) {
         movesArray = new Array();
         let xCurrent = this.getXCoordinate();
         let yCurrent = this.getYCoordinate();
