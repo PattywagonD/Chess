@@ -88,7 +88,7 @@ gameLogic = function(x, y, color){
 
 	//game.checkGameOver()
 	board = game.evaluateClick(x, y, color)
-	moves = game.updateMoves(x, y, color)
+	moves = game.getMoves(x, y, color)
 	//game.checkGameOver()
 }
 
