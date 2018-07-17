@@ -37,7 +37,7 @@ class Game{
 	/**
     * Board is an array of tiles representing the chess board. Used for logic.
     */
-	this.board = [[]]
+	this.board = [[],[],[],[],[],[],[],[],[]]
 	/**
 	 * Display is a copy of the board for HTML. It is exported from the server-side to
 	 * the client-side.
@@ -51,7 +51,9 @@ class Game{
               [0,0,0,0,0,0,0,0],
               [11,11,11,11,11,11,11,11],
               [12,13,14,16,15,14,13,12]
-          	]
+			  ]
+		this.boardInitialize();
+		this.setPieces();
 	}
 	boardInitialize() {
 		for(var x = 1; x < 9; x++) {
@@ -61,10 +63,10 @@ class Game{
 		}
 	}
 	setPieces() {
-		for(y = 1; y < 9; y++) {
+		for(var y = 1; y < 9; y++) {
 			switch (y) {
 				case 1:
-					for(x = 1; x < 9; x++) {
+					for(var x = 1; x < 9; x++) {
 						switch (x) {
 							case 1: case 8:
 								this.board[x][y].setPiece(new pieces.Rook(x, y, "White"));
@@ -85,20 +87,20 @@ class Game{
 					}
 					break;
 				case 2:
-					for(x = 1; x < 9; x++) {
+					for(var x = 1; x < 9; x++) {
 						this.board[x][y].setPiece(new pieces.Pawn(x, y, "White"));
 					}
 				case 3: case 4: case 5: case 6:
-					for(x = 1; x < 9; x++) {
+					for(var x = 1; x < 9; x++) {
 						this.board[x][y].setPiece(new pieces.Blank(x, y));
 					}
 					break;
 				case 7:
-					for(x = 1; x < 9; x++) {
+					for(var x = 1; x < 9; x++) {
 						this.board[x][y].setPiece(new pieces.Pawn(x, y, "Black"));
 					}
 				case 8:
-					for(x = 1; x < 9; x++) {
+					for(var x = 1; x < 9; x++) {
 						switch (x) {
 							case 1: case 8:
 									this.board[x][y].setPiece(new pieces.Rook(x, y, "Black"));
@@ -124,6 +126,8 @@ class Game{
 	getMoves(xCoordinate, yCoordinate, color) {
 		var movesArray;
 		if (this.board[xCoordinate][yCoordinate].getPiece().getColor() != "Blank") {
+			console.log("THIS IS WHAT YOU ARE LOOKING FOR /n")
+			console.log(this.board[xCoordinate][yCoordinate]);
 			movesArray = this.board[xCoordinate][yCoordinate].getPiece().getMoves(this.board);
 		}
 		return movesArray;

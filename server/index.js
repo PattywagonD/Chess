@@ -1,7 +1,7 @@
 // VARIABLES DEPARTMENT
 var express = require('express')
 var socket = require('socket.io')
-const gameClass = require('./game.js').default
+const gameClass = require('./game.js')
 
 var game = new gameClass.Game()
 
@@ -86,7 +86,6 @@ io.on('connection', function(socket){
 gameLogic = function(x, y, color){
 
 	//game.checkGameOver()
-	game.boardInitialize();
 	board = game.evaluateClick(x, y, color);
 	moves = game.getMoves(x, y, color);
 	//game.checkGameOver()
