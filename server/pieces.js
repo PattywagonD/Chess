@@ -21,9 +21,9 @@ class Tile {
     // "Setter" Department
     setOccupied(occupationStatus) {
         this.occupied = occupationStatus;
-    }     
-}
+    }
 
+}
 
 class Piece {
     constructor(xCoordinate, yCoordinate, color, type) {

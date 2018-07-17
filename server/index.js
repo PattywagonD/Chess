@@ -3,6 +3,7 @@ var socket = require('socket.io')
 const gameClass = require('./game.js')
 
 var game = new gameClass.Game()
+var games = {gameID: new gameClass.Game()}
 
 var board = [
               [2,3,4,6,5,4,3,2],
@@ -15,16 +16,6 @@ var board = [
               [12,13,14,16,15,14,13,12]
 
           	]
-var board2 = [
-	            [12,13,14,16,15,14,13,12],
-	            [11,11,11,11,11,11,11,11],
-	            [0,0,0,0,0,0,0,0],
-	            [0,0,0,0,0,0,0,0],
-	            [0,0,0,0,0,0,0,0],
-	            [0,0,0,0,0,0,0,0],
-	            [1,1,1,1,1,1,1,1],
-	            [2,3,4,6,5,4,3,2]
-	          	]
 
 // a moves variable to show avaliable moves for a piece 
 var moves = []
@@ -60,7 +51,7 @@ io.on('connection', function(socket){
 		//send them their starting board
 		if (game.getPlayers().length == 2) {
 			//console.log("opponent!", game.getPlayers()[1])... send both players
-			io.emit("color", {newBoard: [board, board2] , opponent: [game.getPlayers()[0], game.getPlayers()[1]]  })
+			io.emit("color", {newBoard: board , opponent: [game.getPlayers()[0], game.getPlayers()[1]]  })
 		}
 	})
 	//Pull this out of the connection??? 

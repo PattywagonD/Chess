@@ -34,7 +34,7 @@
               <v-flex>
                 <v-card color="blue-grey lighten-5">
                   <v-progress-linear :active= 'opp' :indeterminate= 'opp'></v-progress-linear>
-                  <h3>Username: {{ opponent }} </h3> <v-spacer></v-spacer>Pieces Captured: None</h3>
+                  <h3>{{ opponent }} </h3> <v-spacer></v-spacer>Pieces Captured: None</h3>
                 </v-card>
                </v-flex>
             </v-layout>
@@ -42,10 +42,10 @@
              <v-layout>
 
             <v-flex xs2>
-            <v-card color="blue-grey lighten-5" class="sidebars"> 
+              <v-card color="blue-grey lighten-5" class="sidebars"> 
                 <h3><u>Chat</u></h3>
               </v-card>
-              </v-flex>
+            </v-flex>
             <v-flex xs8 >
               <v-card class="white_b" >
                 <v-card row flat color="transparent" class="nums" >
@@ -61,14 +61,14 @@
                       <h2>h</h2>
                     </div>
                        <div class="col">
-                      <h2>1</h2>
-                      <h2>2</h2>
-                      <h2>3</h2>
-                      <h2>4</h2>
-                      <h2>5</h2>
-                      <h2>6</h2>
-                      <h2>7</h2>
-                      <h2>8</h2>
+                         <h2>{{ getGridNum(8) }}</h2>
+                        <h2>{{ getGridNum(7) }}</h2>
+                        <h2>{{ getGridNum(6) }}</h2>
+                        <h2>{{ getGridNum(5) }}</h2>
+                        <h2>{{ getGridNum(4) }}</h2>
+                        <h2>{{ getGridNum(3) }}</h2>
+                        <h2>{{ getGridNum(2) }}</h2>
+                        <h2>{{ getGridNum(1) }}</h2>
                     </div>
 
                     <v-flex xs1 v-for="i in 8" class="tile">
@@ -109,14 +109,15 @@
               <v-flex xs2>
               <v-card class="sidebars"  color="blue-grey lighten-5">
                 <h3><u>Moves Made</u></h3>
+                  <p>{{history}}</p>
               </v-card>
               </v-flex>
             </v-layout>
             <v-layout wrap row align-center justify-center>
           <v-flex>
           <v-card color="blue-grey lighten-5">
-        <h3>Username: {{ username }} <v-spacer></v-spacer>
-        Peices Captured: None</h3>
+        <h3>{{ username }} <v-spacer></v-spacer>
+        Pieces Captured: None</h3>
       </v-card>
       </v-flex>
             <v-flex xs12>

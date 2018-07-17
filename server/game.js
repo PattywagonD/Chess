@@ -88,9 +88,15 @@ class Game{
               [12,13,14,16,15,14,13,12]
           	]
 	} 
-	updateMoves(x, y, color){
-		return [[2,2], [6,8]]
+	getMoves(xCoordinate, yCoordinate, color) {
+		return [[5,2], [6,3]]
 	}
+		// var movesArray;
+		// if (this.board[xCoordinate][yCoordinate].getPiece().getColor() != "Blank") {
+		// 	movesArray = this.board[xCoordinate][yCoordinate].getPiece().getMoves(this.board);
+		// }
+		// return movesArray;
+
 }
 
 
