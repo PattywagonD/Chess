@@ -2,8 +2,8 @@
 
 const app = new Vue({ 
   
-	el: '#app',
-	data: {
+  el: '#app',
+  data: {
 
     socket: io.connect('http://localhost:3000'),
 
@@ -19,13 +19,12 @@ const app = new Vue({
           ],
 
     username: "",
-<<<<<<< HEAD
-=======
-    opponent: "something",
+    opponent: "finding match...",
     color: "",
->>>>>>> master
     noGame: true,
-    isGame: false
+    isGame: false,
+    moves: [[1,1], [3,4], [5,7] ],
+    opp: true
   },
 
   created: {
@@ -34,20 +33,16 @@ const app = new Vue({
   watch: {
     board() {
       console.log("the board just changed")
-<<<<<<< HEAD
-    }
-=======
     },
     oppopnent(){
       console.log("the oppopnent has changed")
     }
     //If oppopnent hasnt changed set socket to ping out 
->>>>>>> master
   },
 
-	methods: {
+  methods: {
     //display the correct colors for the tiles
-		getColor: function (num, start) {
+    getColor: function (num, start) {
             if (start % 2 == 0)    
                 if (num % 2 == 0)
                     return "blue-grey lighten-4"
@@ -106,12 +101,15 @@ const app = new Vue({
 
     },
 
+    getMoves: function(j, i){
+      for(var x = 0; x < this.moves.length; x ++){
+        if(this.moves[x][0] == i && this.moves[x][1] == j){
+          return true
+        }
+      }
+    },
+
     startGame: function(i, j){
-<<<<<<< HEAD
-      app.noGame = false
-      app.isGame = true
-      console.log(app.username)
-=======
       //Make sure they entered a valid username
       if(this.username){
         console.log(this.username)
@@ -121,6 +119,7 @@ const app = new Vue({
         this.socket.emit('username', {username: this.username})
         //Receives two boards and both usernames, routes data to correct person
         this.socket.on('color', function(data){
+          app.opp = false
           console.log("ON COLOR ", app.username, data.opponent[0])
           if(app.username == data.opponent[0]){
             app.color = "white"
@@ -135,34 +134,23 @@ const app = new Vue({
           }
         })
       }
->>>>>>> master
     },
 
     //send the server the x, y of clicked square
     sendClick: function (i, j) {
         //var coordinates = [i, j]
-<<<<<<< HEAD
-        console.log("Client sending coordinates!", [i, j])
-        this.socket.emit('coordinates', {coordinates: [i,j]})
-        this.socket.on('board', function(data){
-=======
         console.log(app.color, "test")
-        console.log("Client sending coordinates!", [i, j, this.color])
-        this.socket.emit('coordinates', {coordinates: [i,j, this.color]})
-        this.socket.on(app.color+'board', function(data){
->>>>>>> master
-          console.log("Client recieved board! ", data)
-          console.log(data.updated)
-          app.board = data.updated
+        console.log("Client sending coordinates!", i, j, app.color)
+        this.socket.emit('updatedData', {x: i, y: j, color: app.color})
+        //Listen for new board
+        this.socket.on('board', function(data){
+          console.log("Client recieved board and moves! ")
+          console.log(data.updatedboard, data.updatedmoves)
+          app.board = data.updatedboard
+          app.moves = data.updatedmoves
 
-<<<<<<< HEAD
-
-
-=======
->>>>>>> master
     })
     },
   } 
 })
-
 

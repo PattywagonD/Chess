@@ -16,11 +16,11 @@ img {
 }
 
 .tile {
-	flex-flow: row wrap;
-	display: flex;
-	min-width: 90px;
-	min-height: 90px;
-	align-items: center;
+    flex-flow: row wrap;
+    display: flex;
+    min-width: 90px;
+    min-height: 90px;
+    align-items: center;
     justify-content: center;
     text-align: center;
     align-content: center;
@@ -59,6 +59,12 @@ img {
     text-align: center;
     align-items: center;
     vertical-align: middle;
+}
+
+.overlay {
+    position: absolute; /* Sit on top of the page content */
+    background-color: rgba(0,255,0,0.2); /* Black background with opacity */
+    z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
 }
 
 .sidebars {

@@ -1,11 +1,8 @@
 var express = require('express')
 var socket = require('socket.io')
-<<<<<<< HEAD
-=======
 const gameClass = require('./game.js')
 
 var game = new gameClass.Game()
->>>>>>> master
 
 var board = [
               [2,3,4,6,5,4,3,2],
@@ -13,15 +10,10 @@ var board = [
               [0,0,0,0,0,0,0,0],
               [0,0,0,0,0,0,0,0],
               [0,0,0,0,0,0,0,0],
-<<<<<<< HEAD
-              [0,0,0,0,0,1,0,0],
-              [11,11,11,11,11,11,11,11],
-              [12,13,14,16,15,14,13,12]
-          	]
-=======
               [0,0,0,0,0,0,0,0],
               [11,11,11,11,11,11,11,11],
               [12,13,14,16,15,14,13,12]
+
           	]
 var board2 = [
 	            [12,13,14,16,15,14,13,12],
@@ -34,7 +26,8 @@ var board2 = [
 	            [2,3,4,6,5,4,3,2]
 	          	]
 
->>>>>>> master
+// a moves variable to show avaliable moves for a piece 
+var moves = []
 
 //App setup
 var app = express()
@@ -50,12 +43,6 @@ app.use(express.static('../client'))
 
 //Socket setup to work on server(3000)
 var io = socket(server)
-<<<<<<< HEAD
-
-io.on('connection', function(socket){
-	console.log('Made socket connection', socket.id)
-	socket.emit('board', {newBoard: board})
-=======
 var ids = []
 
 io.on('connection', function(socket){
@@ -76,53 +63,35 @@ io.on('connection', function(socket){
 			io.emit("color", {newBoard: [board, board2] , opponent: [game.getPlayers()[0], game.getPlayers()[1]]  })
 		}
 	})
-
-
-	//Pull this out of the connection 
-	//Listen for a new click to update the board
->>>>>>> master
-	socket.on('coordinates', function (data) {
-		gameLogic(data.coordinates)
-    	console.log("Server recieved coordinates! ", data)
-    	console.log("Server now sending a new board! ", board)
-<<<<<<< HEAD
-    	socket.emit('board', {updated: board})
-=======
-    	socket.emit(data.coordinates[2]+'board', {updated: board})
->>>>>>> master
-  })
+	//Pull this out of the connection??? 
+	//Listen for a new click to update the board ie change socket to io
+	socket.on('updatedData', function(newClick){
+		console.log("socket data" , newClick)
+		var x = newClick.x
+		var y = newClick.y
+		var color = newClick.color
+	    console.log(x, y, color)
+	    //Update the board from the click and send new board
+		gameLogic(x, y, color)
+	    console.log("Server recieved coordinates! ", newClick.x, newClick.y)
+	    console.log("Server now sending a new board! ", board)
+	    io.emit('board', {updatedboard: board, updatedmoves: moves })
+	})
 })
 
 
-gameLogic = function(coordinates){
-<<<<<<< HEAD
-	if(coordinates[0] < 4)
-		board = [
-              [2,3,4,6,5,4,3,2],
-              [1,1,1,1,1,1,1,1],
-              [0,0,0,0,0,0,0,0],
-              [0,0,0,5,0,0,0,0],
-              [0,0,0,0,15,0,0,0],
-              [0,0,0,0,0,0,0,0],
-              [11,11,11,11,11,11,11,11],
-              [12,13,14,16,15,14,13,12]
-          	]
-	else
-		board =[
-              [2,3,4,6,5,4,3,2],
-              [1,1,1,1,1,1,1,1],
-              [0,0,0,0,0,0,0,0],
-              [0,0,0,0,6,0,0,0],
-              [0,0,0,16,0,0,0,0],
-              [0,0,0,0,0,0,0,0],
-              [11,11,11,11,11,11,11,11],
-              [12,13,14,16,15,14,13,12]
-          	]
-=======
-	
-	//game.checkGameOver()
-	board = game.evaluateClick(coordinates)
-	//game.checkGameOver()
 
->>>>>>> master
+
+
+
+gameLogic = function(x, y, color){
+
+	//game.checkGameOver()
+	board = game.evaluateClick(x, y, color)
+	//moves = game.getMoves(x, y, color)
+	//game.checkGameOver()
+}
+
+translateData = function(){
+	
 }
