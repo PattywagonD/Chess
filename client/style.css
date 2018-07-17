@@ -1,6 +1,25 @@
 [v-cloak] {
   display: none;
 }
+
+.start_screen {
+    margin: 100px;
+    padding: 100px;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    z-index: 100;
+}
+
+.end_screen {
+    margin: 100px;
+    padding: 100px;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    opacity: 0.5;
+}
+
 img {
     height: 50px;
     width: 50px;
@@ -33,6 +52,7 @@ img {
     justify-content: center;
     align-items: center;
     vertical-align: middle;
+    color: #263238;
 }
 
 .letts {
@@ -48,6 +68,7 @@ img {
     align-items: center;
     vertical-align: middle;
     align-content: center;
+    color: #263238;
 }
 .col {
     display: inline-flex;
@@ -111,32 +132,45 @@ img {
 }
 
 @media only screen and (max-width: 1263px) {
-
 img {
-    height: 35px;
-    width: 35px;
+    height: 60px;
+    width: 60px;
 }
 
 .white_b {
-    height: 580px; 
-    width: 570px;
+    height: 862px; 
+    width: 852px;
 }
 
 
 .tile {
-    min-width: 60px;
-    min-height: 60px;
-}
+    min-width: 90px;
+    min-height: 90px;
 }
 
-@media only screen and (max-width: 969px) {
+.letts {
+    width: 862px;
+    margin-right: 50px;
+    margin-left: 55px;
+}
+.col {
+    height: 520px;
+    margin-right: 20px;
+}
+
+.sidebars {
+    height: 680px;
+}
 
 .sidebars {
     display: none;
+    position: fixed;
+    z-index: -100;
 }
 
 .mobile {
     display: inline-flex;
     width: 100%;
+
 }
 }
