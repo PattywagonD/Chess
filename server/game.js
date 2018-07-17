@@ -37,7 +37,7 @@ class Game{
 	/**
     * Board is an array of tiles representing the chess board. Used for logic.
     */
-	this.board = []
+	this.board = [[]]
 	/**
 	 * Display is a copy of the board for HTML. It is exported from the server-side to
 	 * the client-side.
@@ -56,11 +56,72 @@ class Game{
 	boardInitialize() {
 		for(var x = 1; x < 9; x++) {
 			for(var y = 1; y < 9; y++) {
-				this.board[x][y] = new Tile(0, x, y);
+				this.board[x][y] = new pieces.Tile(0, x, y);
 			}
 		}
 	}
-	getMoves(xCoordinate, yCoordinate) {
+	setPieces() {
+		for(y = 1; y < 9; y++) {
+			switch (y) {
+				case 1:
+					for(x = 1; x < 9; x++) {
+						switch (x) {
+							case 1: case 8:
+								this.board[x][y].setPiece(new pieces.Rook(x, y, "White"));
+								break;
+							case 2: case 7:
+								this.board[x][y].setPiece(new pieces.Knight(x, y, "White"));
+								break;
+							case 3: case 6:
+								this.board[x][y].setPiece(new pieces.Bishop(x, y, "White"));
+								break;
+							case 4:
+								this.board[x][y].setPiece(new pieces.Queen(x, y, "White"));
+								break;
+							case 5:
+								this.board[x][y].setPiece(new pieces.King(x, y, "White"));
+								break;
+						}
+					}
+					break;
+				case 2:
+					for(x = 1; x < 9; x++) {
+						this.board[x][y].setPiece(new pieces.Pawn(x, y, "White"));
+					}
+				case 3: case 4: case 5: case 6:
+					for(x = 1; x < 9; x++) {
+						this.board[x][y].setPiece(new pieces.Blank(x, y));
+					}
+					break;
+				case 7:
+					for(x = 1; x < 9; x++) {
+						this.board[x][y].setPiece(new pieces.Pawn(x, y, "Black"));
+					}
+				case 8:
+					for(x = 1; x < 9; x++) {
+						switch (x) {
+							case 1: case 8:
+									this.board[x][y].setPiece(new pieces.Rook(x, y, "Black"));
+									break;
+								case 2: case 7:
+									this.board[x][y].setPiece(new pieces.Knight(x, y, "Black"));
+									break;
+								case 3: case 6:
+									this.board[x][y].setPiece(new pieces.Bishop(x, y, "Black"));
+									break;
+								case 4:
+									this.board[x][y].setPiece(new pieces.King(x, y, "Black"));
+									break;
+								case 5:
+									this.board[x][y].setPiece(new pieces.Queen(x, y, "Black"));
+									break;
+						}
+					}
+					break;
+			}
+		}
+	}
+	getMoves(xCoordinate, yCoordinate, color) {
 		var movesArray;
 		if (this.board[xCoordinate][yCoordinate].getPiece().getColor() != "Blank") {
 			movesArray = this.board[xCoordinate][yCoordinate].getPiece().getMoves(this.board);
@@ -73,33 +134,30 @@ class Game{
 		else
 			console.log("Cannot add")
 	}
+
 	getPlayers(username){
 		return this.players
 	}
+
 	checkGameOver(){
 
 	}
 
-	// If it is blacks turn the board needs flipped before setting board
-	translateBoard(board){
-		return  [
-	            [12,13,14,16,15,14,13,12],
-	            [11,11,11,11,11,11,11,11],
-	            [0,0,0,0,0,0,0,0],
-	            [0,0,0,0,0,0,0,0],
-	            [0,0,0,0,0,0,0,0],
-	            [0,0,0,0,0,0,0,0],
-	            [1,1,1,1,1,1,1,1],
-	            [2,3,4,6,5,4,3,2]
-	          	]
-	}
-	evaluateClick(coordinates){
-		if(coordinates[2]== "white"){
-			return this.display
-		}else if(coordinates[2]=="black"){
-			return this.translateBoard(this.display)
-		}
+	evaluateClick(x, y, color){
+		return [
+              [2,3,4,6,5,4,3,2],
+              [1,1,1,1,1,1,1,1],
+              [0,0,0,0,0,0,0,0],
+              [0,1,0,0,0,0,0,0],
+              [0,0,0,0,0,0,0,0],
+              [0,0,0,0,0,0,0,0],
+              [11,11,11,11,11,11,11,11],
+              [12,13,14,16,15,14,13,12]
+          	]
 	} 
+	updateMoves(x, y, color){
+		return [[2,2], [6,8]]
+	}
 }
 
 

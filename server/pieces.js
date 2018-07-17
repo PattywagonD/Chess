@@ -35,6 +35,9 @@ class Tile {
     setYCoordinate(yCoordinate) {
         this.y = yCoordinate;
     }
+    setPiece(newPiece) {
+        this.piece = newPiece;
+    }
 }
 
 
@@ -253,7 +256,7 @@ class Knight extends Piece {
         // Case 7. 2 Left, 1 Down
         if ((this.getXCoordinate() - 2 >= 1) && (this.getYCoordinate() - 1 >= 1)) {
             if (board[this.getXCoordinate() - 2][this.getYCoordinate() - 1].getColor() != this.getColor()) {
-                movesArray.push([(this.getXCoordinate() - 2), y : (this.getYCoordinate() - 1)])
+                movesArray.push([(this.getXCoordinate() - 2), (this.getYCoordinate() - 1)])
             }
         }
         // Case 8. 2 Left, 1 Up
@@ -364,7 +367,7 @@ class King extends Piece {
         // Case 2. Up-and-to-the-Right [White] / Down-and-to-the-Left [Black]
         if ((this.getXCoordinate() + 1 <= 8) && (this.getYCoordinate() + 1 <= 8)) {
             if (board[this.getXCoordinate() + 1][this.getYCoordinate() + 1].getColor() != this.getColor()) {
-                movesArray.push([(this.getXCoordinate() + 1), y : (this.getYCoordinate() + 1)]);
+                movesArray.push([(this.getXCoordinate() + 1), (this.getYCoordinate() + 1)]);
             }
         }
         // Case 3. Right [White] / Left [Black]

@@ -1,7 +1,7 @@
 // VARIABLES DEPARTMENT
 var express = require('express')
 var socket = require('socket.io')
-const gameClass = require('./game.js')
+const gameClass = require('./game.js').default
 
 var game = new gameClass.Game()
 
@@ -14,6 +14,7 @@ var board = [
               [0,0,0,0,0,0,0,0],
               [11,11,11,11,11,11,11,11],
               [12,13,14,16,15,14,13,12]
+
           	]
 var board2 = [
 	            [12,13,14,16,15,14,13,12],
@@ -26,6 +27,8 @@ var board2 = [
 	            [2,3,4,6,5,4,3,2]
 	          	]
 
+// a moves variable to show avaliable moves for a piece 
+var moves = []
 
 //App setup
 var app = express()
@@ -61,23 +64,34 @@ io.on('connection', function(socket){
 			io.emit("color", {newBoard: [board, board2] , opponent: [game.getPlayers()[0], game.getPlayers()[1]]  })
 		}
 	})
-
-
-	//Pull this out of the connection 
-	//Listen for a new click to update the board
-	socket.on('coordinates', function (data) {
-		gameLogic(data.coordinates)
-    	console.log("Server recieved coordinates! ", data)
-    	console.log("Server now sending a new board! ", board)
-    	socket.emit(data.coordinates[2]+'board', {updated: board})
-  })
+	//Pull this out of the connection??? 
+	//Listen for a new click to update the board ie change socket to io
+	socket.on('updatedData', function(newClick){
+		console.log("socket data" , newClick)
+		var x = newClick.x
+		var y = newClick.y
+		var color = newClick.color
+	    console.log(x, y, color)
+	    //Update the board from the click and send new board
+		gameLogic(x, y, color)
+	    console.log("Server recieved coordinates! ", newClick.x, newClick.y)
+	    console.log("Server now sending a new board! ", board)
+	    io.emit('board', {updatedboard: board, updatedmoves: moves })
+	})
 })
 
-// LOGIC DEPARTMENT
-gameLogic = function(coordinates){
-	
-	//game.checkGameOver()
-	board = game.evaluateClick(coordinates)
-	//game.checkGameOver()
 
+
+// LOGIC DEPARTMENT
+gameLogic = function(x, y, color){
+
+	//game.checkGameOver()
+	game.boardInitialize();
+	board = game.evaluateClick(x, y, color);
+	moves = game.getMoves(x, y, color);
+	//game.checkGameOver()
+}
+
+translateData = function(){
+	
 }

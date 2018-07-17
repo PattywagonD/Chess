@@ -19,10 +19,12 @@ const app = new Vue({
           ],
 
     username: "",
-    opponent: "something",
+    opponent: "finding match...",
     color: "",
     noGame: true,
-    isGame: false
+    isGame: false,
+    moves: [[1,1], [3,4], [5,7] ],
+    opp: true
   },
 
   created: {
@@ -99,6 +101,14 @@ const app = new Vue({
 
     },
 
+    getMoves: function(j, i){
+      for(var x = 0; x < this.moves.length; x ++){
+        if(this.moves[x][0] == i && this.moves[x][1] == j){
+          return true
+        }
+      }
+    },
+
     startGame: function(i, j){
       //Make sure they entered a valid username
       if(this.username){
@@ -109,6 +119,7 @@ const app = new Vue({
         this.socket.emit('username', {username: this.username})
         //Receives two boards and both usernames, routes data to correct person
         this.socket.on('color', function(data){
+          app.opp = false
           console.log("ON COLOR ", app.username, data.opponent[0])
           if(app.username == data.opponent[0]){
             app.color = "white"
@@ -129,12 +140,14 @@ const app = new Vue({
     sendClick: function (i, j) {
         //var coordinates = [i, j]
         console.log(app.color, "test")
-        console.log("Client sending coordinates!", [i, j, this.color])
-        this.socket.emit('coordinates', {coordinates: [i,j, this.color]})
-        this.socket.on(app.color+'board', function(data){
-          console.log("Client recieved board! ", data)
-          console.log(data.updated)
-          app.board = data.updated
+        console.log("Client sending coordinates!", i, j, app.color)
+        this.socket.emit('updatedData', {x: i, y: j, color: app.color})
+        //Listen for new board
+        this.socket.on('board', function(data){
+          console.log("Client recieved board and moves! ")
+          console.log(data.updatedboard, data.updatedmoves)
+          app.board = data.updatedboard
+          app.moves = data.updatedmoves
 
     })
     },

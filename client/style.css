@@ -61,6 +61,12 @@ img {
     vertical-align: middle;
 }
 
+.overlay {
+    position: absolute; /* Sit on top of the page content */
+    background-color: rgba(0,255,0,0.2); /* Black background with opacity */
+    z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
+}
+
 .sidebars {
     height: 680px;
     width: auto;
