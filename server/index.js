@@ -63,20 +63,25 @@ io.on('connection', function(socket){
 			io.emit("color", {newBoard: [board, board2] , opponent: [game.getPlayers()[0], game.getPlayers()[1]]  })
 		}
 	})
-
-
-	//Pull this out of the connection 
+	//Pull this out of the connection??? 
 	//Listen for a new click to update the board ie change socket to io
-	socket.on('coordinates', function (data) {
-		var x = data.coordinates[0]
-		var y = data.coordinates[1]
-		var color = data.coordinates[2]
+	socket.on('updatedData', function(newClick){
+		console.log("socket data" , newClick)
+		var x = newClick.x
+		var y = newClick.y
+		var color = newClick.color
+	    console.log(x, y, color)
+	    //Update the board from the click and send new board
 		gameLogic(x, y, color)
-    	console.log("Server recieved coordinates! ", data)
-    	console.log("Server now sending a new board! ", board)
-    	socket.emit(data.coordinates[2]+'board', {updated: board})
-  })
+	    console.log("Server recieved coordinates! ", newClick.x, newClick.y)
+	    console.log("Server now sending a new board! ", board)
+	    io.emit('board', {updatedboard: board, updatedmoves: moves })
+	})
 })
+
+
+
+
 
 
 gameLogic = function(x, y, color){

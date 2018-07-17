@@ -19,7 +19,7 @@ const app = new Vue({
           ],
 
     username: "",
-    opponent: "searching...",
+    opponent: "finding match...",
     color: "",
     noGame: true,
     isGame: false,
@@ -140,12 +140,14 @@ const app = new Vue({
     sendClick: function (i, j) {
         //var coordinates = [i, j]
         console.log(app.color, "test")
-        console.log("Client sending coordinates!", [i, j, this.color])
-        this.socket.emit('coordinates', {coordinates: [i,j, this.color]})
-        this.socket.on(app.color+'board', function(data){
-          console.log("Client recieved board! ", data)
-          console.log(data.updated)
-          app.board = data.updated
+        console.log("Client sending coordinates!", i, j, app.color)
+        this.socket.emit('updatedData', {x: i, y: j, color: app.color})
+        //Listen for new board
+        this.socket.on('board', function(data){
+          console.log("Client recieved board and moves! ")
+          console.log(data.updatedboard, data.updatedmoves)
+          app.board = data.updatedboard
+          app.moves = data.updatedmoves
 
     })
     },
