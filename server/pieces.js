@@ -137,7 +137,7 @@ class Pawn extends Piece {
 }
 class Rook extends Piece {
     constructor (xCoordinate, yCoordinate, color) {
-        super(1, xCoordinate, yCoordinate, color);
+        super(xCoordinate, yCoordinate, color);
         this.type = "Rook";
     }
     /**
@@ -203,7 +203,7 @@ class Rook extends Piece {
 }
 class Knight extends Piece {
     constructor(xCoordinate, yCoordinate, color) {
-        super(1, xCoordinate, yCoordinate, color);
+        super(xCoordinate, yCoordinate, color);
         this.type = "Knight";
     }
     /**
@@ -346,7 +346,7 @@ class Bishop extends Piece {
 }
 class Queen extends Piece {
     constructor(xCoordinate, yCoordinate, color) {
-        super(1, xCoordinate, yCoordinate, color);
+        super(xCoordinate, yCoordinate, color);
         this.type = "Queen";
     }
     getMoves(board) {
@@ -360,7 +360,7 @@ class Queen extends Piece {
 }
 class King extends Piece {
     constructor(xCoordinate, yCoordinate, color) {
-        super(1, xCoordinate, yCoordinate, color);
+        super(xCoordinate, yCoordinate, color);
         this.type = "King";
 
     }
