@@ -21,10 +21,10 @@ class Game{
     * Let gameState be defined as
     * 0. Beginning of the game (implies we need to set-up the board)
     * 1. Middle of the game, let the players inform the board
-         * 2. Check: a King is in check, update move behavior to match
-         * 3. Stalemate: There is not enough material on the board for either player to make a 
-         * definitive play. This game is over by default. 
-         * 4. End: a King is in checkmate, inform the players and present them some options
+    * 2. Check: a King is in check, update move behavior to match
+    * 3. Stalemate: There is not enough material on the board for either player to make a 
+    * definitive play. This game is over by default. 
+    * 4. End: a King is in checkmate, inform the players and present them some options
      */
 	this.gameState = 0
 	/**
@@ -125,9 +125,7 @@ class Game{
 	}
 	getMoves(xCoordinate, yCoordinate, color) {
 		var movesArray;
-		if (this.board[xCoordinate][yCoordinate].getPiece().getColor() != "Blank") {
-			console.log("THIS IS WHAT YOU ARE LOOKING FOR /n")
-			console.log(this.board[xCoordinate][yCoordinate]);
+		if (this.board[xCoordinate][yCoordinate].getPiece() != pieces.Blank) {
 			movesArray = this.board[xCoordinate][yCoordinate].getPiece().getMoves(this.board);
 		}
 		return movesArray;
