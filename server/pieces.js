@@ -148,11 +148,10 @@ class Rook extends Piece {
      */
     getMoves(board) {
         var movesArray = new Array();
-        let xCurrent = this.getXCoordinate();
-        let yCurrent = this.getYCoordinate();
+        var xCurrent = this.getXCoordinate();
+        var yCurrent = this.getYCoordinate();
         // Case One: Can the Rook move Forward? If so how far?
         while (yCurrent <= 8) {
-            //TODO: Can't we add take pieces of the opposing color?
             if (board[this.getXCoordinate()][yCurrent].getPiece().getColor() == this.getColor()) {
                 break;
             }
@@ -185,6 +184,12 @@ class Rook extends Piece {
         }
         // Case Four: How far Left can our Rook move?
         while (xCurrent >= 1) {
+            console.log("DEBUG HERE");
+            console.log("X:")
+            console.log(this.getXCoordinate());
+            console.log("Y:");
+            console.log(yCurrent);
+
             if (board[this.getXCoordinate()][yCurrent].getPiece().getColor() == this.getColor()) {
                 break;
             }

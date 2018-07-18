@@ -52,8 +52,8 @@ class Game{
               [11,11,11,11,11,11,11,11],
               [12,13,14,16,15,14,13,12]
 			  ]
-		this.boardInitialize();
-		this.setPieces();
+	this.boardInitialize();
+	this.setPieces();
 	}
 	boardInitialize() {
 		for(var x = 1; x < 9; x++) {
@@ -70,18 +70,23 @@ class Game{
 						switch (x) {
 							case 1: case 8:
 								this.board[x][y].setPiece(new pieces.Rook(x, y, "White"));
+								this.board[x][y].setOccupied(1);
 								break;
 							case 2: case 7:
 								this.board[x][y].setPiece(new pieces.Knight(x, y, "White"));
+								this.board[x][y].setOccupied(1);
 								break;
 							case 3: case 6:
 								this.board[x][y].setPiece(new pieces.Bishop(x, y, "White"));
+								this.board[x][y].setOccupied(1);
 								break;
 							case 4:
 								this.board[x][y].setPiece(new pieces.Queen(x, y, "White"));
+								this.board[x][y].setOccupied(1);
 								break;
 							case 5:
 								this.board[x][y].setPiece(new pieces.King(x, y, "White"));
+								this.board[x][y].setOccupied(1);
 								break;
 						}
 					}
@@ -89,6 +94,7 @@ class Game{
 				case 2:
 					for(var x = 1; x < 9; x++) {
 						this.board[x][y].setPiece(new pieces.Pawn(x, y, "White"));
+						this.board[x][y].setOccupied(1);
 					}
 				case 3: case 4: case 5: case 6:
 					for(var x = 1; x < 9; x++) {
@@ -98,24 +104,30 @@ class Game{
 				case 7:
 					for(var x = 1; x < 9; x++) {
 						this.board[x][y].setPiece(new pieces.Pawn(x, y, "Black"));
+						this.board[x][y].setOccupied(1);
 					}
 				case 8:
 					for(var x = 1; x < 9; x++) {
 						switch (x) {
 							case 1: case 8:
 									this.board[x][y].setPiece(new pieces.Rook(x, y, "Black"));
+									this.board[x][y].setOccupied(1);
 									break;
 								case 2: case 7:
 									this.board[x][y].setPiece(new pieces.Knight(x, y, "Black"));
+									this.board[x][y].setOccupied(1);
 									break;
 								case 3: case 6:
 									this.board[x][y].setPiece(new pieces.Bishop(x, y, "Black"));
+									this.board[x][y].setOccupied(1);
 									break;
 								case 4:
 									this.board[x][y].setPiece(new pieces.King(x, y, "Black"));
+									this.board[x][y].setOccupied(1);
 									break;
 								case 5:
 									this.board[x][y].setPiece(new pieces.Queen(x, y, "Black"));
+									this.board[x][y].setOccupied(1);
 									break;
 						}
 					}
@@ -126,7 +138,16 @@ class Game{
 	getMoves(xCoordinate, yCoordinate, color) {
 		var movesArray;
 		if (this.board[xCoordinate][yCoordinate].getPiece() != pieces.Blank) {
-			movesArray = this.board[xCoordinate][yCoordinate].getPiece().getMoves(this.board);
+			console.log("Inside getMoves() @game.js");
+			console.log("X:");
+			console.log(xCoordinate);
+			console.log("Y:");
+			console.log(yCoordinate);
+			console.log("Board:")
+			console.log(this.board)
+			console.log("Container at index values:");
+			console.log(this.board[xCoordinate][yCoordinate]);
+			movesArray = this.board[xCoordinate][yCoordinate].pieces.getPiece().getMoves(this.board);
 		}
 		return movesArray;
 	}
