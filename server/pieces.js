@@ -295,7 +295,12 @@ class Bishop extends Piece {
                 case 0: //Up-and-to-the-left
                     while (xCurrent >= 1 && yCurrent <= 8) {
                         if(board[xCurrent][yCurrent].getOccupied()) {
-                            break;
+                            if(board[xCurrent][yCurrent].getPiece().getColor() == this.getColor()) {
+                                break;
+                            }
+                            else {
+                                movesArray.push([xCurrent, yCurrent]);
+                            }
                         }
                         else {
                             movesArray.push([xCurrent, yCurrent]);
@@ -307,7 +312,12 @@ class Bishop extends Piece {
                 case 1: //Up-and-to-the-Right   
                     while (xCurrent <= 8 && yCurrent <= 8) {
                         if(board[xCurrent][yCurrent].getOccupied()) {
-                            break;
+                            if(board[xCurrent][yCurrent].getPiece().getColor() == this.getColor()) {
+                                break;
+                            }
+                            else {
+                                movesArray.push([xCurrent, yCurrent]);
+                            }
                         }
                         else {
                             movesArray.push([xCurrent, yCurrent]);
@@ -319,7 +329,12 @@ class Bishop extends Piece {
                 case 2: //Down-and-to-the-Right
                     while (xCurrent <= 8 && yCurrent >= 1) {
                         if(board[xCurrent][yCurrent].getOccupied()) {
-                            break;
+                            if(board[xCurrent][yCurrent].getPiece().getColor() == this.getColor()) {
+                                break;
+                            }
+                            else {
+                                movesArray.push([xCurrent, yCurrent]);
+                            }
                         }
                         else {
                             movesArray.push([xCurrent, yCurrent])
@@ -331,7 +346,12 @@ class Bishop extends Piece {
                 case 3: // Down-and-to-the-Left
                 while (xCurrent >= 1 && yCurrent >= 1) {
                     if(board[xCurrent][yCurrent].getOccupied()) {
-                        break;
+                        if(board[xCurrent][yCurrent].getPiece().getColor() == this.getColor()) {
+                            break;
+                        }
+                        else {
+                            movesArray.push([xCurrent, yCurrent]);
+                        }
                     }
                     else {
                         movesArray.push([xCurrent, yCurrent])
