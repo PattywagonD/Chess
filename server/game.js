@@ -147,7 +147,7 @@ class Game{
 			console.log(this.board)
 			console.log("Container at index values:");
 			console.log(this.board[xCoordinate][yCoordinate]);
-			movesArray = this.board[xCoordinate][yCoordinate].pieces.getPiece().getMoves(this.board);
+			movesArray = this.board[xCoordinate][yCoordinate].getPiece().getMoves(this.board);
 		}
 		return movesArray;
 	}

@@ -87,7 +87,7 @@ class Pawn extends Piece {
         if(this.color == "White") {
             // Case 1.White : Capture a piece to your left
             if ((this.getXCoordinate() - 1 >= 1) && (this.getYCoordinate() + 1 <= 8)) {  
-                if (board[this.getXCoordinate() - 1][this.getYCoordinate() + 1].piece.color == "Black") {
+                if (board[this.getXCoordinate() - 1][this.getYCoordinate() + 1].getPiece().getColor() == "Black") {
                     movesArray.push([(this.getXCoordinate() - 1) , (this.getYCoordinate() + 1)]);
                 }
             }
@@ -103,7 +103,7 @@ class Pawn extends Piece {
             }
             // Case 3.White : Capture a piece to your right
             if ((this.getXCoordinate() + 1 <= 8) && (this.getYCoordinate() + 1 <= 8)) {
-                if (board[this.getXCoordinate() + 1][this.getYCoordinate() + 1].piece.color == "Black") {
+                if (board[this.getXCoordinate() + 1][this.getYCoordinate() + 1].getPiece().getColor() == "Black") {
                     movesArray.push([(this.getXCoordinate() + 1), (this.getYCoordinate() + 1)]);
                 }
             }
@@ -111,7 +111,7 @@ class Pawn extends Piece {
         else if (this.color == "Black") {
             // Case 1.Black : Capture a piece to your left
             if((this.x - 1 >= 1) && (this.y - 1 >= 1)) {  
-                if (board[this.getXCoordinate() - 1][this.getYCoordinate() - 1].piece.color == "White") {
+                if (board[this.getXCoordinate() - 1][this.getYCoordinate() - 1].getPiece().getColor() == "White") {
                     movesArray.push([(this.getXCoordinate() - 1), (this.getYCoordinate() - 1)]);
                 }
             }
@@ -127,7 +127,7 @@ class Pawn extends Piece {
             }
             // Case 3. Capture a piece to your right
             if ((this.getXCoordinate() + 1 <= 8) && (this.getYCoordinate() - 1 >= 1)) {
-                if (board[this.getXCoordinate() + 1][this.getYCoordinate() - 1].piece.color == "White") {
+                if (board[this.getXCoordinate() + 1][this.getYCoordinate() - 1].getPiece().getColor() == "White") {
                     movesArray.push([(this.getXCoordinate() + 1), (this.getYCoordinate() - 1)]);
                 }
             }
@@ -225,49 +225,49 @@ class Knight extends Piece {
         var movesArray = new Array();
         // Case 1. 2 Up, 1 Left
         if ((this.getXCoordinate() - 1 >= 1) && (this.getYCoordinate() + 2 <= 8)) {
-            if (board[this.getXCoordinate() - 1][this.getYCoordinate() + 2].getColor() != this.getColor()) {
+            if (board[this.getXCoordinate() - 1][this.getYCoordinate() + 2].getPiece().getColor() != this.getColor()) {
                 movesArray.push([(this.getXCoordinate() - 1), (this.getYCoordinate() + 2)])
             }
         }
         // Case 2. 2 Up, 1 Right
         if ((this.getXCoordinate() + 1 <= 8) && (this.getYCoordinate() + 2 <= 8)) {
-            if (board[this.getXCoordinate() + 1][this.getYCoordinate() + 2].getColor() != this.getColor()) {
+            if (board[this.getXCoordinate() + 1][this.getYCoordinate() + 2].getPiece().getColor() != this.getColor()) {
                 movesArray.push([(this.getXCoordinate() + 1),(this.getYCoordinate() + 2)])
             }
         }
         // Case 3. 2 Right, 1 Up
         if ((this.getXCoordinate() + 2 <= 8) && (this.getYCoordinate() + 1 <= 8)) {
-            if (board[this.getXCoordinate() + 2][this.getYCoordinate() + 1].getColor() != this.getColor()) {
+            if (board[this.getXCoordinate() + 2][this.getYCoordinate() + 1].getPiece().getColor() != this.getColor()) {
                 movesArray.push([(this.getXCoordinate() + 2), (this.getYCoordinate() + 1)])
             }
         }
         // Case 4. 2 Right, 1 Down
         if ((this.getXCoordinate() + 2 <= 8) && (this.getYCoordinate() - 1 >= 1)) {
-            if (board[this.getXCoordinate() + 2][this.getYCoordinate() - 1].getColor() != this.getColor()) {
+            if (board[this.getXCoordinate() + 2][this.getYCoordinate() - 1].getPiece().getColor() != this.getColor()) {
                 movesArray.push([(this.getXCoordinate() + 2),(this.getYCoordinate() - 1)])
             }
         }
         // Case 5. 2 Down, 1 Right
         if ((this.getXCoordinate() + 1 <= 8) && (this.getYCoordinate() - 2 >= 1)) {
-            if (board[this.getXCoordinate() + 1][this.getYCoordinate() - 2].getColor() != this.getColor()) {
+            if (board[this.getXCoordinate() + 1][this.getYCoordinate() - 2].getPiece().getColor() != this.getColor()) {
                 movesArray.push([(this.getXCoordinate() + 1),(this.getYCoordinate() - 2)])
             }
         }
         // Case 6. 2 Down, 1 Left
         if ((this.getXCoordinate() - 1 >= 1) && (this.getYCoordinate() - 2 >= 1)) {
-            if (board[this.getXCoordinate() - 1][this.getYCoordinate() - 2].getColor() != this.getColor()) {
+            if (board[this.getXCoordinate() - 1][this.getYCoordinate() - 2].getPiece().getColor() != this.getColor()) {
                 movesArray.push([(this.getXCoordinate() - 1),(this.getYCoordinate() - 2)])
             }
         }
         // Case 7. 2 Left, 1 Down
         if ((this.getXCoordinate() - 2 >= 1) && (this.getYCoordinate() - 1 >= 1)) {
-            if (board[this.getXCoordinate() - 2][this.getYCoordinate() - 1].getColor() != this.getColor()) {
+            if (board[this.getXCoordinate() - 2][this.getYCoordinate() - 1].getPiece().getColor() != this.getColor()) {
                 movesArray.push([(this.getXCoordinate() - 2), (this.getYCoordinate() - 1)])
             }
         }
         // Case 8. 2 Left, 1 Up
         if ((this.getXCoordinate() - 2 >= 1) && (this.getYCoordinate() + 1 <= 8)) {
-            if (board[this.getXCoordinate() - 2][this.getYCoordinate() + 1].getColor() != this.getColor()) {
+            if (board[this.getXCoordinate() - 2][this.getYCoordinate() + 1].getPiece().getColor() != this.getColor()) {
                 movesArray.push([(this.getXCoordinate() - 2), (this.getYCoordinate() + 1)])
             }
         }
@@ -368,49 +368,49 @@ class King extends Piece {
         var movesArray = new Array();
         // Case 1. Forward [White] / Backward [Black]
         if (this.getYCoordinate() + 1 <= 8) {
-            if (board[this.getXCoordinate()][this.getYCoordinate() + 1].getColor() != this.getColor()) {
+            if (board[this.getXCoordinate()][this.getYCoordinate() + 1].getPiece().getColor() != this.getColor()) {
                 movesArray.push([this.getXCoordinate(),(this.getYCoordinate() + 1)]);
             }
         }
         // Case 2. Up-and-to-the-Right [White] / Down-and-to-the-Left [Black]
         if ((this.getXCoordinate() + 1 <= 8) && (this.getYCoordinate() + 1 <= 8)) {
-            if (board[this.getXCoordinate() + 1][this.getYCoordinate() + 1].getColor() != this.getColor()) {
+            if (board[this.getXCoordinate() + 1][this.getYCoordinate() + 1].getPiece().getColor() != this.getColor()) {
                 movesArray.push([(this.getXCoordinate() + 1), (this.getYCoordinate() + 1)]);
             }
         }
         // Case 3. Right [White] / Left [Black]
         if (this.getXCoordinate() + 1 <= 8) {
-            if (board[this.getXCoordinate() + 1][this.getYCoordinate()].getColor() != this.getColor()) {
+            if (board[this.getXCoordinate() + 1][this.getYCoordinate()].getPiece().getColor() != this.getColor()) {
                 movesArray.push([(this.getXCoordinate() + 1),(this.getYCoordinate())])
             }
         }
         // Case 4. Down-and-to-the-Right [White] / Up-and-to-the-Left [Black]
         if ((this.getXCoordinate() + 1 <= 8) && (this.getYCoordinate() - 1 >= 1)) {
-            if (board[this.getXCoordinate() + 1][this.getYCoordinate() - 1].getColor() != this.getColor()) {
+            if (board[this.getXCoordinate() + 1][this.getYCoordinate() - 1].getPiece().getColor() != this.getColor()) {
                 movesArray.push([(this.getXCoordinate() + 1),(this.getYCoordinate() - 1)]);
             }
         }
         // Case 5. Backward [White] / Forward [Black]
         if (this.getYCoordinate() - 1 >= 1) {
-            if (board[this.getXCoordinate()][this.getYCoordinate() - 1].getColor() != this.getColor()) {
+            if (board[this.getXCoordinate()][this.getYCoordinate() - 1].getPiece().getColor() != this.getColor()) {
                 movesArray.push([(this.getXCoordinate() + 1), (this.getYCoordinate() - 1)]);
             }
         }
         // Case 6. Down-and-to-the-Left [White] / Up-and-to-the-Right [Black]
         if ((this.getXCoordinate() - 1 >= 1) && (this.getYCoordinate() - 1 >= 1)) {
-            if (board[this.getXCoordinate() - 1][this.getYCoordinate() - 1].getColor() != this.getColor()) {
+            if (board[this.getXCoordinate() - 1][this.getYCoordinate() - 1].getPiece().getColor() != this.getColor()) {
                 movesArray.push([(this.getXCoordinate() - 1), (this.getYCoordinate() - 1)]);
             }
         }
         // Case 7. Left [White] / Right [Black]
         if (this.getXCoordinate() - 1 >= 1) {
-            if (board[this.getXCoordinate() - 1][this.getYCoordinate()].getColor() != this.getColor()) {
+            if (board[this.getXCoordinate() - 1][this.getYCoordinate()].getPiece().getColor() != this.getColor()) {
                 movesArray.push([(this.getXCoordinate() - 1), (this.getYCoordinate())]);
             }
         }
         // Case 8. Up-and-to-the-Left [White] / Down-and-to-the-Right [Black]
         if ((this.getXCoordinate() - 1 >= 1) && (this.getYCoordinate() + 1 <= 8)) {
-            if (board[this.getXCoordinate() - 1][this.getYCoordinate() + 1].getColor() != this.getColor()) {
+            if (board[this.getXCoordinate() - 1][this.getYCoordinate() + 1].getPiece().getColor() != this.getColor()) {
                 movesArray.push([(this.getXCoordinate() - 1), (this.getYCoordinate() + 1)])
             }
         }
