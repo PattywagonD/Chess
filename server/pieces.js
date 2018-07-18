@@ -370,8 +370,8 @@ class Queen extends Piece {
         this.type = "Queen";
     }
     getMoves(board) {
-        protoRook = new Rook(this.getXCoordinate(), this.getYCoordinate(), this.getColor());
-        protoBishop = new Bishop(this.getXCoordinate(), this.getYCoordinate(), this.getColor());
+        var protoRook = new Rook(this.getXCoordinate(), this.getYCoordinate(), this.getColor());
+        var protoBishop = new Bishop(this.getXCoordinate(), this.getYCoordinate(), this.getColor());
         var arrayRook = protoRook.getMoves(board);
         var arrayBishop = protoBishop.getMoves(board);
         var movesArray = (arrayRook.concat(arrayBishop));
