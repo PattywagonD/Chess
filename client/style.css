@@ -32,6 +32,7 @@ img {
     justify-content: center;
     align-content: center;
     display: inline-block;
+    box-shadow: 0px 1px 5px #888888;
 }
 
 .tile {
@@ -140,32 +141,32 @@ img {
 .white_b {
     height: 862px; 
     width: 852px;
+    box-shadow: none;
 }
 
 
 .tile {
-    min-width: 90px;
-    min-height: 90px;
+    min-width: 100px;
+    min-height: 100px;
 }
 
 .letts {
-    width: 862px;
-    margin-right: 50px;
-    margin-left: 55px;
+   height: 0px;
+    width: 0px;
+    display: none;
 }
 .col {
-    height: 520px;
-    margin-right: 20px;
-}
-
-.sidebars {
-    height: 680px;
-}
-
-.sidebars {
+    height: 0px;
+    width: 0px;
     display: none;
-    position: fixed;
-    z-index: -100;
+}
+
+
+
+.sidebars {
+    height: 0px;
+    width: 0px;
+    display: none;
 }
 
 .mobile {

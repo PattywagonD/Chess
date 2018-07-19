@@ -15,11 +15,11 @@
        <v-container>
         <v-layout wrap row align-center justify-center>
         <v-flex xs12>
-          <v-card color="blue-grey lighten-5" class="start_screen">
-            <h2><font color="#263238">Let's Play Chess</font></h2>
+          <v-card class="start_screen">
+            <h2>Let's Play Chess</h2>
             <v-form ref="form" lazy-validation>
               <v-text-field v-model="username" label="Username" required></v-text-field>
-              <v-btn @click="startGame()" color="blue-grey darken-3"><font color="white">PLAY</font></v-btn>
+              <v-btn @click="startGame()" color="info">PLAY</v-btn>
             </v-form>
           </v-card>
           </v-flex>
@@ -35,7 +35,7 @@
             <v-layout wrap row align-center justify-center>
               <v-flex>
                 <v-card color="blue-grey lighten-5">
-                  <v-progress-linear color="blue-grey darken-3":active= 'opp' :indeterminate= 'opp'></v-progress-linear>
+                  <v-progress-linear color="#37474F" :active= 'opp' :indeterminate= 'opp'></v-progress-linear>
                   <h3><font color="#263238">Username: {{ opponent }} </h3> <v-spacer></v-spacer>Pieces Captured: None</font></h3>
                 </v-card>
                </v-flex>
@@ -44,12 +44,12 @@
              <v-layout>
 
             <v-flex xs2 class="sidebars">
-            <v-card color="blue-grey lighten-4" class="sidebars"> 
+            <v-card color="blue-grey lighten-5" class="sidebars"> 
                 <h3><u><font color="#263238">Chat</font></u></h3>
               </v-card>
               </v-flex>
-            <v-flex xs8 >
-              <v-card class="white_b" >
+            <v-flex xs12 >
+              <v-card class="white_b" color="transparent" >
                 <v-card row flat color="transparent" class="nums" >
                   <v-layout wrap row align-center justify-center>
                     <div class="letts">
