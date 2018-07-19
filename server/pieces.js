@@ -184,11 +184,6 @@ class Rook extends Piece {
         }
         // Case Four: How far Left can our Rook move?
         while (xCurrent >= 1) {
-            console.log("DEBUG HERE");
-            console.log("X:")
-            console.log(this.getXCoordinate());
-            console.log("Y:");
-            console.log(yCurrent);
 
             if (board[this.getXCoordinate()][yCurrent].getPiece().getColor() == this.getColor()) {
                 break;
@@ -344,21 +339,22 @@ class Bishop extends Piece {
                     }
                 break;
                 case 3: // Down-and-to-the-Left
-                while (xCurrent >= 1 && yCurrent >= 1) {
-                    if(board[xCurrent][yCurrent].getOccupied()) {
-                        if(board[xCurrent][yCurrent].getPiece().getColor() == this.getColor()) {
-                            break;
+                    while (xCurrent >= 1 && yCurrent >= 1) {
+                        if(board[xCurrent][yCurrent].getOccupied()) {
+                            if(board[xCurrent][yCurrent].getPiece().getColor() == this.getColor()) {
+                                break;
+                            }
+                            else {
+                                movesArray.push([xCurrent, yCurrent]);
+                            }
                         }
                         else {
-                            movesArray.push([xCurrent, yCurrent]);
+                            movesArray.push([xCurrent, yCurrent])
                         }
+                        --xCurrent;
+                        --yCurrent;
                     }
-                    else {
-                        movesArray.push([xCurrent, yCurrent])
-                    }
-                    --xCurrent;
-                    --yCurrent;
-                }
+                break;
             }
         }
         return movesArray;

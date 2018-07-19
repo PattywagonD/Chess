@@ -54,6 +54,11 @@ class Game{
 			  ]
 	this.boardInitialize();
 	this.setPieces();
+	for(var x = 1; x < 9; x++) {
+		for(var y = 1; y < 9; y++) {
+			console.log(this.board[x][y].getPiece());
+		}
+	}
 	}
 	boardInitialize() {
 		for(var x = 1; x < 9; x++) {
@@ -96,6 +101,7 @@ class Game{
 						this.board[x][y].setPiece(new pieces.Pawn(x, y, "White"));
 						this.board[x][y].setOccupied(1);
 					}
+					break;
 				case 3: case 4: case 5: case 6:
 					for(var x = 1; x < 9; x++) {
 						this.board[x][y].setPiece(new pieces.Blank(x, y));
@@ -106,6 +112,7 @@ class Game{
 						this.board[x][y].setPiece(new pieces.Pawn(x, y, "Black"));
 						this.board[x][y].setOccupied(1);
 					}
+					break;
 				case 8:
 					for(var x = 1; x < 9; x++) {
 						switch (x) {
@@ -180,6 +187,10 @@ class Game{
 	} 
 	updateMoves(x, y, color){
 		return [[2,2], [6,8]]
+	}
+	//TODO: exportBoard takes in a logical board and returns a display board
+	exportBoard() {
+
 	}
 }
 
