@@ -16,7 +16,7 @@ const pieces = require('./pieces')
 
 
 class Game{
-	constructor(){
+	constructor(id){
 	/**
     * Let gameState be defined as
     * 0. Beginning of the game (implies we need to set-up the board)
@@ -34,6 +34,7 @@ class Game{
          */
 	this.turn = 0;
 	this.players =  []
+	this.gameId = ""
 	/**
     * Board is an array of tiles representing the chess board. Used for logic.
     */
@@ -67,33 +68,36 @@ class Game{
 		else
 			console.log("Cannot add")
 	}
+
 	getPlayers(username){
 		return this.players
 	}
+
 	checkGameOver(){
 
 	}
 
-	// If it is blacks turn the board needs flipped before setting board
-	translateBoard(board){
-		return  [
-	            [12,13,14,16,15,14,13,12],
-	            [11,11,11,11,11,11,11,11],
-	            [0,0,0,0,0,0,0,0],
-	            [0,0,0,0,0,0,0,0],
-	            [0,0,0,0,0,0,0,0],
-	            [0,0,0,0,0,0,0,0],
-	            [1,1,1,1,1,1,1,1],
-	            [2,3,4,6,5,4,3,2]
-	          	]
-	}
-	evaluateClick(coordinates){
-		if(coordinates[2]== "white"){
-			return this.display
-		}else if(coordinates[2]=="black"){
-			return this.translateBoard(this.display)
-		}
+	evaluateClick(x, y, color){
+		return [
+              [2,3,4,6,5,4,3,2],
+              [1,1,1,1,1,1,1,1],
+              [0,0,0,0,0,0,0,0],
+              [0,1,0,0,0,0,0,0],
+              [0,0,0,0,0,0,0,0],
+              [0,0,0,0,0,0,0,0],
+              [11,11,11,11,11,11,11,11],
+              [12,13,14,16,15,14,13,12]
+          	]
 	} 
+	getMoves(xCoordinate, yCoordinate, color) {
+		return [[5,2], [6,3]]
+	}
+		// var movesArray;
+		// if (this.board[xCoordinate][yCoordinate].getPiece().getColor() != "Blank") {
+		// 	movesArray = this.board[xCoordinate][yCoordinate].getPiece().getMoves(this.board);
+		// }
+		// return movesArray;
+
 }
 
 
