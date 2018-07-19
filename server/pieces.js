@@ -79,7 +79,7 @@ class Pawn extends Piece {
     constructor(xCoordinate, yCoordinate, color) {
         super(xCoordinate, yCoordinate, color);
         this.type = "Pawn";
-        this.numberMoves = 0;
+        this.numberOfMoves = 0;
     }
 
     getMoves(board){
