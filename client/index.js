@@ -20,12 +20,18 @@ const app = new Vue({
     history: ['a4','kg4', 'qxc4'],
     username: "",
     opponent: "finding match...",
+    feedback: "",
     color: "",
     noGame: true,
     isGame: false,
     moves: [],
-    grid1: "1",
-    opp: true
+    opp: true,
+    gameId: "",
+    messages: [],
+    message: "",
+    dialog: false,
+    oppPieces: ["img/bpawn.png", "img/brook.png"],
+    pieces: ["img/wpawn.png", "img/wbishop.png"]
   },
 
   created: {
@@ -37,6 +43,13 @@ const app = new Vue({
     },
     oppopnent(){
       console.log("the oppopnent has changed")
+    }, 
+    message(){
+      if(app.message == ""){
+        this.socket.emit('typing', {name: ""})
+      }else{
+        this.socket.emit('typing', {name: app.username})
+      }
     }
     //If oppopnent hasnt changed set socket to ping out 
   },
@@ -67,7 +80,7 @@ const app = new Vue({
       }
       return 1
     }, 
-    
+
 		getColor: function (num, start) {
             if (start % 2 == 0)    
                 if (num % 2 == 0)
@@ -99,10 +112,10 @@ const app = new Vue({
         return 'img/bbishop.png'
       }
       else if(this.board[i-1][j-1] == "5"){
-        return 'img/bqueen.png'
+        return 'img/bking.png'
       }
       else if(this.board[i-1][j-1] == "6"){
-        return 'img/bking.png'
+        return 'img/bqueen.png'
       }
       else if(this.board[i-1][j-1] == "11"){
         return 'img/wpawn.png'
@@ -138,9 +151,12 @@ const app = new Vue({
     startGame: function(i, j){
       //Make sure they entered a valid username
       if(this.username){
+        //save id
+        app.gameId = this.socket.id
         console.log(this.username)
         app.noGame = false
         app.isGame = true
+        console.log(this.gameId)
         //send username to server
         this.socket.emit('username', {username: this.username})
         //Receives two boards and both usernames, routes data to correct person
@@ -171,7 +187,21 @@ const app = new Vue({
             app.board = app.translateBoard(data.updatedboard)
             app.moves = app.translateMoves(data.updatedmoves)
           }
-    })
+        })
+
+      this.socket.on('typing', function(typer){
+        if(typer.name == ""){
+          app.feedback = ""
+        }else{
+          app.feedback = typer.name + " is typing a message..."
+        }
+      })
+
+      this.socket.on('chat', function(newChat){
+        console.log("Getting new chat")
+        app.messages.push(newChat.message)
+      })
+
       }
     },
 
@@ -180,28 +210,43 @@ const app = new Vue({
         //var coordinates = [i, j]
         console.log(app.color, "test")
         console.log("Client sending coordinates!", i, j, app.color)
+        // set 9-j if logic board is upside down
         this.socket.emit('updatedData', {x: i, y: j, color: app.color})
         //Listen for new board
 
     },
 
+    sendMessage: function(){
+      this.socket.emit('chat', {
+        message: app.message,
+        handle: app.username
+      })
+      app.message=""
+    },
+
+
+    //Need to reflect board horizontally!!!!!
     translateBoard: function(newBoard){
       var tempboard = []
       for(var x = newBoard.length-1; x >= 0; x--){
-        tempboard.push(newBoard[x])
+        tempboard.push(newBoard[x].reverse())
       }
       return tempboard
     },
 
     translateMoves: function(newMoves){
       var tempMoves = []
-      var translated = 0
       for(var x = 0; x < newMoves.length; x++){
-          translated = 9 - newMoves[x][0]
-          tempMoves.push([translated, newMoves[x][1]])
+          tempMoves.push([9 - newMoves[x][0] , 9-newMoves[x][1]])
         }
       
       return tempMoves
+    },
+
+    exportClick: function(clientCoordinates){
+      var x = clientCoordinates[0]
+      var y = clientCoordinates[1]
+      return [x, 9-y]
     }
 
   } 

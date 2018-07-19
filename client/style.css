@@ -6,6 +6,10 @@ img {
     width: 50px;
 }
 
+.avatar{
+    color: black;
+}
+
 .white_b {
     height: 860px; 
     width: 850px;

@@ -16,7 +16,7 @@ const pieces = require('./pieces')
 
 
 class Game{
-	constructor(){
+	constructor(id){
 	/**
     * Let gameState be defined as
     * 0. Beginning of the game (implies we need to set-up the board)
@@ -34,6 +34,7 @@ class Game{
          */
 	this.turn = 0;
 	this.players =  []
+	this.gameId = ""
 	/**
     * Board is an array of tiles representing the chess board. Used for logic.
     */
