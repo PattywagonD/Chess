@@ -77,7 +77,7 @@ class Blank extends Piece {
 
 class Pawn extends Piece {
     constructor(xCoordinate, yCoordinate, color) {
-        super(1, xCoordinate, yCoordinate, color);
+        super(xCoordinate, yCoordinate, color);
         this.type = "Pawn";
         this.numberMoves = 0;
     }
