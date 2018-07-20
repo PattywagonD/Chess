@@ -84,17 +84,17 @@ const app = new Vue({
     getColor: function (num, start) {
             if (start % 2 == 0)    
                 if (num % 2 == 0)
-                    return "blue-grey lighten-4"
+                    return "yellow lighten-5"
 
                  else
-                     return "blue-grey darken-3" 
+                     return "green darken-2" 
                      
             else
                 if (num % 2 == 0)
-                    return "blue-grey darken-3"
+                    return "green darken-2"
 
                  else
-                     return "blue-grey lighten-4"
+                     return "yellow lighten-5"
     },
 
     //display chess pieces

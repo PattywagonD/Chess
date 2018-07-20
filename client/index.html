@@ -14,13 +14,15 @@
       <v-content v-if="noGame">
         <v-container>
           <v-layout wrap row align-center justify-center>
-            <v-card color="blue-grey lighten-5">
-              <h2>Let's Play Chess</h2>
+          <v-flex xs12>
+            <v-card  class="start_screen">
+              <h1>Let's Play Chess</font></h1>
               <v-form ref="form" lazy-validation>
                 <v-text-field v-model="username" label="Username" required></v-text-field>
-                <v-btn @click="startGame()" color=blue> PLAY </v-btn>
+                <v-btn @click="startGame()" color="info" class="button"> PLAY </v-btn>
               </v-form>
             </v-card>
+            </v-flex>
           </v-layout>
         </v-container>
       </v-content>
@@ -38,8 +40,8 @@
         <!-- Opponent's Display -->
           <v-layout wrap row align-center justify-center >
             <v-flex xs8>
-            <v-card  color="blue-grey lighten-5">
-              <v-progress-linear color="blue-grey darken-3" :active= 'opp' :indeterminate= 'opp'></v-progress-linear>
+            <v-card  >
+              <v-progress-linear  :active= 'opp' :indeterminate= 'opp'></v-progress-linear>
               <v-card-title><h1>{{opponent}}</h1><v-spacer></v-spacer
               ><div v-for="piece in oppPieces"> <img :src="piece"></div>
               </v-card-title>
@@ -62,7 +64,7 @@
                     <v-card-text>
                       <v-list >
                         <v-list-tile v-for="item in messages" avatar>
-                          <v-list-tile-avatar color="blue-grey lighten-4">
+                          <v-list-tile-avatar>
                             <span class="avatar">C</span>
                           </v-list-tile-avatar>
                           <v-list-tile-content>
@@ -83,7 +85,7 @@
 
             <!-- Start of the Board -->
             <v-flex xs12 >
-              <v-card class="white_b" >
+              <v-card class="white_b">
                 <v-card row flat color="transparent" class="nums" >
                   <v-layout wrap row align-center justify-center>
                     <div class="letts" >
@@ -108,7 +110,7 @@
                     </div>
 
                     <v-flex xs1 v-for="i in 8" class="tile">
-                      <v-card class="tile" v-for="j in 8" dark tile v-bind:color="getColor(i, j)">
+                      <v-card class="tile" v-for="j in 8"  dark  tile v-bind:color="getColor(i, j)">
                         <div>
                         <div v-if = "getMoves(i,j)" class="overlay">Moveable</div> 
                         <v-btn flat fab @click= "sendClick(i,j)">                       
@@ -188,7 +190,7 @@
           <!-- User's Display -->
         <v-layout wrap row align-center justify-center>
           <v-flex xs12 >
-            <v-card right color="blue-grey lighten-3">
+            <v-card right> 
               <v-card-title><h1>{{username}}</h1><v-spacer></v-spacer>
                 <div v-for="piece in pieces"> <img :src="piece"></div>
               </v-card-title>
@@ -196,7 +198,7 @@
           </v-flex>
 
               <!-- Mobile Query for History Panel -->
-              <v-flex class="mobile" xs12 color="blue-grey lighten-5">
+              <v-flex class="mobile" xs12 >
                   <v-expansion-panel>
                     <v-expansion-panel-content>
                       <div slot="header"><h2>History</h2></div>
@@ -215,7 +217,7 @@
               </v-flex>
 
               <!-- Mobile Query for Chat Panel -->
-              <v-flex class ="mobile" xs12 color="blue-grey lighten-5">
+              <v-flex class ="mobile" xs12 >
                 <v-expansion-panel>
                   <v-expansion-panel-content>
                     <div slot="header"><h2>Chat</h2></div>
@@ -223,7 +225,7 @@
                       <v-card-text>
                         <v-list >
                           <v-list-tile v-for="item in messages" avatar @click="">
-                            <v-list-tile-avatar color="blue-grey lighten-4">
+                            <v-list-tile-avatar>
                               <span class="avatar">C</span>
                             </v-list-tile-avatar>
                             <v-list-tile-content>
