@@ -43,7 +43,6 @@ class Game{
 	 * of the logicalBoard. It is exported from the server-side to
 	 * the client-side.
 	 */
-	// TODO: Ask Patrick about the pros and cons of indexing starting @one vs indexing starting @zero
 	this.displayBoard = [
               [2,3,4,6,5,4,3,2],
               [1,1,1,1,1,1,1,1],
@@ -54,6 +53,28 @@ class Game{
               [11,11,11,11,11,11,11,11],
 			  [12,13,14,16,15,14,13,12]
 			  ]
+	/**
+	 * PROPERTY: alphaClick
+	 * alphaClick represents the first tile or piece of a player's move when we arrive at their turn.
+	 * It is the primary mover, the "Point A" of a journey a piece at that tile is about to undertake.
+	 */
+	this.alphaClick = new pieces.Tile(0, 0, 0);
+	/**
+	 * PROPERTY: omegaClick
+	 * omegaClick is the anti-thesis of alphaClick. It is the final destination of our fated piece,
+	 * the "Point B" of our pieces' journey.
+	 */
+	this.omegaClick = new pieces.Tile(0, 0, 0);
+	/**
+	 * PROPERTY: whiteCaptures[]
+	 * whiteCaptures is an array of pieces captured by the "White" player
+	 */
+	this.whiteCaptures = [];
+	/**
+	 * PROPERTY: blackCaptures[]
+	 * blackCaptures is an array of pieces captured by the "Black" player
+	 */
+	this.blackCaptures = [];
 	this.logicalBoardInitialize();
 	this.setPieces();
 	}
@@ -149,9 +170,9 @@ class Game{
 	}
 	addPlayer(username){
 		if(this.players.length < 2)
-			this.players.push(username)
+			this.players.push(username);
 		else
-			console.log("Cannot add")
+			console.log("Cannot add");
 	}
 
 	getPlayers(username){
@@ -163,7 +184,18 @@ class Game{
 	}
 
 	//TODO: Update evaluateClick 
-	evaluateClick(x, y, color){
+	evaluateClick(x, y, color) {
+		// Is this the opening or "alpha" click?
+		// if( !(this.alphaClick.getXCoordinate()) && !(this.alphaClick.getYCoordinate())) {
+		// 	this.alphaClick = (this.logicalBoard[x][y]);
+		// 	movesArray = this.getMoves(x, y, color);
+		// }
+		// // This must be the omega click!
+		// else {
+		// 	this.omegaClick = (this.logicalBoard[x][y]);
+
+
+		// }
 		this.exportBoard();
 		return this.displayBoard;
 		// return [
@@ -223,6 +255,8 @@ class Game{
 	 * exportBoard converts the logical board pieces into the display board "piece codes".
 	 * The piece code is a number in the 0-16 range that represents a color and piece type.
 	 * F'rex a Black King has a piece code of 6.
+	 * IMPORTANT: DISPLAY BOARD INDEXING BEGINS AT ZERO (0). LOGICAL BOARD INDEXING BEGINS AT ONE (1).
+	 * I DON'T MAKE THE RULES I JUST INSTANTIATE THEM.
 	 */
 	exportBoard() {	
 		for(var y = 1; y < 9; y++) {
@@ -230,6 +264,7 @@ class Game{
 				this.displayBoard[y - 1][x - 1] = this.pieceConverter(this.logicalBoard[x][y].getPiece());
 			}
 		}
+		this.displayBoard.reverse();
 	}
 }
 
