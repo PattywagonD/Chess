@@ -31,12 +31,70 @@ const app = new Vue({
     message: "",
     dialog: false,
     oppPieces: ["img/bpawn.png", "img/brook.png"],
-    pieces: ["img/wpawn.png", "img/wbishop.png"]
+    pieces: ["img/wpawn.png", "img/wbishop.png"],
+    awidth: 300,
+    color: 'blue',
   },
 
-  created: {
+  computed: {
+    styles1: function() {
+      var newWidth = this.awidth;
+    
+      return {
+        'background-color': 'rgba(0,0,0,.5)',
+        width: newWidth + 'px',
+        height: newWidth/12 + 'px'
+      };
+    },
+
+    styles2: function() {
+      var newWidth = this.awidth;
+      console.log(newWidth)
+      return {
+        'background-color': 'green',
+        width: newWidth + 'px',
+        height: newWidth   + 'px'
+      };
+    },
+
+    styles3: function() {
+      var newWidth = this.awidth;
+    
+      return {
+        'background-color': 'rgba(0,0,0,.3)',
+        width: newWidth + 'px',
+        height: newWidth/8 + 'px'
+      };
+    },
+
+    chat: function() {
+      var newWidth = this.awidth;
+    
+      return {
+        'background-color': 'blue',
+        width: newWidth + 'px',
+        height: newWidth/12 + 'px'
+      };
+    },
+    styles5: function() {
+      var newWidth = this.awidth/8;
+    
+      return {
+        'background-color': 'rgba(0,0,0,.7)',
+        width: newWidth+ 'px',
+        height: newWidth + 'px'
+      };
+    },
+  },
+
+  created(){
+    addEventListener('resize', function(){
+      app.awidth = window.innerWidth
+      console.log(app.awidth)
+    })
 
   },
+
   watch: {
     board() {
       console.log("the board just changed")
@@ -80,6 +138,13 @@ const app = new Vue({
       }
       return 1
     }, 
+
+    getOpponent: function(){
+      console.log(this.opponent)
+      if (this.oppopnent != "finding match..."){
+        return false
+      }
+    },
 
 		getColor: function (num, start) {
             if (start % 2 == 0)    

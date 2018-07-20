@@ -1,6 +1,9 @@
 [v-cloak] {
   display: none;
 }
+.smallmobile{
+    display: none;
+}
 
 .start_screen {
     margin: 100px;
@@ -10,6 +13,7 @@
     align-content: center;
     z-index: 100;
 }
+
 
 .end_screen {
     margin: 100px;
@@ -100,7 +104,6 @@ img {
 }
 
 @media only screen and (max-width: 1903px) {
-
 img {
     height: 40px;
     width: 40px;
@@ -133,15 +136,15 @@ img {
 }
 
 @media only screen and (max-width: 1263px) {
+
 img {
-    height: 60px;
-    width: 60px;
+    height: 80px;
+    width: 80px;
 }
 
 .white_b {
-    height: 862px; 
-    width: 852px;
-    box-shadow: none;
+    height: 900px; 
+    width: 900px;
 }
 
 
@@ -151,17 +154,20 @@ img {
 }
 
 .letts {
-   height: 0px;
-    width: 0px;
-    display: none;
+    width: 790px;
+    margin-right: 50px;
+    margin-left: 55px;
 }
+
 .col {
-    height: 0px;
-    width: 0px;
-    display: none;
+    height: 730px;
+    margin-right: 20px;
 }
 
-
+.resizeDis{
+    width:1000px;
+    height: 80px;
+}
 
 .sidebars {
     height: 0px;
@@ -174,4 +180,25 @@ img {
     width: 100%;
 
 }
+}
+
+@media screen and (max-width: 900px) {
+img{
+    width: 30px;
+    height: 30px;
+}
+
+
+.smallmobile{
+    display: inline;
+}
+
+::-webkit-scrollbar { 
+    display: none; 
+}
+
+.web{
+    display: none;
+}
+
 }
