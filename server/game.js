@@ -15,7 +15,7 @@
 const pieces = require('./pieces')
 
 class Game{
-	constructor(){
+	constructor() {
 	/**
     * Let gameState be defined as
     * 0. Beginning of the game (implies we need to set-up the board)
@@ -43,6 +43,7 @@ class Game{
 	 * of the logicalBoard. It is exported from the server-side to
 	 * the client-side.
 	 */
+	// TODO: Ask Patrick about the pros and cons of indexing starting @one vs indexing starting @zero
 	this.displayBoard = [
               [2,3,4,6,5,4,3,2],
               [1,1,1,1,1,1,1,1],
@@ -51,16 +52,12 @@ class Game{
               [0,0,0,0,0,0,0,0],
               [0,0,0,0,0,0,0,0],
               [11,11,11,11,11,11,11,11],
-              [12,13,14,16,15,14,13,12]
+			  [12,13,14,16,15,14,13,12]
 			  ]
 	this.logicalBoardInitialize();
 	this.setPieces();
-	for(var x = 1; x < 9; x++) {
-		for(var y = 1; y < 9; y++) {
-			console.log(this.logicalBoard[x][y].getPiece());
-		}
 	}
-	}
+
 	logicalBoardInitialize() {
 		for(var x = 1; x < 9; x++) {
 			for(var y = 1; y < 9; y++) {
@@ -167,16 +164,18 @@ class Game{
 
 	//TODO: Update evaluateClick 
 	evaluateClick(x, y, color){
-		return [
-              [2,3,4,6,5,4,3,2],
-              [1,1,1,1,1,1,1,1],
-              [0,0,0,0,0,0,0,0],
-              [0,1,0,0,0,0,0,0],
-              [0,0,0,0,0,0,0,0],
-              [0,0,0,0,0,0,0,0],
-              [11,11,11,11,11,11,11,11],
-              [12,13,14,16,15,14,13,12]
-          	]
+		this.exportBoard();
+		return this.displayBoard;
+		// return [
+        //       [2,3,4,6,5,4,3,2],
+        //       [1,1,1,1,1,1,1,1],
+        //       [0,0,0,0,0,0,0,0],
+        //       [0,1,0,0,0,0,0,0],
+        //       [0,0,0,0,0,0,0,0],
+        //       [0,0,0,0,0,0,0,0],
+        //       [11,11,11,11,11,11,11,11],
+        //       [12,13,14,16,15,14,13,12]
+        //   	]
 	} 
 	updateMoves(x, y, color){
 		return [[2,2], [6,8]];
@@ -190,10 +189,10 @@ class Game{
 	pieceConverter(piece) {
 		var pieceNumber = 0;
 		if (piece instanceof pieces.Piece) {
-			if(piece.getType() == "Empty") {
+			if (piece.getType() == "Empty") {
 				return 0;
 			}
-			if(piece.getType() == "Pawn") {
+			if (piece.getType() == "Pawn") {
 				pieceNumber = 1;
 			}
 			else if (piece.getType() == "Rook") {
@@ -217,9 +216,7 @@ class Game{
 			else {
 				return (pieceNumber);
 			}
-
 		}
-
 	}
 	/**
 	 * FUNCTION: exportBoard()
@@ -227,10 +224,10 @@ class Game{
 	 * The piece code is a number in the 0-16 range that represents a color and piece type.
 	 * F'rex a Black King has a piece code of 6.
 	 */
-	exportBoard() {
+	exportBoard() {	
 		for(var y = 1; y < 9; y++) {
 			for(var x = 1; x < 9; x++) {
-				this.displayBoard[y][x] = pieceConverter(this.logicalBoard[x][y].getPiece());
+				this.displayBoard[y - 1][x - 1] = this.pieceConverter(this.logicalBoard[x][y].getPiece());
 			}
 		}
 	}
