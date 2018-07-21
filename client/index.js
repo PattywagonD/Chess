@@ -29,13 +29,13 @@ const app = new Vue({
     opp: true,
     gameId: "",
     messages: [],
+    handles: [],
     message: "",
     dialog: false,
     chatMobile: false,
     oppPieces: ["img/bpawn.png", "img/brook.png"],
     pieces: ["img/wpawn.png", "img/wbishop.png"],
     awidth: 300,
-    color: 'blue',
     unread: false,
     read: true
   },
@@ -160,7 +160,7 @@ const app = new Vue({
                      
             else
                 if (num % 2 == 0)
-                    return "light-green darken-3  "
+                    return "light-green darken-3"
 
                  else
                      return "light-green lighten-4"
@@ -270,7 +270,18 @@ const app = new Vue({
 
       this.socket.on('chat', function(newChat){
         console.log("Getting new chat")
-        app.messages.push(newChat.message)
+        var firstLetter = newChat.handle.substring(0,1)
+        var pcolor = "blue"
+        if(app.color == "white" && newChat.handle == app.username){
+          pcolor = "light-green lighten-4"
+        }else if(app.color == "black" && newChat.handle == app.username){
+          pcolor = "light-green darken-3"
+        }else if(app.color == "white" && newChat.handle == app.opponent){
+          pcolor= "light-green darken-3"
+        }else{
+          pcolor = "light-green lighten-4"
+        }
+        app.messages.push({message: newChat.message, handle: newChat.handle, avatar:firstLetter, avatarColor: pcolor})
         if(newChat.handle != app.username){
           app.unread = true
           app.read = false

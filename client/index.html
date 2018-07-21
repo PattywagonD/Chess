@@ -34,151 +34,148 @@
         <v-container grid-list-xl text-xs-center>
           <v-layout column>
         <!-- Opponent's Display -->
-          <v-layout wrap row align-center justify-center >
             <v-flex>
-            <v-card  color='primary'>
-              <v-progress-linear color="blue-grey darken-3" :active= 'opp' :indeterminate= 'opp'></v-progress-linear>
-              <v-card-title><h1>{{opponent}}</h1><v-spacer></v-spacer
-              ><div v-for="piece in oppPieces"> <img :src="piece"></div>
-              </v-card-title>
-            </v-card>
+              <v-card  color="primary">
+                <v-progress-linear color="blue darken-3" :active= 'opp' :indeterminate= 'opp' height = 10 ></v-progress-linear>
+                <v-card-title><h1>{{opponent}}</h1><v-spacer></v-spacer
+                ><div v-for="piece in oppPieces"> <img :src="piece"></div>
+                </v-card-title>
+              </v-card>
             </v-flex>
-          </v-layout>
 
-          <!-- Layout for Chat Game and Moves -->
-          <v-layout>
+            <!-- Layout for Chat Game and Moves -->
+            <v-layout>
 
-            <!-- Game Board -->
-            <v-flex s6 >
-              <v-card class="white_b"  >
-                <v-card row flat class="nums" >
-                  <v-layout wrap row align-center justify-center>
-                    <div class="letts" >
-                      <h2>a</h2>
-                      <h2>b</h2>
-                      <h2>c</h2>
-                      <h2>d</h2>
-                      <h2>e</h2>
-                      <h2>f</h2>
-                      <h2>g</h2>
-                      <h2>h</h2>
-                    </div>
-                       <div class="col">
-                         <h2>{{ getGridNum(8) }}</h2>
-                        <h2>{{ getGridNum(7) }}</h2>
-                        <h2>{{ getGridNum(6) }}</h2>
-                        <h2>{{ getGridNum(5) }}</h2>
-                        <h2>{{ getGridNum(4) }}</h2>
-                        <h2>{{ getGridNum(3) }}</h2>
-                        <h2>{{ getGridNum(2) }}</h2>
-                        <h2>{{ getGridNum(1) }}</h2>
-                    </div>
+              <!-- Game Board -->
+              <v-flex s6 >
+                <v-card class="white_b"  >
+                  <v-card row flat class="nums" >
+                    <v-layout wrap row align-center justify-center>
+                      <div class="letts" >
+                        <h2>a</h2>
+                        <h2>b</h2>
+                        <h2>c</h2>
+                        <h2>d</h2>
+                        <h2>e</h2>
+                        <h2>f</h2>
+                        <h2>g</h2>
+                        <h2>h</h2>
+                      </div>
+                         <div class="col">
+                           <h2>{{ getGridNum(8) }}</h2>
+                          <h2>{{ getGridNum(7) }}</h2>
+                          <h2>{{ getGridNum(6) }}</h2>
+                          <h2>{{ getGridNum(5) }}</h2>
+                          <h2>{{ getGridNum(4) }}</h2>
+                          <h2>{{ getGridNum(3) }}</h2>
+                          <h2>{{ getGridNum(2) }}</h2>
+                          <h2>{{ getGridNum(1) }}</h2>
+                      </div>
 
-                    <v-flex xs1 v-for="i in 8" class="tile">
-                      <v-card class="tile" v-for="j in 8" dark tile v-bind:color="getColor(i, j)">
-                        <div>
-                        <div v-if = "getMoves(i,j)" class="overlay">Moveable</div> 
-                        <v-btn flat fab @click= "sendClick(i,j)">                       
-                          <img v-bind:src = "getImage(i, j)">
-                        </v-btn>
-                        </div>
-                      </v-card>
-                    </v-flex>
-                    <div class="col">
-                      <h2>&nbsp;</h2>
-                      <h2>&nbsp;</h2>
-                      <h2>&nbsp;</h2>
-                      <h2>&nbsp;</h2>
-                      <h2>&nbsp;</h2>
-                      <h2>&nbsp;</h2>
-                      <h2>&nbsp;</h2>
-                      <h2>&nbsp;</h2>
-                    </div>
-                    <div class="letts" >
-                      <h2>&nbsp;</h2>
-                      <h2>&nbsp;</h2>
-                      <h2>&nbsp;</h2>
-                      <h2>&nbsp;</h2>
-                      <h2>&nbsp;</h2>
-                      <h2>&nbsp;</h2>
-                      <h2>&nbsp;</h2>
-                      <h2>&nbsp;</h2>
-                    </div>
-                   </v-layout>
+                      <v-flex xs1 v-for="i in 8" class="tile">
+                        <v-card class="tile" v-for="j in 8" dark tile v-bind:color="getColor(i, j)">
+                          <div>
+                          <div v-if = "getMoves(i,j)" class="overlay">Moveable</div> 
+                          <v-btn flat fab @click= "sendClick(i,j)">                       
+                            <img v-bind:src = "getImage(i, j)">
+                          </v-btn>
+                          </div>
+                        </v-card>
+                      </v-flex>
+                      <div class="col">
+                        <h2>&nbsp;</h2>
+                        <h2>&nbsp;</h2>
+                        <h2>&nbsp;</h2>
+                        <h2>&nbsp;</h2>
+                        <h2>&nbsp;</h2>
+                        <h2>&nbsp;</h2>
+                        <h2>&nbsp;</h2>
+                        <h2>&nbsp;</h2>
+                      </div>
+                      <div class="letts" >
+                        <h2>&nbsp;</h2>
+                        <h2>&nbsp;</h2>
+                        <h2>&nbsp;</h2>
+                        <h2>&nbsp;</h2>
+                        <h2>&nbsp;</h2>
+                        <h2>&nbsp;</h2>
+                        <h2>&nbsp;</h2>
+                        <h2>&nbsp;</h2>
+                      </div>
+                     </v-layout>
+                  </v-card>
                 </v-card>
-              </v-card>
-            </v-flex>
+              </v-flex>
 
-            <!-- History Panel -->
-            <v-flex s6>
-              <v-card class="sidebars">
-              <v-toolbar dark color = blue>
-                  <v-toolbar-title class="white--text">History
+              <!-- History Panel -->
+              <v-flex s6>
+                <v-card class="sidebars">
+                <v-toolbar dark color = blue>
+                    <v-toolbar-title class="white--text">History
 
-                  </v-toolbar-title>
+                    </v-toolbar-title>
 
-                    <v-spacer>
-                    </v-spacer>
-<v-dialog v-model="dialog" width = "500">
-                      <v-btn icon slot="activator">
-                        <v-icon>info</v-icon>
-                      </v-btn>
-                  <v-card>
-                    <v-card-title
-                      class="headline" primary-title
-                    >
-                      Chess Notation
-                    </v-card-title>
-                      <v-card-text>example a3</v-card-text>
-                    <v-divider></v-divider>
-                    <v-card-actions>
-                      <v-spacer></v-spacer>
-                      <v-btn color="primary" flat @click="dialog = false"> OK </v-btn>
-                    </v-card-actions>
-                  </v-card>
-                  </v-dialog>
-              </v-toolbar>
-              <v-card>
-                <v-card-text>
-                  <h4>Game Opening: Something</h4>
-                  <p>{{history}}</p>                
-                </v-card-text>
-              </v-card>
-
-              </v-card>
-            <!-- Layout for Chat window -->
-            <v-card class="sidebars">
-              <v-toolbar dark color = blue>
-                  <v-toolbar-title class="white--text">Chat</v-toolbar-title>
+                      <v-spacer>
+                      </v-spacer>
+                      <v-dialog v-model="dialog" width = "500">
+                        <v-btn icon slot="activator">
+                          <v-icon>info</v-icon>
+                        </v-btn>
+                        <v-card>
+                          <v-card-title
+                            class="headline" primary-title
+                          >
+                            Chess Notation
+                          </v-card-title>
+                            <v-card-text>example a3</v-card-text>
+                          <v-divider></v-divider>
+                          <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn color="primary" flat @click="dialog = false"> OK </v-btn>
+                          </v-card-actions>
+                        </v-card>
+                    </v-dialog>
                 </v-toolbar>
-                  <v-card>
-                    <v-card-text>
-                      <v-list >
-                        <v-list-tile v-for="item in messages" avatar>
-                          <v-list-tile-avatar color="blue-grey lighten-4">
-                            <span class="avatar">C</span>
-                          </v-list-tile-avatar>
-                          <v-list-tile-content>
-                            <v-list-tile-title v-text="item"></v-list-tile-title>
-                          </v-list-tile-content>
-                        </v-list-tile>
-                      </v-list>                             
-                    </v-card-text>
-                  </v-card>
-                  <v-card><v-card-text>{{feedback}}</v-card-text></v-card>
-              <v-toolbar>
-                <v-text-field v-model="message" placeholder="new message"></v-text-field>
-                <v-btn icon @click="sendMessage()">
-                  <v-icon>send</v-icon>
-                </v-btn>
-              </v-toolbar>
-            </v-card>
-          </v-flex>
+                <v-card>
+                  <v-card-text>
+                    <h4>Game Opening: Something</h4>
+                    <p>{{history}}</p>                
+                  </v-card-text>
+                </v-card>
 
+                </v-card>
+              <!-- Layout for Chat window -->
+              <v-card class="sidebars">
+                <v-toolbar dark color = blue>
+                    <v-toolbar-title class="white--text">Chat</v-toolbar-title>
+                  </v-toolbar>
+                    <v-card>
+                      <v-card-text>
+                        <v-list >
+                          <v-list-tile v-for="item in messages" avatar>
+                            <v-list-tile-avatar :color="item.avatarColor">
+                              <span class="avatar">{{item.avatar}}</span>
+                            </v-list-tile-avatar>
+                            <v-list-tile-content>
+                              <v-list-tile-title v-text="item.message"></v-list-tile-title>
+                            </v-list-tile-content>
+                          </v-list-tile>
+                        </v-list>                             
+                      </v-card-text>
+                    </v-card>
+                    <v-card><v-card-text>{{feedback}}</v-card-text></v-card>
+                <v-toolbar>
+                  <v-text-field v-model="message" placeholder="new message"></v-text-field>
+                  <v-btn icon @click="sendMessage()">
+                    <v-icon>send</v-icon>
+                  </v-btn>
+                </v-toolbar>
+              </v-card>
 
+            </v-flex>
           </v-layout>
 
-          <!-- Layout for User's Display and Query Chat-->
+          <!-- Layout for User's Display and Web Small Chat-->
           <v-layout wrap row align-center justify-center >
 
             <!-- User's Display -->
@@ -211,11 +208,11 @@
                     <v-card-text>
                       <v-list >
                         <v-list-tile v-for="item in messages" avatar @click="">
-                          <v-list-tile-avatar color="blue-grey lighten-4">
-                            <span class="avatar">C</span>
+                          <v-list-tile-avatar :color="item.avatarColor">
+                            <span class="avatar">{{item.avatar}}</span>
                           </v-list-tile-avatar>
                           <v-list-tile-content>
-                            <v-list-tile-title v-text="item"></v-list-tile-title>
+                            <v-list-tile-title v-text="item.message"></v-list-tile-title>
                           </v-list-tile-content>
                         </v-list-tile>
                       </v-list>                             
@@ -230,8 +227,8 @@
                 </v-expansion-panel-content>
               </v-expansion-panel>
             </v-flex>
-          </v-layout>
 
+          </v-layout>
         </v-layout>
 
         </v-container>
@@ -306,11 +303,12 @@
                       <v-card-text background-color=''>
                         <v-list >
                           <v-list-tile v-for="item in messages" avatar>
-                            <v-list-tile-avatar color="">
-                              <span class="avatar">C</span>
+                            <v-list-tile-avatar :color="item.avatarColor">
+                              <span class="avatar">
+                              {{item.avatar}}</span>
                             </v-list-tile-avatar>
                             <v-list-tile-content>
-                              <v-list-tile-title v-text="item"></v-list-tile-title>
+                              <v-list-tile-title v-text="item.message"></v-list-tile-title>
                             </v-list-tile-content>
                           </v-list-tile>
                         </v-list>                             
@@ -337,6 +335,7 @@
               <div class="feed">{{feedback}} </div>
             </v-card>
           </v-card>
+
         </v-layout>
       </content>
 

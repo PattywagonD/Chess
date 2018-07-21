@@ -3,6 +3,7 @@ var socket = require('socket.io')
 const gameClass = require('./game.js')
 
 //var game = new gameClass.Game()
+var players = []
 
 var startingBoard = [
               [2,3,4,6,5,4,3,2],
@@ -38,9 +39,12 @@ var io = socket(server)
 var ids = []
 var queue = 0
 
+//Everytime a new socket connects
 io.on('connection', function(socket){
 	console.log('Made socket connection', socket.id)
 	queue += 1
+	players.push(socket.id)
+	console.log(players, "players")
 	if(queue <= 2){
 		console.log("Less than two people in game")
 	}else{
@@ -66,7 +70,7 @@ io.on('connection', function(socket){
 			io.emit("color", {newBoard: games.game.board , opponent: [games.game.logic.getPlayers()[0], games.game.logic.getPlayers()[1]]})
 		}
 	})
-	//Pull this out of the connection??? 
+
 	//Listen for a new click to update the board ie change socket to io
 	// Needs to be moved into a for loop that goes over the objects in games
 	socket.on('updatedData', function(newClick){
