@@ -4,7 +4,6 @@ const gameClass = require('./game.js')
 
 //var game = new gameClass.Game()
 
-
 var startingBoard = [
               [2,3,4,6,5,4,3,2],
               [1,1,1,1,1,1,1,1],
@@ -17,9 +16,11 @@ var startingBoard = [
 
           	]
 
-// A list to store multiple games         	
-var games = []
-var index = 0
+// A dictionary to store multiple games         	
+var games = {
+	game: {logic: new gameClass.Game("exampleid"), board: startingBoard, moves: [], id: "exampleid"}
+	}
+
 //App setup
 var app = express()
 //Server setup
@@ -35,58 +36,36 @@ app.use(express.static('../client'))
 //Socket setup to work on server(3000)
 var io = socket(server)
 var ids = []
-var queue = []
-var gameId = ""
-
-//var newGame = new gameClass.Game("arandomId")
-
-//games.game = {logic: newGame}
+var queue = 0
 
 io.on('connection', function(socket){
 	console.log('Made socket connection', socket.id)
+	queue += 1
+	if(queue <= 2){
+		console.log("Less than two people in game")
+	}else{
+		console.log("Too many people in game!")
+		games.newId = {logic: new gameClass.Game(socket.id), board: startingBoard, moves: [], id: "game"+socket.id}
+		console.log(games)
+		queue = 0
+	}
+
+	ids.push(socket.id)
 	console.log(ids)
-
-
-
 	//on recieving a new player:
 	socket.on('username', function(newUsername){
+		// add user to game
+		games.game.logic.addPlayer(newUsername.username)
+		console.log(newUsername.username)
+		console.log(games.game.logic.getPlayers())
 
-		if(queue.length == 0){
-			//Create new game with unique id 
-			gameId = newUsername.username
-
-			console.log(ids, "ids")
-			socket.join(gameId)
-			//This syntax sets games key to game Id games[gameId] = {}
-			games.push({logic: new gameClass.Game(gameId), board: startingBoard, moves: [], id:"random" })
-			queue.push(newUsername.username)
-			ids.push(gameId)
-
-			//Get the index with your gameId
-			index = ids.indexOf(gameId)
-			console.log(index)
-			games[index].logic.addPlayer(newUsername.username)
-			console.log(queue)
-		}else if(queue.length == 1){
-			index = ids.indexOf(gameId)
-			socket.join(gameId)
-			queue.push(newUsername.username)
-			games[index].logic.addPlayer(newUsername.username)
-			console.log(queue)
-
-			io.sockets.in(gameId).emit("color", {newBoard: games[index].board , opponent: [games[index].logic.getPlayers()[0], games[index].logic.getPlayers()[1]], room: gameId})
-
-			//reset
-			queue = []
+		//give the players the color they are playing
+		//send them their starting board
+		if (games.game.logic.getPlayers().length == 2) {
+			//console.log("opponent!", game.getPlayers()[1])... send both players
+			io.emit("color", {newBoard: games.game.board , opponent: [games.game.logic.getPlayers()[0], games.game.logic.getPlayers()[1]]})
 		}
-
-
 	})
-
-
-
-
-
 	//Pull this out of the connection??? 
 	//Listen for a new click to update the board ie change socket to io
 	// Needs to be moved into a for loop that goes over the objects in games
@@ -99,8 +78,8 @@ io.on('connection', function(socket){
 	    //Update the board from the click and send new board
 		gameLogic(x, y, color)
 	    console.log("Server recieved coordinates! ", newClick.x, newClick.y)
-	    console.log("Server now sending a new board! ", games[0].board)
-	    io.emit('board', {updatedboard: games[0].board, updatedmoves: games[0].moves })
+	    console.log("Server now sending a new board! ", games.game.board)
+	    io.emit('board', {updatedboard: games.game.board, updatedmoves: games.game.moves })
 	})
 
 	socket.on('chat', function(newChat){
@@ -118,7 +97,7 @@ io.on('connection', function(socket){
 gameLogic = function(x, y, color){
 
 	//game.checkGameOver()
-	games[0].board = games[0].logic.evaluateClick(x, y, color)
-	games[0].moves = games[0].logic.getMoves(x, y, color)
+	games.game.board = games.game.logic.evaluateClick(x, y, color)
+	games.game.moves = games.game.logic.getMoves(x, y, color)
 	//game.checkGameOver()
 }

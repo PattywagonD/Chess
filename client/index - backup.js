@@ -6,7 +6,7 @@ const app = new Vue({
 	data: {
 
     socket: io.connect('http://localhost:3000'),
-    room: "",
+
     board: [
               [2,3,4,6,5,4,3,2],
               [1,1,1,1,1,1,1,1],
@@ -228,14 +228,11 @@ const app = new Vue({
         app.isGame = true
         console.log(this.gameId)
         //send username to server
-
         this.socket.emit('username', {username: this.username})
         //Receives two boards and both usernames, routes data to correct person
         this.socket.on('color', function(data){
           app.opp = false
           app.loader = 0
-          app.room = data.room
-          console.log(app.room, "Game Room ID")
           console.log("ON COLOR ", app.username, data.opponent[0])
           if(app.username == data.opponent[0]){
             app.color = "white"

@@ -34,7 +34,7 @@ class Game{
          */
 	this.turn = 0;
 	this.players =  []
-	this.gameId = ""
+	this.gameId = id
 	/**
     * Board is an array of tiles representing the chess board. Used for logic.
     */
@@ -75,6 +75,9 @@ class Game{
 
 	checkGameOver(){
 
+	}
+	getId(){
+		return this.gameId
 	}
 
 	evaluateClick(x, y, color){
