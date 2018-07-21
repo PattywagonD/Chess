@@ -30,13 +30,14 @@ img {
 }
 
 .white_b {
-    height: 860px; 
+    height: auto; 
     width: 850px;
     align-items: center;
     justify-content: center;
     align-content: center;
     display: inline-block;
-    box-shadow: 0px 1px 5px #888888;
+    border-radius: 25px;
+
 }
 
 .tile {
@@ -94,10 +95,11 @@ img {
 }
 
 .sidebars {
-    height: 680px;
     width: auto;
     display: block;
+    max-height: 400px;
 }
+
 
 .mobile {
     display: none;
@@ -197,7 +199,7 @@ img{
 
 .smallmobile{
     display: inline;
-    background-color: #263238;
+    background-color: #303030;
     height: 100%;
 }
 
