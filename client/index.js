@@ -108,9 +108,9 @@ const app = new Vue({
     }, 
     message(){
       if(app.message == ""){
-        this.socket.emit('typing', {name: ""})
+        this.socket.emit('typing', {name: "", room:app.room})
       }else{
-        this.socket.emit('typing', {name: app.username})
+        this.socket.emit('typing', {name: app.username, room:app.room})
       }
     }
     //If oppopnent hasnt changed set socket to ping out 
@@ -300,7 +300,7 @@ const app = new Vue({
         console.log(app.color, "test")
         console.log("Client sending coordinates!", i, j, app.color)
         // set 9-j if logic board is upside down
-        this.socket.emit('updatedData', {x: i, y: j, color: app.color})
+        this.socket.emit('updatedData', {x: i, y: j, color: app.color, room:app.room})
         //Listen for new board
 
     },
@@ -308,7 +308,8 @@ const app = new Vue({
     sendMessage: function(){
       this.socket.emit('chat', {
         message: app.message,
-        handle: app.username
+        handle: app.username,
+        room: app.room
       })
       app.message=""
     },

@@ -20,6 +20,7 @@ var startingBoard = [
 // A list to store multiple games         	
 var games = []
 var index = 0
+var room = ""
 //App setup
 var app = express()
 //Server setup
@@ -48,7 +49,7 @@ io.on('connection', function(socket){
 
 
 
-	//on recieving a new player:
+	//Put player in appropriate game and create new games as needed
 	socket.on('username', function(newUsername){
 
 		if(queue.length == 0){
@@ -79,46 +80,47 @@ io.on('connection', function(socket){
 			//reset
 			queue = []
 		}
-
-
 	})
 
 
 
-
-
-	//Pull this out of the connection??? 
-	//Listen for a new click to update the board ie change socket to io
-	// Needs to be moved into a for loop that goes over the objects in games
+	//Send Updated Data to Client
 	socket.on('updatedData', function(newClick){
+		room = newClick.room
+		index = ids.indexOf(room)
 		console.log("socket data" , newClick)
 		var x = newClick.x
 		var y = newClick.y
 		var color = newClick.color
 	    console.log(x, y, color)
 	    //Update the board from the click and send new board
-		gameLogic(x, y, color)
+		gameLogic(x, y, color, index)
 	    console.log("Server recieved coordinates! ", newClick.x, newClick.y)
-	    console.log("Server now sending a new board! ", games[0].board)
-	    io.emit('board', {updatedboard: games[0].board, updatedmoves: games[0].moves })
+	    console.log("Server now sending a new board! ", games[index].board)
+	    io.sockets.in(room).emit('board', {updatedboard: games[index].board, updatedmoves: games[index].moves })
 	})
 
+	//Listen for new chats in each game room
 	socket.on('chat', function(newChat){
+		room = newChat.room
+		index = ids.indexOf(room)
 		console.log("Recieving new chat", newChat.message)
-		io.sockets.emit('chat', newChat)
+		io.sockets.in(room).emit('chat', newChat)
 	})
 
+	//Broadcast in a specific room if someone there is typing
 	socket.on('typing', function(typer){
-		socket.broadcast.emit('typing', typer)
-	})
-
+	 	socket.broadcast.to(typer.room).emit('typing', typer)
+	 })
 })
 
 
-gameLogic = function(x, y, color){
+//Update the board and moves for each game 
+gameLogic = function(x, y, color, index){
 
+	index = ids.indexOf(room)
 	//game.checkGameOver()
-	games[0].board = games[0].logic.evaluateClick(x, y, color)
-	games[0].moves = games[0].logic.getMoves(x, y, color)
+	games[index].board = games[index].logic.evaluateClick(x, y, color)
+	games[index].moves = games[index].logic.getMoves(x, y, color)
 	//game.checkGameOver()
 }
