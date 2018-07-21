@@ -11,6 +11,7 @@
 <body>
   <div id="app">
     <v-app>
+      <!--PLAY Button to Start Game-->
       <v-content v-if="noGame" >
         <v-container>
           <v-layout wrap row align-center justify-center>
@@ -25,15 +26,10 @@
         </v-container>
       </v-content>
 
-
+      <!--Game Window-->
       <v-content v-if = "isGame" class="web">
-
+        <!--Standard Window HTML (LARGE SCREEN)-->
         <v-container grid-list-xl text-xs-center>
-                <!--
-          <v-btn flat fab small absolute left >
-            <v-icon x-large>settings</v-icon>
-          </v-btn>
-                -->
 
         <!-- Opponent's Display -->
           <v-layout wrap row align-center justify-center >
@@ -50,10 +46,7 @@
           <!-- Layout for Chat Game and Moves -->
           <v-layout>
 
-  
-
-          
-              <!-- Layout for Chat window -->
+            <!-- Layout for Chat window -->
             <v-flex class="sidebars" s3>
               <v-toolbar dark color = blue>
                   <v-toolbar-title class="white--text">Chat</v-toolbar-title>
@@ -81,10 +74,10 @@
               </v-toolbar>
             </v-flex>
 
-            <!-- Start of the Board -->
+            <!-- Game Board -->
             <v-flex s6 >
               <v-card class="white_b" >
-                <v-card row flat = class="nums" >
+                <v-card row flat class="nums" >
                   <v-layout wrap row align-center justify-center>
                     <div class="letts" >
                       <h2>a</h2>
@@ -140,15 +133,9 @@
                    </v-layout>
                 </v-card>
               </v-card>
-              </v-flex>
+            </v-flex>
 
-
-
-
-
-
-
-              <!-- Start of History Panel -->
+            <!-- History Panel -->
             <v-flex class="sidebars" s3>
               <v-toolbar dark color = blue>
                   <v-toolbar-title class="white--text">History</v-toolbar-title>
@@ -156,7 +143,7 @@
                       <v-card>
                         <v-card-text>
                           <h4>Game Opening: Something</h4>
-                          <p1>{{history}}</p1>                            
+                          <p>{{history}}</p>                            
                         </v-card-text>
                       </v-card>
                   <v-toolbar>
@@ -185,45 +172,132 @@
 
           </v-layout>
 
-          <!-- User's Display -->
-        <v-layout wrap row align-center justify-center >
-          <flex xs6>
-            <v-card right color="blue-grey lighten-3">
-              <v-card-title><h1>{{username}}</h1><v-spacer></v-spacer>
-                <div v-for="piece in pieces"> <img :src="piece"></div>
+          <!-- Layout for User's Display and Query Chat-->
+          <v-layout wrap row align-center justify-center >
+
+            <!-- User's Display -->
+            <v-flex xs6>
+              <v-card right color="blue-grey lighten-3">
+                <v-card-title><h1>{{username}}</h1><v-spacer></v-spacer>
+                  <div v-for="piece in pieces"> <img :src="piece"></div>
+                </v-card-title>
+              </v-card>
+            </v-flex>
+          
+            <!-- Small Web Query for History Panel -->
+            <v-flex class="mobile" xs12 color="blue-grey lighten-5">
+              <v-expansion-panel>
+                <v-expansion-panel-content>
+                  <div slot="header"><h2>History</h2></div>
+                    <v-card>
+                      <v-card-text class="grey lighten-3">{{history}}</v-card-text>
+                    </v-card>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+            </v-flex>
+
+            <!-- Small Web Query for Chat Panel -->
+            <v-flex class ="mobile" xs12 color="blue-grey lighten-5">
+              <v-expansion-panel>
+                <v-expansion-panel-content>
+                  <div slot="header"><h2>Chat</h2></div>
+                  <v-card>
+                    <v-card-text>
+                      <v-list >
+                        <v-list-tile v-for="item in messages" avatar @click="">
+                          <v-list-tile-avatar color="blue-grey lighten-4">
+                            <span class="avatar">C</span>
+                          </v-list-tile-avatar>
+                          <v-list-tile-content>
+                            <v-list-tile-title v-text="item"></v-list-tile-title>
+                          </v-list-tile-content>
+                        </v-list-tile>
+                      </v-list>                             
+                    </v-card-text>
+                  </v-card>
+                  <v-toolbar>
+                    <v-text-field v-model="message" placeholder="new message"></v-text-field>
+                    <v-btn icon @click="sendMessage">
+                      <v-icon>send</v-icon>
+                    </v-btn>
+                  </v-toolbar>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+            </v-flex>
+          
+          </v-layout>
+        </v-container>
+      </v-content>
+
+      <!--Interface for Mobile-->
+      <content class="smallmobile" v-if = "isGame" >
+        <v-layout  column>
+          <!--History and Opponent Interface-->
+          <v-card>
+            <v-card color='blue-grey darken-4' class="contain">
+              <v-card-title class="white--text">
+                <h4>Game Opening: Something</h4>
+                <v-spacer></v-spacer>
+                <p>{{history}}</p>
               </v-card-title>
             </v-card>
-          </flex>
-        
+            <v-toolbar color=blue>
+              <v-progress-circular color='blue darken-3' :active= 'opp' :indeterminate= 'opp' :size="loader"></v-progress-circular>
+              <v-card-title  class="white--text"><h1>{{opponent}}</h1></v-card-title>
+              <v-spacer></v-spacer>
+              <div v-for="piece in oppPieces"> <img :src="piece"></div>
+             </v-toolbar>
+          </v-card>
 
-              <!-- Mobile Query for History Panel -->
-              <v-flex class="mobile" xs12 color="blue-grey lighten-5">
-                  <v-expansion-panel>
-                    <v-expansion-panel-content>
-                      <div slot="header"><h2>History</h2></div>
-                      <v-card>
-                       <v-card>
-                        <v-card-text class="grey lighten-3">{{history}}</v-card-text>
-                        </v-card>
-                      <v-toolbar>
-                        <v-text-field placeholder="make a move"></v-text-field>
-                        <v-btn icon>
-                          <v-icon>send</v-icon>
-                        </v-btn>
-                      </v-toolbar>
-                    </v-expansion-panel-content>
-                  </v-expansion-panel>
-              </v-flex>
+          <!--Game Display (MOBILE)-->
+          <v-card v-bind:style="[boardMobile]">
+            <v-layout width=100% row green> 
+              <v-card width=12.5%  center column v-for = "i in 8" >
+                <v-card v-bind:style="[tileMobile]"  dark v-for ="j in 8" v-bind:color= "getColor(i, j)" >
+                  <div v-if ="getMoves(i,j)" class='overlay' >Moveable</div> 
+                  <v-btn style="width:90%; height:90%; margin-left: 5%;" flat fab @click="sendClick(i,j)">                       
+                    <img style="width:90%; height:90%;" v-bind:src = "getImage(i, j)">
+                  </v-btn>
+                </v-card>
+              </v-card>
+            </v-layout>
+          </v-card>
 
-              <!-- Mobile Query for Chat Panel -->
-              <v-flex class ="mobile" xs12 color="blue-grey lighten-5">
-                <v-expansion-panel>
-                  <v-expansion-panel-content>
-                    <div slot="header"><h2>Chat</h2></div>
-                    <v-card>
-                      <v-card-text>
-                        <v-list >
-                          <v-list-tile v-for="item in messages" avatar @click="">
+          <!--User's Display and Chat-->
+          <v-card v-bind:style="[footerHUD]">
+            <v-toolbar color='blue'>
+              <v-card-title class="white--text"><h1>{{username}}</h1></v-card-title>
+              <v-spacer></v-spacer>
+              <div v-for="piece in pieces"> <img :src="piece"></div>
+            </v-toolbar>
+
+            <v-card v-bind:style="[chat]">
+              <v-toolbar color='blue darken-4'>
+                <!-- Dialog Box for MOBILE Chat -->
+                <!--Dialog BTN-->
+                <v-dialog v-model="chatMobile" fullscreen hide-overlay transition="dialog-bottom-transition">
+                  <v-btn fab style="height: 30px; width: 30px;" slot="activator" dark>
+                    <img v-if="unread" src="img/chatMessageUnread.png">
+                    <img v-if='read' src="img/chatMessage.png">
+                  </v-btn>
+                  <!--Dialog Window and Top Nav-->
+                  <v-card color='blue-grey darken-4'>
+                    <v-toolbar dark color="blue darken-1">
+                      <v-btn icon dark @click.native="
+                      chatMobile = false
+                      read = true
+                      unread = false ">
+                        <v-icon>close</v-icon>
+                      </v-btn>
+                      <v-spacer></v-spacer>
+                      <v-toolbar-title>Chat</v-toolbar-title>
+                      <v-spacer></v-spacer>
+                    </v-toolbar>
+                    <!--Dialog Messages in List-->
+                    <v-card class="containChat" color='blue-grey' >
+                      <v-card-text background-color='blue-grey'>
+                        <v-list style="background-color: #607D8B">
+                          <v-list-tile v-for="item in messages" avatar>
                             <v-list-tile-avatar color="blue-grey lighten-4">
                               <span class="avatar">C</span>
                             </v-list-tile-avatar>
@@ -234,90 +308,32 @@
                         </v-list>                             
                       </v-card-text>
                     </v-card>
-                <v-toolbar>
-                  <v-text-field placeholder="new message"></v-text-field>
-                  <v-btn icon>
-                    <v-icon>send</v-icon>
-                  </v-btn>
-                </v-toolbar>
-                  </v-expansion-panel-content>
-                </v-expansion-panel>
-              </v-flex>
-        </v-layout>
-      </v-card>
-    <v-flex>
-  </v-layout>
-        </v-container>
-      </v-content>
-
-
-
-
-
-<content class="smallmobile" v-if = "isGame" >
-  <v-layout  column>
-
-
-      <v-card v-bind:style="[style1]">
-
-        <v-card color=black>
-          <v-card-title class="white--text"><p1>{{history}}</p1></v-card-title>
-        </v-card>
-
-
-        <v-toolbar color=red>
-        <v-progress-circular v-if="getOpponent()" :active= 'opp' :indeterminate= 'opp'></v-progress-circular>
-          <v-card-title class="white--text"><h1>{{opponent}}</h1></v-card-title>
-          <v-spacer></v-spacer>
-           <div v-for="piece in oppPieces"> <img :src="piece"></div>
-        </v-toolbar>
-
-      </v-card>
-
-
-
-      <v-card v-bind:style="[styles2]">
-
-        <v-layout width=100% row green> 
-          <v-card width=12.5%  center column v-for = "i in 8" >
-            <v-card v-bind:style="[styles5]"  dark v-for ="j in 8" v-bind:color= "getColor(i, j)" >
-              <div v-if ="getMoves(i,j)" class='overlay' >Moveable</div> 
-                        <v-btn flat fab @click="sendClick(i,j)">                       
-                          <img v-bind:src = "getImage(i, j)">
-                        </v-btn>
+                    <v-spacer></v-spacer>
+                    <!--Dialog Input Field and Send Btn-->
+                    <v-toolbar class="stick" color= 'blue darken-1'>
+                      <v-text-field v-model="message" placeholder="new message"></v-text-field>
+                      <v-btn icon @click="sendMessage()">
+                        <v-icon>send</v-icon>
+                      </v-btn>
+                    </v-toolbar>
                   </v-card>
-                </v-card>
-          </v-layout>
-
-      </v-card>
-
-      <v-card v-bind:style="[styles3]">
-        <v-toolbar color=green>
-          <v-card-title class="white--text"><h1>{{username}}</h1></v-card-title>
-          <v-spacer></v-spacer>
-           <div v-for="piece in pieces"> <img :src="piece"></div>
-        </v-toolbar>
-      </v-card>
-
-      <v-card v-bind:style="[chat]">
-        <v-toolbar color=blue>
-          <v-card-title class="white--text"><h1>Chat</h1></v-card-title>
-            <v-text-field v-model="message" placeholder="new message"></v-text-field>
-            <v-btn icon @click="sendMessage()">
-                <v-icon>send</v-icon>
-            </v-btn>
-        </v-toolbar>
-        <div style=" background-color: blue; height: 20px">{{feedback}} </div>
-     </v-card>
+                </v-dialog>
+                <!--Chat Input Outside Dialog-->
+                <v-card-title class="white--text"><h1>Chat</h1></v-card-title>
+                <v-text-field v-model="message" placeholder="new message"></v-text-field>
+                <v-btn icon @click="sendMessage()">
+                  <v-icon>send</v-icon>
+                </v-btn>
+              </v-toolbar>
+              <!--"is typing window"-->
+              <div class="feed">{{feedback}} </div>
+            </v-card>
+          </v-card>
+        </v-layout>
+      </content>
 
 
-  </v-layout>
-  </content>
-</v-app>
-
-
-
-
+    </v-app>
   </div>
   <script src="vue.js"></script>
   <script src="vuetify.js"></script>

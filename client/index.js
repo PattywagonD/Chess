@@ -17,9 +17,10 @@ const app = new Vue({
               [11,11,11,11,11,11,11,11],
               [12,13,14,16,15,14,13,12]
           ],
-    history: ['a4','kg4', 'qxc4'],
+    history: ['a4','kg4', 'qxc4','a4','kg4', 'qxc4','a4','a4','kg4', 'qxc4','a4','kg4', 'qxc4'],
     username: "",
     opponent: "finding match...",
+    loader: 20,
     feedback: "",
     color: "",
     noGame: true,
@@ -30,10 +31,13 @@ const app = new Vue({
     messages: [],
     message: "",
     dialog: false,
+    chatMobile: false,
     oppPieces: ["img/bpawn.png", "img/brook.png"],
     pieces: ["img/wpawn.png", "img/wbishop.png"],
     awidth: 300,
     color: 'blue',
+    unread: false,
+    read: true
   },
 
   computed: {
@@ -47,7 +51,7 @@ const app = new Vue({
       };
     },
 
-    styles2: function() {
+    boardMobile: function() {
       var newWidth = this.awidth;
       console.log(newWidth)
       return {
@@ -57,7 +61,7 @@ const app = new Vue({
       };
     },
 
-    styles3: function() {
+    footerHUD: function() {
       var newWidth = this.awidth;
     
       return {
@@ -76,7 +80,7 @@ const app = new Vue({
         height: newWidth/12 + 'px'
       };
     },
-    styles5: function() {
+    tileMobile: function() {
       var newWidth = this.awidth/8;
     
       return {
@@ -142,24 +146,24 @@ const app = new Vue({
     getOpponent: function(){
       console.log(this.opponent)
       if (this.oppopnent != "finding match..."){
-        return false
+        return true
       }
     },
 
 		getColor: function (num, start) {
             if (start % 2 == 0)    
                 if (num % 2 == 0)
-                    return "blue-grey lighten-4"
+                    return "light-green lighten-4"
 
                  else
-                     return "blue-grey darken-3" 
+                     return "light-green darken-3" 
                      
             else
                 if (num % 2 == 0)
-                    return "blue-grey darken-3"
+                    return "light-green darken-3  "
 
                  else
-                     return "blue-grey lighten-4"
+                     return "light-green lighten-4"
     },
 
     //display chess pieces
@@ -213,6 +217,7 @@ const app = new Vue({
       }
     },
 
+
     startGame: function(i, j){
       //Make sure they entered a valid username
       if(this.username){
@@ -227,6 +232,7 @@ const app = new Vue({
         //Receives two boards and both usernames, routes data to correct person
         this.socket.on('color', function(data){
           app.opp = false
+          app.loader = 0
           console.log("ON COLOR ", app.username, data.opponent[0])
           if(app.username == data.opponent[0]){
             app.color = "white"
@@ -265,6 +271,10 @@ const app = new Vue({
       this.socket.on('chat', function(newChat){
         console.log("Getting new chat")
         app.messages.push(newChat.message)
+        if(newChat.handle != app.username){
+          app.unread = true
+          app.read = false
+        }
       })
 
       }

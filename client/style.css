@@ -182,19 +182,51 @@ img {
 }
 }
 
-@media screen and (max-width: 900px) {
+@media only screen and (max-width: 600px) {
 img{
     width: 30px;
     height: 30px;
 }
 
+.smallBtn{
+    width: 50%;
+    height: 50%;
+    margin-left: 1px;
+
+}
 
 .smallmobile{
     display: inline;
+    background-color: #263238;
+    height: 100%;
 }
 
 ::-webkit-scrollbar { 
     display: none; 
+}
+.feed{
+    background-color: #01579B;
+    height: 20px;
+    align-content: center;
+    text-align: center;
+}
+.contain{
+    overflow: scroll;
+    max-height: 60px;
+    margin-top: -10px;
+}
+
+
+.containChat{
+    overflow: scroll;
+    margin-bottom: 25px;
+    max-height: 600px;
+}
+
+.stick{
+    position: fixed; /* Set the navbar to fixed position */
+    bottom: 0; /* Position the navbar at the bottom of the page */
+    width: 100%; /* Full width */
 }
 
 .web{
