@@ -49,6 +49,7 @@ class Piece {
         this.type = type;
         this.numberOfMoves = 0;
     }
+    // "Getter" Department
     getXCoordinate() {
         return(this.x);
     }
@@ -63,6 +64,16 @@ class Piece {
     }
     getNumberOfMoves() {
         return(this.numberOfMoves)
+    }
+    // "Setter" Department
+    setXCoordinate(xCoordinate) {
+        this.x = xCoordinate;
+    }
+    setYCoordinate(yCoordinate) {
+        this.y = yCoordinate;
+    }
+    setColor(color) {
+        this.color = color;
     }
 }
 

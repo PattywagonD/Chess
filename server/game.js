@@ -182,17 +182,52 @@ class Game{
 	checkGameOver(){
 
 	}
+	//TODO: Write helper function movePiece() for evaluate click
+	movePiece(firstClick, lastClick) {
+		// Piece exists at its destination tile.
+		lastClick.setPiece(firstClick.getPiece());
+		// Pieces' coordinates are updated to match its new parent tiles' coordinates.
+		lastClick.getPiece().setXCoordinate()
+	}
 
 	//TODO: Update evaluateClick 
 	evaluateClick(x, y, color) {
-		// Is this the opening or "alpha" click?
-		// if( !(this.alphaClick.getXCoordinate()) && !(this.alphaClick.getYCoordinate())) {
-		// 	this.alphaClick = (this.logicalBoard[x][y]);
-		// 	movesArray = this.getMoves(x, y, color);
-		// }
-		// // This must be the omega click!
-		// else {
-		// 	this.omegaClick = (this.logicalBoard[x][y]);
+		//Is this the opening or "alpha" click?
+		if( !(this.alphaClick.getXCoordinate()) && !(this.alphaClick.getYCoordinate())) {
+			this.alphaClick = (this.logicalBoard[x][y]);
+			var movesArray = this.getMoves(x, y, color);
+		}
+		// This must be the omega click!
+		else {
+			this.omegaClick = (this.logicalBoard[x][y]);
+			//Case 1. Check to see if the 2nd click is in our moves Array.
+			var isValidMove = false;
+			for(var i = 0; i < movesArray.length(); i++) {
+				if((movesArray[i][0] == this.omegaClick.getXCoordinate()) && (movesArray[i][1] == this.omegaClick.getYCoordinate())) {
+					isValidMove = true;
+					break;
+				}
+				else {
+					isValidMove = false;
+				}
+			}
+			// If the omega tile is un-occupied, then we can move there.
+			if (!(this.omegaClick.getOccupied())  && (isValidMove)) {
+				var swapSpace = new pieces.Tile(0, 0, 0);
+
+				// swapSpace = this.alphaClick.getPiece();
+				// this.alphaClick.setPiece(this.omegaClick.getPiece());
+				// this.omegaClick.setPiece(swapSpace.getPiece());
+				// this.logicalBoard[this.alphaClick.getXCoordinate()][this.alphaClick.getYCoordinate()] = this.omegaClick;
+				// this.logicalBoard[this.omegaClick.getXCoordinate()][this.omegaClick.getYCoordinate()] = this.alphaClick; 
+			}
+			else if ((this.omegaClick.getOccupied()) && (isValidMove)) {
+				var captured = this.omegaClick;
+				this.omegaClick = this.alphaClick;
+				this.alphaClick = new pieces.Tile(0, this.omegaClick.get)
+			}
+			
+		}
 
 
 		// }
