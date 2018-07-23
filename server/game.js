@@ -163,7 +163,17 @@ class Game{
 					break;
 			}
 		}
+		//Set a piece for testing
+		this.logicalBoard[4][4].setPiece(new pieces.Rook(4, 4, "White"));
+		this.logicalBoard[4][4].setOccupied(1);
+
+		this.logicalBoard[6][5].setPiece(new pieces.Rook(6, 5, "White"));
+		this.logicalBoard[6][5].setOccupied(1);
+
+		this.logicalBoard[3][7].setPiece(new pieces.Rook(3, 7, "White"));
+		this.logicalBoard[3][7].setOccupied(1);	
 	}
+
 	getMoves(xCoordinate, yCoordinate, color) {
 		var movesArray = [];
 		if (this.logicalBoard[xCoordinate][yCoordinate].getPiece() != pieces.Blank) {

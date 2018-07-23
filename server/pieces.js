@@ -124,7 +124,7 @@ class Pawn extends Piece {
                     movesArray.push([(this.getXCoordinate()), (this.getYCoordinate() - 1)]);
                     // 2.b Move forward 2 spaces; only true if case 2.a is also true
                     if ((this.getNumberOfMoves() < 1) && !(board[this.getXCoordinate()][this.getYCoordinate() - 2].getOccupied())) {
-                        movesArray.push([(this.getXCoordinate()), (this.getYCoordinate() - 1)]);
+                        movesArray.push([(this.getXCoordinate()), (this.getYCoordinate() - 2)]);
                     }
                 }
             }
@@ -153,51 +153,79 @@ class Rook extends Piece {
      */
     getMoves(board) {
         var movesArray = new Array();
-        // var xCurrent = this.getXCoordinate();
-        // var yCurrent = this.getYCoordinate();
-        // // Case One: Can the Rook move Forward? If so how far?
-        // while (yCurrent <= 8) {
-        //     if (board[this.getXCoordinate()][yCurrent].getPiece().getColor() == this.getColor()) {
-        //         break;
-        //     }
-        //     else {
-        //         movesArray.push([this.getXCoordinate(), yCurrent]);
-        //     }
-        //     ++yCurrent;
-        // }
-        // // Case Two: How far Right can the Rook move?
-        // while (xCurrent <= 8) {
-        //     if (board[this.getXCoordinate()][yCurrent].getPiece().getColor() == this.getColor()) {
-        //         break;
-        //     }
-        //     else {
-        //         movesArray.push([xCurrent, this.getYCoordinate()]);
-        //     }
-        //     ++xCurrent;
-        // }
-        // xCurrent = this.getXCoordinate();
-        // yCurrent = this.getYCoordinate();
-        // // Case Three: Can the Rook move Backward? To what degree?
-        // while (yCurrent >= 1) {
-        //     if (board[this.getXCoordinate()][yCurrent].getPiece().getColor() == this.getColor()) {
-        //         break;
-        //     }
-        //     else {
-        //         movesArray.push([this.getXCoordinate(), yCurrent]);
-        //     }
-        //     --yCurrent;
-        // }
-        // // Case Four: How far Left can our Rook move?
-        // while (xCurrent >= 1) {
+        var xCurrent = this.getXCoordinate();
+        var yCurrent = this.getYCoordinate();
+        // Case One: Can the Rook move Forward? If so how far?
+        while (yCurrent <= 7) {
+            console.log("trip case 1")
+            if (board[this.getXCoordinate()][yCurrent+1].getPiece().getColor() != "Blank") {
+                if(board[this.getXCoordinate()][yCurrent+1].getPiece().getColor() == this.getColor()){
+                    break;
+                }else{
+                    movesArray.push([this.getXCoordinate(), yCurrent+1])
+                    break;
+                }
+            }
 
-        //     if (board[this.getXCoordinate()][yCurrent].getPiece().getColor() == this.getColor()) {
-        //         break;
-        //     }
-        //     else {
-        //         movesArray.push([ xCurrent, this.getYCoordinate()]);
-        //     }
-        //     --xCurrent;
-        // }
+            else {
+                console.log("adding")
+                movesArray.push([this.getXCoordinate(), yCurrent+1]);
+            }
+            ++yCurrent;
+        }
+        // Case Two: How far Right can the Rook move?
+        while (xCurrent <= 7) {
+            console.log("trip case 2")
+            if (board[xCurrent+1][this.getYCoordinate()].getPiece().getColor() != "Blank") {
+                if(board[xCurrent+1][this.getYCoordinate()].getPiece().getColor() == this.getColor()){
+                    break;
+                }else{
+                    movesArray.push([xCurrent+1, this.getYCoordinate()])
+                    break;
+                }
+            }
+            else {
+                console.log("adding")
+                movesArray.push([xCurrent+1, this.getYCoordinate()]);
+            }
+            ++xCurrent;
+        }
+
+        xCurrent = this.getXCoordinate();
+        yCurrent = this.getYCoordinate();
+        // Case Three: Can the Rook move Backward? To what degree?
+        while (yCurrent >= 2) {
+            console.log("trip case 3")
+            if (board[this.getXCoordinate()][yCurrent-1].getPiece().getColor() != "Blank") {
+                if(board[this.getXCoordinate()][yCurrent-1].getPiece().getColor() == this.getColor()){
+                    break;
+                }else{
+                    movesArray.push([this.getXCoordinate(), yCurrent-1])
+                    break;
+                }
+            }else {
+                console.log("adding")
+                movesArray.push([this.getXCoordinate(), yCurrent-1])
+            }
+            --yCurrent;
+        }
+
+        // Case Four: How far Left can our Rook move?
+        while (xCurrent >= 2) {
+            console.log("trip case 4")
+            if (board[xCurrent-1][this.getYCoordinate()].getPiece().getColor() != "Blank") {
+                if(board[xCurrent-1][this.getYCoordinate()].getPiece().getColor() == this.getColor()){
+                    break;
+                }else{
+                    movesArray.push([xCurrent-1, this.getYCoordinate()]);
+                    break;
+                }
+            }else {
+                console.log("adding")
+                movesArray.push([xCurrent-1, this.getYCoordinate()]);
+            }
+            --xCurrent;
+        }
         console.log("rook moves")
         return movesArray;
     }
