@@ -82,7 +82,7 @@ class Blank extends Piece {
         super(xCoordinate, yCoordinate, "Blank", "Empty");
     }
     getMoves(board) {
-
+        return []
     }
 }
 
@@ -95,7 +95,9 @@ class Pawn extends Piece {
 
     getMoves(board){
         var movesArray = new Array();
+        console.log(this.color);
         if(this.color == "White") {
+            console.log("Inside Pawn IF statement for White")
             // Case 1.White : Capture a piece to your left
             if ((this.getXCoordinate() - 1 >= 1) && (this.getYCoordinate() + 1 <= 8)) {  
                 if (board[this.getXCoordinate() - 1][this.getYCoordinate() + 1].getPiece().getColor() == "Black") {
@@ -103,16 +105,17 @@ class Pawn extends Piece {
                 }
             }
             // Case 2.White Move forward
-            if ((this.getYCoordinate() + 1) >= 1) { 
+            if ((this.getYCoordinate() + 1) <= 8) {
+                console.log("Inside Pawn IF statement for Move Forward");
                 if (!(board[this.getXCoordinate()][this.getYCoordinate() + 1].getOccupied())) { // 2.a Move forward 1 space
                     movesArray.push([(this.getXCoordinate()) , (this.getYCoordinate() + 1)]);
                     // 2.b Move forward 2 spaces; only possibly true if case 2.a is also true
-                    if ((this.getNumberOfMoves() < 1) && !(board[this.getXCoordinate()][this.getYCoordinate() - 2].getOccupied())) {
+                    if ((this.getNumberOfMoves() < 1) && !(board[this.getXCoordinate()][this.getYCoordinate() + 2].getOccupied())) {
                         movesArray.push([(this.getXCoordinate()), (this.getYCoordinate() + 2)]);
                     }
                 }
             }
-            // Case 3.White : Capture a piece to your right
+            // // Case 3.White : Capture a piece to your right
             if ((this.getXCoordinate() + 1 <= 8) && (this.getYCoordinate() + 1 <= 8)) {
                 if (board[this.getXCoordinate() + 1][this.getYCoordinate() + 1].getPiece().getColor() == "Black") {
                     movesArray.push([(this.getXCoordinate() + 1), (this.getYCoordinate() + 1)]);
@@ -143,6 +146,8 @@ class Pawn extends Piece {
                 }
             }
         }
+
+        console.log(movesArray, "pawn moves")
         return movesArray;
     }
 }
@@ -281,7 +286,7 @@ class Knight extends Piece {
 }
 class Bishop extends Piece {
     constructor(xCoordinate, yCoordinate, color) {
-        super(1, xCoordinate, yCoordinate, color);
+        super(xCoordinate, yCoordinate, color);
         this.type = "Bishop";
     }
     /**

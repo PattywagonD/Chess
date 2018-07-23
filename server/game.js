@@ -15,7 +15,7 @@
 const pieces = require('./pieces')
 
 class Game{
-	constructor() {
+	constructor(id){
 	/**
     * Let gameState be defined as
     * 0. Beginning of the game (implies we need to set-up the board)
@@ -33,6 +33,8 @@ class Game{
          */
 	this.turn = 0;
 	this.players =  []
+	this.gameId = id
+	this.movesArray = []
 	/**
     * logical Board is an array of tiles representing the chess board. Used by the server for an "absolute" board
 	* that clients can access.
@@ -148,11 +150,11 @@ class Game{
 									this.logicalBoard[x][y].setOccupied(1);
 									break;
 								case 4:
-									this.logicalBoard[x][y].setPiece(new pieces.King(x, y, "Black"));
+									this.logicalBoard[x][y].setPiece(new pieces.Queen(x, y, "Black"));
 									this.logicalBoard[x][y].setOccupied(1);
 									break;
 								case 5:
-									this.logicalBoard[x][y].setPiece(new pieces.Queen(x, y, "Black"));
+									this.logicalBoard[x][y].setPiece(new pieces.King(x, y, "Black"));
 									this.logicalBoard[x][y].setOccupied(1);
 									break;
 						}
@@ -162,10 +164,13 @@ class Game{
 		}
 	}
 	getMoves(xCoordinate, yCoordinate, color) {
-		var movesArray;
+		var movesArray = [];
 		if (this.logicalBoard[xCoordinate][yCoordinate].getPiece() != pieces.Blank) {
 			movesArray = this.logicalBoard[xCoordinate][yCoordinate].getPiece().getMoves(this.logicalBoard);
 		}
+		console.log(movesArray, "before export")
+		movesArray = this.exportMoves(movesArray);
+		console.log(movesArray, "after export")
 		return movesArray;
 	}
 	addPlayer(username){
@@ -271,10 +276,10 @@ class Game{
 			else if (piece.getType() == "Bishop") {
 				pieceNumber = 4;
 			}
-			else if (piece.getType() == "Queen") {
+			else if (piece.getType() == "King") {
 				pieceNumber = 5;
 			}
-			else if (piece.getType() == "King") {
+			else if (piece.getType() == "Queen") {
 				pieceNumber = 6;
 			}
 			if (piece.getColor() == "White") {
@@ -301,6 +306,38 @@ class Game{
 		}
 		this.displayBoard.reverse();
 	}
+	/**
+	 * FUNCTION: exportBoard()
+	 * exportBoard converts the logical board pieces into the display board "piece codes".
+	 * The piece code is a number in the 0-16 range that represents a color and piece type.
+	 * F'rex a Black King has a piece code of 6.
+	 * IMPORTANT: DISPLAY BOARD INDEXING BEGINS AT ZERO (0). LOGICAL BOARD INDEXING BEGINS AT ONE (1).
+	 * I DON'T MAKE THE RULES I JUST INSTANTIATE THEM.
+	 */
+	exportBoard() {	
+		for(var y = 1; y < 9; y++) {
+			for(var x = 1; x < 9; x++) {
+				this.displayBoard[y - 1][x - 1] = this.pieceConverter(this.logicalBoard[x][y].getPiece());
+			}
+		}
+		this.displayBoard.reverse();
+	}
+	exportMoves(oldMovesArray){
+		var newMovesArray = [];
+		for(var i = 0; i < oldMovesArray.length; i++) {
+			newMovesArray.push([9 - oldMovesArray[i][1], oldMovesArray[i][0]]);
+		}
+		//this.displayMoves
+		return newMovesArray;
+	}
+	getPlayers(username){
+		return this.players
+	}
+
+	getId(){
+		return this.gameId
+	}
+
 }
 
 

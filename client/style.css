@@ -1,18 +1,43 @@
 [v-cloak] {
   display: none;
 }
+.smallmobile{
+    display: none;
+}
+
+.start_screen {
+    margin: 100px;
+    padding: 100px;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    z-index: 100;
+}
+
+
+.end_screen {
+    margin: 100px;
+    padding: 100px;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    opacity: 0.5;
+}
+
 img {
     height: 50px;
     width: 50px;
 }
 
 .white_b {
-    height: 860px; 
+    height: auto; 
     width: 850px;
     align-items: center;
     justify-content: center;
     align-content: center;
     display: inline-block;
+    border-radius: 25px;
+
 }
 
 .tile {
@@ -33,6 +58,7 @@ img {
     justify-content: center;
     align-items: center;
     vertical-align: middle;
+    color: #263238;
 }
 
 .letts {
@@ -48,6 +74,7 @@ img {
     align-items: center;
     vertical-align: middle;
     align-content: center;
+    color: #263238;
 }
 .col {
     display: inline-flex;
@@ -68,17 +95,17 @@ img {
 }
 
 .sidebars {
-    height: 680px;
     width: auto;
     display: block;
+    max-height: 400px;
 }
+
 
 .mobile {
     display: none;
 }
 
 @media only screen and (max-width: 1903px) {
-
 img {
     height: 40px;
     width: 40px;
@@ -113,30 +140,99 @@ img {
 @media only screen and (max-width: 1263px) {
 
 img {
-    height: 35px;
-    width: 35px;
+    height: 80px;
+    width: 80px;
 }
 
 .white_b {
-    height: 580px; 
-    width: 570px;
+    height: 900px; 
+    width: 900px;
 }
 
 
 .tile {
-    min-width: 60px;
-    min-height: 60px;
-}
+    min-width: 100px;
+    min-height: 100px;
 }
 
-@media only screen and (max-width: 969px) {
+.letts {
+    width: 790px;
+    margin-right: 50px;
+    margin-left: 55px;
+}
+
+.col {
+    height: 730px;
+    margin-right: 20px;
+}
+
+.resizeDis{
+    width:1000px;
+    height: 80px;
+}
 
 .sidebars {
+    height: 0px;
+    width: 0px;
     display: none;
 }
 
 .mobile {
     display: inline-flex;
     width: 100%;
+
 }
+}
+
+@media only screen and (max-width: 600px) {
+img{
+    width: 30px;
+    height: 30px;
+}
+
+.smallBtn{
+    width: 50%;
+    height: 50%;
+    margin-left: 1px;
+
+}
+
+.smallmobile{
+    display: inline;
+    background-color: #303030;
+    height: 100%;
+}
+
+::-webkit-scrollbar { 
+    display: none; 
+}
+.feed{
+    background-color: #01579B;
+    height: 20px;
+    align-content: center;
+    text-align: center;
+}
+.contain{
+    overflow: scroll;
+    max-height: 60px;
+    margin-top: -10px;
+}
+
+
+.containChat{
+    overflow: scroll;
+    margin-bottom: 25px;
+    max-height: 600px;
+}
+
+.stick{
+    position: fixed; /* Set the navbar to fixed position */
+    bottom: 0; /* Position the navbar at the bottom of the page */
+    width: 100%; /* Full width */
+}
+
+.web{
+    display: none;
+}
+
 }
