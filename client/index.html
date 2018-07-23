@@ -11,15 +11,59 @@
 <body>
   <div id="app">
     <v-app>
+    <div class="text-xs-center">
+    <v-menu
+      v-model="menu"
+      :close-on-content-click="false"
+      :nudge-width="200"
+      offset-x
+    >
+      <v-btn
+        slot="activator"
+        dark
+      >
+        CHANGE THEME
+      </v-btn>
+
+      <v-card>
+        <v-list>
+          <v-list-tile avatar>
+            <v-list-tile-avatar>
+            <v-btn flat fab @click="">
+              <img src="img/bpawn.png" alt="black pawn">
+              </v-btn>
+            </v-list-tile-avatar>
+
+            <v-list-tile-content>
+              <v-list-tile-title>Dark</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+           <v-list-tile avatar>
+            <v-list-tile-avatar>
+            <v-btn flat fab>
+              <img src="img/wpawn.png" alt="white pawn">
+              </v-btn>
+            </v-list-tile-avatar>
+
+            <v-list-tile-content>
+              <v-list-tile-title>Light</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+        </v-list>
+    </v-menu>
+  </div>
+      <!--PLAY Button to Start Game-->
       <v-content v-if="noGame">
         <v-container>
           <v-layout wrap row align-center justify-center>
-          <v-flex xs12>
-            <v-card  class="start_screen">
-              <h1>Let's Play Chess</font></h1>
+          <v-flex s6>
+            <v-card color="blue" class="start_screen">
+              <v-card-title>
+              <h2>Start a Game of Chess</h2>
+              </v-card-title>
               <v-form ref="form" lazy-validation>
                 <v-text-field v-model="username" label="Username" required></v-text-field>
-                <v-btn @click="startGame()" color="info" class="button"> PLAY </v-btn>
+                <v-btn @click="startGame()"> PLAY </v-btn>
               </v-form>
             </v-card>
             </v-flex>
@@ -27,231 +71,332 @@
         </v-container>
       </v-content>
 
-
-      <v-content v-if = "isGame">
-
+      <!--Game Window-->
+      <v-content v-if = "isGame" class="web">
+        <!--Standard Window HTML (LARGE SCREEN)-->
         <v-container grid-list-xl text-xs-center>
-                
-          <v-btn flat fab small absolute left >
-            <v-icon x-large>settings</v-icon>
-          </v-btn>
-               
-
+          <v-layout column>
         <!-- Opponent's Display -->
-          <v-layout wrap row align-center justify-center >
-            <v-flex xs8>
-            <v-card  >
-              <v-progress-linear  :active= 'opp' :indeterminate= 'opp'></v-progress-linear>
-              <v-card-title><h1>{{opponent}}</h1><v-spacer></v-spacer
-              ><div v-for="piece in oppPieces"> <img :src="piece"></div>
-              </v-card-title>
-            </v-card>
-            </v-flex>
-          </v-layout>
-
-          <!-- Layout for Chat Game and Moves -->
-          <v-layout>
-
-  
-
-          
-              <!-- Layout for Chat window -->
-            <v-flex class="sidebars" s3>
-              <v-toolbar dark color = blue>
-                  <v-toolbar-title class="white--text">Chat</v-toolbar-title>
-                </v-toolbar>
-                  <v-card>
-                    <v-card-text>
-                      <v-list >
-                        <v-list-tile v-for="item in messages" avatar>
-                          <v-list-tile-avatar>
-                            <span class="avatar">C</span>
-                          </v-list-tile-avatar>
-                          <v-list-tile-content>
-                            <v-list-tile-title v-text="item"></v-list-tile-title>
-                          </v-list-tile-content>
-                        </v-list-tile>
-                      </v-list>                             
-                    </v-card-text>
-                  </v-card>
-                  <v-card><v-card-text>{{feedback}}</v-card-text></v-card>
-              <v-toolbar>
-                <v-text-field v-model="message" placeholder="new message"></v-text-field>
-                <v-btn icon @click="sendMessage()">
-                  <v-icon>send</v-icon>
-                </v-btn>
-              </v-toolbar>
-            </v-flex>
-
-            <!-- Start of the Board -->
-            <v-flex xs12 >
-              <v-card class="white_b">
-                <v-card row flat color="transparent" class="nums" >
-                  <v-layout wrap row align-center justify-center>
-                    <div class="letts" >
-                      <h2>a</h2>
-                      <h2>b</h2>
-                      <h2>c</h2>
-                      <h2>d</h2>
-                      <h2>e</h2>
-                      <h2>f</h2>
-                      <h2>g</h2>
-                      <h2>h</h2>
-                    </div>
-                       <div class="col">
-                         <h2>{{ getGridNum(8) }}</h2>
-                        <h2>{{ getGridNum(7) }}</h2>
-                        <h2>{{ getGridNum(6) }}</h2>
-                        <h2>{{ getGridNum(5) }}</h2>
-                        <h2>{{ getGridNum(4) }}</h2>
-                        <h2>{{ getGridNum(3) }}</h2>
-                        <h2>{{ getGridNum(2) }}</h2>
-                        <h2>{{ getGridNum(1) }}</h2>
-                    </div>
-
-                    <v-flex xs1 v-for="i in 8" class="tile">
-                      <v-card class="tile" v-for="j in 8"  dark  tile v-bind:color="getColor(i, j)">
-                        <div>
-                        <div v-if = "getMoves(i,j)" class="overlay">Moveable</div> 
-                        <v-btn flat fab @click= "sendClick(i,j)">                       
-                          <img v-bind:src = "getImage(i, j)">
-                        </v-btn>
-                        </div>
-                      </v-card>
-                    </v-flex>
-                    <div class="col">
-                      <h2>&nbsp;</h2>
-                      <h2>&nbsp;</h2>
-                      <h2>&nbsp;</h2>
-                      <h2>&nbsp;</h2>
-                      <h2>&nbsp;</h2>
-                      <h2>&nbsp;</h2>
-                      <h2>&nbsp;</h2>
-                      <h2>&nbsp;</h2>
-                    </div>
-                    <div class="letts" >
-                      <h2>&nbsp;</h2>
-                      <h2>&nbsp;</h2>
-                      <h2>&nbsp;</h2>
-                      <h2>&nbsp;</h2>
-                      <h2>&nbsp;</h2>
-                      <h2>&nbsp;</h2>
-                      <h2>&nbsp;</h2>
-                      <h2>&nbsp;</h2>
-                    </div>
-                   </v-layout>
-                </v-card>
+            <v-flex>
+              <v-card  color="primary">
+                <v-progress-linear color="blue darken-3" :active= 'opp' :indeterminate= 'opp' height = 10 ></v-progress-linear>
+                <v-card-title><h1>{{opponent}}</h1><v-spacer></v-spacer
+                ><div v-for="piece in oppPieces"> <img :src="piece"></div>
+                </v-card-title>
               </v-card>
-              </v-flex>
-
-
-
-
-
-
-
-              <!-- Start of History Panel -->
-            <v-flex class="sidebars" s3>
-              <v-toolbar dark color = blue>
-                  <v-toolbar-title class="white--text">History</v-toolbar-title>
-                </v-toolbar>
-                      <v-card>
-                        <v-card-text>
-                          <h4>Game Opening: Something</h4>
-                          <p1>{{history}}</p1>                            
-                        </v-card-text>
-                      </v-card>
-                  <v-toolbar>
-                    <v-dialog v-model="dialog" width = "500">
-                      <v-btn icon slot="activator">
-                        <v-icon>info</v-icon>
-                      </v-btn>
-                  <v-card>
-                    <v-card-title
-                      class="headline grey lighten-2"
-                      primary-title
-                    >
-                      Make a Move with Keyboard
-                    </v-card-title>
-                      <v-card-text>example a3</v-card-text>
-                    <v-divider></v-divider>
-                    <v-card-actions>
-                      <v-spacer></v-spacer>
-                      <v-btn color="primary" flat @click="dialog = false"> OK </v-btn>
-                    </v-card-actions>
-                  </v-card>
-                  </v-dialog>
-                  <v-text-field placeholder="make a move"></v-text-field>
-                </v-toolbar>
             </v-flex>
 
-          </v-layout>
+            <!-- Layout for Chat Game and Moves -->
+            <v-layout>
 
-          <!-- User's Display -->
-        <v-layout wrap row align-center justify-center>
-          <v-flex xs12 >
-            <v-card right> 
-              <v-card-title><h1>{{username}}</h1><v-spacer></v-spacer>
-                <div v-for="piece in pieces"> <img :src="piece"></div>
-              </v-card-title>
-            </v-card>
-          </v-flex>
+              <!-- Game Board -->
+              <v-flex s6 >
+                <v-card class="white_b"  >
+                  <v-card row flat class="nums" >
+                    <v-layout wrap row align-center justify-center>
+                      <div class="letts" >
+                        <h2>a</h2>
+                        <h2>b</h2>
+                        <h2>c</h2>
+                        <h2>d</h2>
+                        <h2>e</h2>
+                        <h2>f</h2>
+                        <h2>g</h2>
+                        <h2>h</h2>
+                      </div>
+                         <div class="col">
+                           <h2>{{ getGridNum(8) }}</h2>
+                          <h2>{{ getGridNum(7) }}</h2>
+                          <h2>{{ getGridNum(6) }}</h2>
+                          <h2>{{ getGridNum(5) }}</h2>
+                          <h2>{{ getGridNum(4) }}</h2>
+                          <h2>{{ getGridNum(3) }}</h2>
+                          <h2>{{ getGridNum(2) }}</h2>
+                          <h2>{{ getGridNum(1) }}</h2>
+                      </div>
 
-              <!-- Mobile Query for History Panel -->
-              <v-flex class="mobile" xs12 >
-                  <v-expansion-panel>
-                    <v-expansion-panel-content>
-                      <div slot="header"><h2>History</h2></div>
-                      <v-card>
-                       <v-card>
-                        <v-card-text class="grey lighten-3">{{history}}</v-card-text>
+                      <v-flex xs1 v-for="i in 8" class="tile">
+                        <v-card class="tile" v-for="j in 8" dark tile v-bind:color="getColor(i, j)">
+                          <div>
+                          <div v-if = "getMoves(i,j)" class="overlay">Moveable</div> 
+                          <v-btn flat fab @click= "sendClick(i,j)">                       
+                            <img v-bind:src = "getImage(i, j)">
+                          </v-btn>
+                          </div>
                         </v-card>
-                      <v-toolbar>
-                        <v-text-field placeholder="make a move"></v-text-field>
-                        <v-btn icon>
-                          <v-icon>send</v-icon>
-                        </v-btn>
-                      </v-toolbar>
-                    </v-expansion-panel-content>
-                  </v-expansion-panel>
+                      </v-flex>
+                      <div class="col">
+                        <h2>&nbsp;</h2>
+                        <h2>&nbsp;</h2>
+                        <h2>&nbsp;</h2>
+                        <h2>&nbsp;</h2>
+                        <h2>&nbsp;</h2>
+                        <h2>&nbsp;</h2>
+                        <h2>&nbsp;</h2>
+                        <h2>&nbsp;</h2>
+                      </div>
+                      <div class="letts" >
+                        <h2>&nbsp;</h2>
+                        <h2>&nbsp;</h2>
+                        <h2>&nbsp;</h2>
+                        <h2>&nbsp;</h2>
+                        <h2>&nbsp;</h2>
+                        <h2>&nbsp;</h2>
+                        <h2>&nbsp;</h2>
+                        <h2>&nbsp;</h2>
+                      </div>
+                     </v-layout>
+                  </v-card>
+                </v-card>
               </v-flex>
 
-              <!-- Mobile Query for Chat Panel -->
-              <v-flex class ="mobile" xs12 >
-                <v-expansion-panel>
-                  <v-expansion-panel-content>
-                    <div slot="header"><h2>Chat</h2></div>
+              <!-- History Panel -->
+              <v-flex s6>
+                <v-card class="sidebars">
+                <v-toolbar dark color = blue>
+                    <v-toolbar-title class="white--text">History
+
+                    </v-toolbar-title>
+
+                      <v-spacer>
+                      </v-spacer>
+                      <v-dialog v-model="dialog" width = "500">
+                        <v-btn icon slot="activator">
+                          <v-icon>info</v-icon>
+                        </v-btn>
+                        <v-card>
+                          <v-card-title
+                            class="headline" primary-title
+                          >
+                            Chess Notation
+                          </v-card-title>
+                            <v-card-text>example a3</v-card-text>
+                          <v-divider></v-divider>
+                          <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn color="primary" flat @click="dialog = false"> OK </v-btn>
+                          </v-card-actions>
+                        </v-card>
+                    </v-dialog>
+                </v-toolbar>
+                <v-card>
+                  <v-card-text>
+                    <h4>Game Opening: Something</h4>
+                    <p>{{history}}</p>                
+                  </v-card-text>
+                </v-card>
+
+                </v-card>
+              <!-- Layout for Chat window -->
+              <v-card class="sidebars">
+                <v-toolbar dark color = blue>
+                    <v-toolbar-title class="white--text">Chat</v-toolbar-title>
+                  </v-toolbar>
                     <v-card>
                       <v-card-text>
                         <v-list >
-                          <v-list-tile v-for="item in messages" avatar @click="">
-                            <v-list-tile-avatar>
-                              <span class="avatar">C</span>
+                          <v-list-tile v-for="item in messages" avatar>
+                            <v-list-tile-avatar :color="item.avatarColor">
+                              <span class="avatar">{{item.avatar}}</span>
                             </v-list-tile-avatar>
                             <v-list-tile-content>
-                              <v-list-tile-title v-text="item"></v-list-tile-title>
+                              <v-list-tile-title v-text="item.message"></v-list-tile-title>
                             </v-list-tile-content>
                           </v-list-tile>
                         </v-list>                             
                       </v-card-text>
                     </v-card>
+                    <v-card><v-card-text>{{feedback}}</v-card-text></v-card>
                 <v-toolbar>
-                  <v-text-field placeholder="new message"></v-text-field>
-                  <v-btn icon>
+                  <v-text-field v-model="message" placeholder="new message"></v-text-field>
+                  <v-btn icon @click="sendMessage()">
                     <v-icon>send</v-icon>
                   </v-btn>
                 </v-toolbar>
-                  </v-expansion-panel-content>
-                </v-expansion-panel>
-              </v-flex>
+              </v-card>
+
+            </v-flex>
+          </v-layout>
+
+          <!-- Layout for User's Display and Web Small Chat-->
+          <v-layout wrap row align-center justify-center >
+
+            <!-- User's Display -->
+            <v-flex >
+              <v-card right color="primary">
+                <v-card-title><h1>{{username}}</h1><v-spacer></v-spacer>
+                  <div v-for="piece in pieces"> <img :src="piece"></div>
+                </v-card-title>
+              </v-card>
+            </v-flex>
+          
+            <!-- Small Web Query for History Panel -->
+            <v-flex class="mobile" xs12 color="blue-grey lighten-5">
+              <v-expansion-panel>
+                <v-expansion-panel-content>
+                  <div slot="header"><h2>History</h2></div>
+                    <v-card>
+                      <v-card-text >{{history}}</v-card-text>
+                    </v-card>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+            </v-flex>
+
+            <!-- Small Web Query for Chat Panel -->
+            <v-flex class ="mobile" xs12 color="blue-grey lighten-5">
+              <v-expansion-panel>
+                <v-expansion-panel-content>
+                  <div slot="header"><h2>Chat</h2></div>
+                  <v-card>
+                    <v-card-text>
+                      <v-list >
+                        <v-list-tile v-for="item in messages" avatar @click="">
+                          <v-list-tile-avatar :color="item.avatarColor">
+                            <span class="avatar">{{item.avatar}}</span>
+                          </v-list-tile-avatar>
+                          <v-list-tile-content>
+                            <v-list-tile-title v-text="item.message"></v-list-tile-title>
+                          </v-list-tile-content>
+                        </v-list-tile>
+                      </v-list>                             
+                    </v-card-text>
+                  </v-card>
+                  <v-toolbar>
+                    <v-text-field v-model="message" placeholder="new message"></v-text-field>
+                    <v-btn icon @click="sendMessage">
+                      <v-icon>send</v-icon>
+                    </v-btn>
+                  </v-toolbar>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+            </v-flex>
+
+          </v-layout>
         </v-layout>
 
         </v-container>
       </v-content>
+
+      <!--Interface for Mobile-->
+      <content class="smallmobile" v-if = "isGame" >
+        <v-layout  column>
+          <!--History and Opponent Interface-->
+          <v-card>
+            <v-card style='background-color: #303030' class="contain">
+              <v-card-title class="white--text">
+                <h4>Game Opening: Something</h4>
+                <v-spacer></v-spacer>
+                <p>{{history}}</p>
+              </v-card-title>
+            </v-card>
+            <v-toolbar color=blue>
+              <v-progress-circular color='blue darken-3' :active= 'opp' :indeterminate= 'opp' :size="loader"></v-progress-circular>
+              <v-card-title  class="white--text"><h1>{{opponent}}</h1></v-card-title>
+              <v-spacer></v-spacer>
+              <div v-for="piece in oppPieces"> <img :src="piece"></div>
+             </v-toolbar>
+          </v-card>
+
+          <!--Game Display (MOBILE)-->
+          <v-card v-bind:style="[boardMobile]">
+            <v-layout width=100% row green> 
+              <v-card width=12.5%  center column v-for = "i in 8" >
+                <v-card v-bind:style="[tileMobile]"  dark v-for ="j in 8" v-bind:color= "getColor(i, j)" >
+                  <div v-if ="getMoves(i,j)" class='overlay' >Moveable</div> 
+                  <v-btn style="width:90%; height:90%; margin-left: 5%;" flat fab @click="sendClick(i,j)">                       
+                    <img style="width:90%; height:90%;" v-bind:src = "getImage(i, j)">
+                  </v-btn>
+                </v-card>
+              </v-card>
+            </v-layout>
+          </v-card>
+
+          <!--User's Display and Chat-->
+          <v-card v-bind:style="[footerHUD]">
+            <v-toolbar color='blue'>
+              <v-card-title class="white--text"><h1>{{username}}</h1></v-card-title>
+              <v-spacer></v-spacer>
+              <div v-for="piece in pieces"> <img :src="piece"></div>
+            </v-toolbar>
+
+            <v-card v-bind:style="[chat]">
+              <v-toolbar color='blue darken-4'>
+                <!-- Dialog Box for MOBILE Chat -->
+                <!--Dialog BTN-->
+                <v-dialog v-model="chatMobile" fullscreen hide-overlay transition="dialog-bottom-transition">
+                  <v-btn fab style="height: 30px; width: 30px;" slot="activator" dark>
+                    <img v-if="unread" src="img/chatMessageUnread.png">
+                    <img v-if='read' src="img/chatMessage.png">
+                  </v-btn>
+                  <!--Dialog Window and Top Nav-->
+                  <v-card style='background-color: #303030'>
+                    <v-toolbar dark color="primary">
+                      <v-btn icon dark @click.native="
+                      chatMobile = false
+                      read = true
+                      unread = false ">
+                        <v-icon>close</v-icon>
+                      </v-btn>
+                      <v-spacer></v-spacer>
+                      <v-toolbar-title>Chat</v-toolbar-title>
+                      <v-spacer></v-spacer>
+                    </v-toolbar>
+                    <!--Dialog Messages in List-->
+                    <v-card class="containChat" color='#303030' >
+                      <v-card-text background-color=''>
+                        <v-list >
+                          <v-list-tile v-for="item in messages" avatar>
+                            <v-list-tile-avatar :color="item.avatarColor">
+                              <span class="avatar">
+                              {{item.avatar}}</span>
+                            </v-list-tile-avatar>
+                            <v-list-tile-content>
+                              <v-list-tile-title v-text="item.message"></v-list-tile-title>
+                            </v-list-tile-content>
+                          </v-list-tile>
+                        </v-list>                             
+                      </v-card-text>
+                    </v-card>
+                    <v-spacer></v-spacer>
+                    <!--Dialog Input Field and Send Btn-->
+                    <v-toolbar class="stick" color= 'primary'>
+                      <v-text-field v-model="message" placeholder="new message"></v-text-field>
+                      <v-btn icon @click="sendMessage()">
+                        <v-icon>send</v-icon>
+                      </v-btn>
+                    </v-toolbar>
+                  </v-card>
+                </v-dialog>
+                <!--Chat Input Outside Dialog-->
+                <v-card-title class="white--text"><h1>Chat</h1></v-card-title>
+                <v-text-field v-model="message" placeholder="new message"></v-text-field>
+                <v-btn icon @click="sendMessage()">
+                  <v-icon>send</v-icon>
+                </v-btn>
+              </v-toolbar>
+              <!--"is typing window"-->
+              <div class="feed">{{feedback}} </div>
+            </v-card>
+          </v-card>
+
+        </v-layout>
+      </content>
+
+
     </v-app>
   </div>
   <script src="vue.js"></script>
   <script src="vuetify.js"></script>
   <script src="index.js"></script>
+  <script>
+  export default {
+    data: () => ({
+      fav: true,
+      menu: false,
+      message: false,
+      hints: true
+    })
+  }
+</script>
 </body>
 </html>

@@ -4,9 +4,8 @@ const app = new Vue({
   
   el: '#app',
   data: {
-
     socket: io.connect('http://localhost:3000'),
-
+    room: "",
     board: [
               [2,3,4,6,5,4,3,2],
               [1,1,1,1,1,1,1,1],
@@ -17,9 +16,10 @@ const app = new Vue({
               [11,11,11,11,11,11,11,11],
               [12,13,14,16,15,14,13,12]
           ],
-    history: ['a4','kg4', 'qxc4'],
+    history: ['a4','kg4', 'qxc4','a4','kg4', 'qxc4','a4','a4','kg4', 'qxc4','a4','kg4', 'qxc4'],
     username: "",
     opponent: "finding match...",
+    loader: 20,
     feedback: "",
     color: "",
     noGame: true,
@@ -28,15 +28,77 @@ const app = new Vue({
     opp: true,
     gameId: "",
     messages: [],
+    handles: [],
     message: "",
     dialog: false,
+    chatMobile: false,
     oppPieces: ["img/bpawn.png", "img/brook.png"],
-    pieces: ["img/wpawn.png", "img/wbishop.png"]
+    pieces: ["img/wpawn.png", "img/wbishop.png"],
+    awidth: 300,
+    unread: false,
+    read: true
+
   },
 
-  created: {
+  computed: {
+    styles1: function() {
+      var newWidth = this.awidth;
+    
+      return {
+        'background-color': 'rgba(0,0,0,.5)',
+        width: newWidth + 'px',
+        height: newWidth/12 + 'px'
+      };
+    },
+
+    boardMobile: function() {
+      var newWidth = this.awidth;
+      console.log(newWidth)
+      return {
+        'background-color': 'green',
+        width: newWidth + 'px',
+        height: newWidth   + 'px'
+      };
+    },
+
+    footerHUD: function() {
+      var newWidth = this.awidth;
+    
+      return {
+        'background-color': 'rgba(0,0,0,.3)',
+        width: newWidth + 'px',
+        height: newWidth/8 + 'px'
+      };
+    },
+
+    chat: function() {
+      var newWidth = this.awidth;
+    
+      return {
+        'background-color': 'blue',
+        width: newWidth + 'px',
+        height: newWidth/12 + 'px'
+      };
+    },
+    tileMobile: function() {
+      var newWidth = this.awidth/8;
+    
+      return {
+        'background-color': 'rgba(0,0,0,.7)',
+        width: newWidth+ 'px',
+        height: newWidth + 'px'
+      };
+    },
+  },
+
+  created(){
+    addEventListener('resize', function(){
+      app.awidth = window.innerWidth
+      console.log(app.awidth)
+    })
 
   },
+
   watch: {
     board() {
       console.log("the board just changed")
@@ -46,9 +108,9 @@ const app = new Vue({
     }, 
     message(){
       if(app.message == ""){
-        this.socket.emit('typing', {name: ""})
+        this.socket.emit('typing', {name: "", room:app.room})
       }else{
-        this.socket.emit('typing', {name: app.username})
+        this.socket.emit('typing', {name: app.username, room:app.room})
       }
     }
     //If oppopnent hasnt changed set socket to ping out 
@@ -81,20 +143,27 @@ const app = new Vue({
       return 1
     }, 
 
+    getOpponent: function(){
+      console.log(this.opponent)
+      if (this.oppopnent != "finding match..."){
+        return true
+      }
+    },
+
     getColor: function (num, start) {
             if (start % 2 == 0)    
                 if (num % 2 == 0)
-                    return "yellow lighten-5"
+                    return "light-green lighten-4"
 
                  else
-                     return "green darken-2" 
+                     return "light-green darken-3" 
                      
             else
                 if (num % 2 == 0)
-                    return "green darken-2"
+                    return "light-green darken-3"
 
                  else
-                     return "yellow lighten-5"
+                     return "light-green lighten-4"
     },
 
     //display chess pieces
@@ -148,6 +217,7 @@ const app = new Vue({
       }
     },
 
+
     startGame: function(i, j){
       //Make sure they entered a valid username
       if(this.username){
@@ -158,10 +228,14 @@ const app = new Vue({
         app.isGame = true
         console.log(this.gameId)
         //send username to server
+
         this.socket.emit('username', {username: this.username})
         //Receives two boards and both usernames, routes data to correct person
         this.socket.on('color', function(data){
           app.opp = false
+          app.loader = 0
+          app.room = data.room
+          console.log(app.room, "Game Room ID")
           console.log("ON COLOR ", app.username, data.opponent[0])
           if(app.username == data.opponent[0]){
             app.color = "white"
@@ -199,7 +273,22 @@ const app = new Vue({
 
       this.socket.on('chat', function(newChat){
         console.log("Getting new chat")
-        app.messages.push(newChat.message)
+        var firstLetter = newChat.handle.substring(0,1)
+        var pcolor = "blue"
+        if(app.color == "white" && newChat.handle == app.username){
+          pcolor = "light-green lighten-4"
+        }else if(app.color == "black" && newChat.handle == app.username){
+          pcolor = "light-green darken-3"
+        }else if(app.color == "white" && newChat.handle == app.opponent){
+          pcolor= "light-green darken-3"
+        }else{
+          pcolor = "light-green lighten-4"
+        }
+        app.messages.push({message: newChat.message, handle: newChat.handle, avatar:firstLetter, avatarColor: pcolor})
+        if(newChat.handle != app.username){
+          app.unread = true
+          app.read = false
+        }
       })
 
       }
@@ -211,7 +300,7 @@ const app = new Vue({
         console.log(app.color, "test")
         console.log("Client sending coordinates!", i, j, app.color)
         // set 9-j if logic board is upside down
-        this.socket.emit('updatedData', {x: i, y: j, color: app.color})
+        this.socket.emit('updatedData', {x: i, y: j, color: app.color, room:app.room})
         //Listen for new board
 
     },
@@ -219,7 +308,8 @@ const app = new Vue({
     sendMessage: function(){
       this.socket.emit('chat', {
         message: app.message,
-        handle: app.username
+        handle: app.username,
+        room: app.room
       })
       app.message=""
     },
