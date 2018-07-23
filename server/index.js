@@ -89,14 +89,16 @@ io.on('connection', function(socket){
 		room = newClick.room
 		index = ids.indexOf(room)
 		console.log("socket data" , newClick)
-		var x = newClick.x
-		var y = newClick.y
+	    console.log(x, y, color, "Click before server import")
+		var logicClick = importMoves(newClick.x, newClick.y)
+		var x = logicClick[0]
+		var y = logicClick[1]
 		var color = newClick.color
-	    console.log(x, y, color)
+	    console.log(x, y, color, "click after server import")
 	    //Update the board from the click and send new board
 		gameLogic(x, y, color, index)
-	    console.log("Server recieved coordinates! ", newClick.x, newClick.y)
-	    console.log("Server now sending a new board! ", games[index].board)
+		console.log("Server now sending a new board! ", games[index].board)
+		console.log("server sending updated moves", games[index].moves)
 	    io.sockets.in(room).emit('board', {updatedboard: games[index].board, updatedmoves: games[index].moves })
 	})
 
@@ -114,12 +116,14 @@ io.on('connection', function(socket){
 	 })
 })
 
-
+importMoves = function(clickx, clicky) {
+	return [clickx, 9-clicky]
+}
 //Update the board and moves for each game 
 gameLogic = function(x, y, color, index){
 
-	index = ids.indexOf(room)
 	//game.checkGameOver()
+	console.log(games[index]);
 	games[index].board = games[index].logic.evaluateClick(x, y, color)
 	games[index].moves = games[index].logic.getMoves(x, y, color)
 	//game.checkGameOver()

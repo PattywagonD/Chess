@@ -84,55 +84,57 @@ class Pawn extends Piece {
 
     getMoves(board){
         var movesArray = new Array();
-        movesArray.push([3,1])
-        // if(this.color == "White") {
-        //     // Case 1.White : Capture a piece to your left
-        //     if ((this.getXCoordinate() - 1 >= 1) && (this.getYCoordinate() + 1 <= 8)) {  
-        //         if (board[this.getXCoordinate() - 1][this.getYCoordinate() + 1].getPiece().getColor() == "Black") {
-        //             movesArray.push([(this.getXCoordinate() - 1) , (this.getYCoordinate() + 1)]);
-        //         }
-        //     }
-        //     // Case 2.White Move forward
-        //     if ((this.getYCoordinate() + 1) >= 1) { 
-        //         if (!(board[this.getXCoordinate()][this.getYCoordinate() + 1].getOccupied())) { // 2.a Move forward 1 space
-        //             movesArray.push([(this.getXCoordinate()) , (this.getYCoordinate() + 1)]);
-        //             // 2.b Move forward 2 spaces; only possibly true if case 2.a is also true
-        //             if ((this.getNumberOfMoves() < 1) && !(board[this.getXCoordinate()][this.getYCoordinate() - 2].getOccupied())) {
-        //                 movesArray.push([(this.getXCoordinate()), (this.getYCoordinate() + 2)]);
-        //             }
-        //         }
-        //     }
-        //     // Case 3.White : Capture a piece to your right
-        //     if ((this.getXCoordinate() + 1 <= 8) && (this.getYCoordinate() + 1 <= 8)) {
-        //         if (board[this.getXCoordinate() + 1][this.getYCoordinate() + 1].getPiece().getColor() == "Black") {
-        //             movesArray.push([(this.getXCoordinate() + 1), (this.getYCoordinate() + 1)]);
-        //         }
-        //     }
-        // }
-        // else if (this.color == "Black") {
-        //     // Case 1.Black : Capture a piece to your left
-        //     if((this.x - 1 >= 1) && (this.y - 1 >= 1)) {  
-        //         if (board[this.getXCoordinate() - 1][this.getYCoordinate() - 1].getPiece().getColor() == "White") {
-        //             movesArray.push([(this.getXCoordinate() - 1), (this.getYCoordinate() - 1)]);
-        //         }
-        //     }
-        //     // Case 2.Black Move forward
-        //     if ((this.getYCoordinate() - 1) >= 1) { 
-        //         if (!(board[this.getXCoordinate()][this.getYCoordinate() - 1].getOccupied())) { // 2.a Move forward 1 space
-        //             movesArray.push([(this.getXCoordinate()), (this.getYCoordinate() - 1)]);
-        //             // 2.b Move forward 2 spaces; only true if case 2.a is also true
-        //             if ((this.getNumberOfMoves() < 1) && !(board[this.getXCoordinate()][this.getYCoordinate() - 2].getOccupied())) {
-        //                 movesArray.push([(this.getXCoordinate()), (this.getYCoordinate() - 1)]);
-        //             }
-        //         }
-        //     }
-        //     // Case 3. Capture a piece to your right
-        //     if ((this.getXCoordinate() + 1 <= 8) && (this.getYCoordinate() - 1 >= 1)) {
-        //         if (board[this.getXCoordinate() + 1][this.getYCoordinate() - 1].getPiece().getColor() == "White") {
-        //             movesArray.push([(this.getXCoordinate() + 1), (this.getYCoordinate() - 1)]);
-        //         }
-        //     }
-        // }
+        console.log(this.color);
+        if(this.color == "White") {
+            console.log("Inside Pawn IF statement for White")
+            // Case 1.White : Capture a piece to your left
+            if ((this.getXCoordinate() - 1 >= 1) && (this.getYCoordinate() + 1 <= 8)) {  
+                if (board[this.getXCoordinate() - 1][this.getYCoordinate() + 1].getPiece().getColor() == "Black") {
+                    movesArray.push([(this.getXCoordinate() - 1) , (this.getYCoordinate() + 1)]);
+                }
+            }
+            // Case 2.White Move forward
+            if ((this.getYCoordinate() + 1) <= 8) {
+                console.log("Inside Pawn IF statement for Move Forward");
+                if (!(board[this.getXCoordinate()][this.getYCoordinate() + 1].getOccupied())) { // 2.a Move forward 1 space
+                    movesArray.push([(this.getXCoordinate()) , (this.getYCoordinate() + 1)]);
+                    // 2.b Move forward 2 spaces; only possibly true if case 2.a is also true
+                    if ((this.getNumberOfMoves() < 1) && !(board[this.getXCoordinate()][this.getYCoordinate() + 2].getOccupied())) {
+                        movesArray.push([(this.getXCoordinate()), (this.getYCoordinate() + 2)]);
+                    }
+                }
+            }
+            // // Case 3.White : Capture a piece to your right
+            if ((this.getXCoordinate() + 1 <= 8) && (this.getYCoordinate() + 1 <= 8)) {
+                if (board[this.getXCoordinate() + 1][this.getYCoordinate() + 1].getPiece().getColor() == "Black") {
+                    movesArray.push([(this.getXCoordinate() + 1), (this.getYCoordinate() + 1)]);
+                }
+            }
+        }
+        else if (this.color == "Black") {
+            // Case 1.Black : Capture a piece to your left
+            if((this.x - 1 >= 1) && (this.y - 1 >= 1)) {  
+                if (board[this.getXCoordinate() - 1][this.getYCoordinate() - 1].getPiece().getColor() == "White") {
+                    movesArray.push([(this.getXCoordinate() - 1), (this.getYCoordinate() - 1)]);
+                }
+            }
+            // Case 2.Black Move forward
+            if ((this.getYCoordinate() - 1) >= 1) { 
+                if (!(board[this.getXCoordinate()][this.getYCoordinate() - 1].getOccupied())) { // 2.a Move forward 1 space
+                    movesArray.push([(this.getXCoordinate()), (this.getYCoordinate() - 1)]);
+                    // 2.b Move forward 2 spaces; only true if case 2.a is also true
+                    if ((this.getNumberOfMoves() < 1) && !(board[this.getXCoordinate()][this.getYCoordinate() - 2].getOccupied())) {
+                        movesArray.push([(this.getXCoordinate()), (this.getYCoordinate() - 1)]);
+                    }
+                }
+            }
+            // Case 3. Capture a piece to your right
+            if ((this.getXCoordinate() + 1 <= 8) && (this.getYCoordinate() - 1 >= 1)) {
+                if (board[this.getXCoordinate() + 1][this.getYCoordinate() - 1].getPiece().getColor() == "White") {
+                    movesArray.push([(this.getXCoordinate() + 1), (this.getYCoordinate() - 1)]);
+                }
+            }
+        }
 
         console.log(movesArray, "pawn moves")
         return movesArray;

@@ -169,6 +169,9 @@ class Game{
 		if (this.logicalBoard[xCoordinate][yCoordinate].getPiece() != pieces.Blank) {
 			movesArray = this.logicalBoard[xCoordinate][yCoordinate].getPiece().getMoves(this.logicalBoard);
 		}
+		console.log(movesArray, "before export")
+		movesArray = this.exportMoves(movesArray);
+		console.log(movesArray, "after export")
 		return movesArray;
 	}
 	addPlayer(username){
@@ -269,6 +272,14 @@ class Game{
 			}
 		}
 		this.displayBoard.reverse();
+	}
+	exportMoves(oldMovesArray){
+		var newMovesArray = [];
+		for(var i = 0; i < oldMovesArray.length; i++) {
+			newMovesArray.push([9 - oldMovesArray[i][1], oldMovesArray[i][0]]);
+		}
+		//this.displayMoves
+		return newMovesArray;
 	}
 	getPlayers(username){
 		return this.players
