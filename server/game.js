@@ -163,15 +163,18 @@ class Game{
 					break;
 			}
 		}
-		//Set a piece for testing
-		this.logicalBoard[4][4].setPiece(new pieces.Rook(4, 4, "White"));
-		this.logicalBoard[4][4].setOccupied(1);
+		// //Set a piece for testing
+		// this.logicalBoard[4][4].setPiece(new pieces.King(4, 4, "Black"));
+		// this.logicalBoard[4][4].setOccupied(1);
 
-		this.logicalBoard[6][5].setPiece(new pieces.Rook(6, 5, "White"));
-		this.logicalBoard[6][5].setOccupied(1);
+		// this.logicalBoard[4][5].setPiece(new pieces.King(4, 5, "Black"));
+		// this.logicalBoard[4][5].setOccupied(1);
 
-		this.logicalBoard[3][7].setPiece(new pieces.Rook(3, 7, "White"));
-		this.logicalBoard[3][7].setOccupied(1);	
+		// this.logicalBoard[6][5].setPiece(new pieces.King(6, 5, "Black"));
+		// this.logicalBoard[6][5].setOccupied(1);
+
+		// this.logicalBoard[2][2].setPiece(new pieces.King(2, 2, "Black"));
+		// this.logicalBoard[2][2].setOccupied(1);	
 	}
 
 	getMoves(xCoordinate, yCoordinate, color) {

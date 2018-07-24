@@ -37,6 +37,9 @@ const app = new Vue({
     pieces: ["img/wpawn.png", "img/wbishop.png"],
     awidth: 300,
     unread: false,
+    mouseX: 0,
+    mouseY: 0,
+    drag: [1,1],
     read: true
   },
 
@@ -59,6 +62,18 @@ const app = new Vue({
         width: newWidth + 'px',
         height: newWidth   + 'px'
       };
+    },
+    dragable: function(){
+      var x = app.mouseX
+      var y = app. mouseY
+      if(app.drag){
+        return{
+          position: 'fixed',
+          top: y-25 + 'px',
+          left: x-35 + 'px',
+          'z-index': 2
+        }
+      }
     },
 
     footerHUD: function() {
@@ -96,7 +111,12 @@ const app = new Vue({
       app.awidth = window.innerWidth
       console.log(app.awidth)
     })
-
+    //keep track of the mouse x and y position
+    addEventListener('mousemove', function(event){
+        app.mouseX = event.clientX
+        app.mouseY = event.clientY
+        console.log("mouse moved", app.mouseX, app.mouseY)    
+    })
   },
 
   watch: {
@@ -209,6 +229,13 @@ const app = new Vue({
 
     },
 
+    dragging: function(i, j){
+      if(i == app.drag[0] && j == app.drag[1]){
+        return true
+      }
+      return false
+    },
+
     getMoves: function(j, i){
       for(var x = 0; x < this.moves.length; x ++){
         if(this.moves[x][0] == i && this.moves[x][1] == j){
@@ -299,8 +326,15 @@ const app = new Vue({
         //var coordinates = [i, j]
         console.log(app.color, "test")
         console.log("Client sending coordinates!", i, j, app.color)
-        // set 9-j if logic board is upside down
-        this.socket.emit('updatedData', {x: i, y: j, color: app.color, room:app.room})
+        //set piece to mouse while mouse is clicked down
+        app.drag[0] = i
+        app.drag[1] = j
+        // export blacks click differently 
+        if(app.color == "white"){
+          this.socket.emit('updatedData', {x: i, y: j, color: app.color, room:app.room})
+        }else{
+          this.socket.emit('updatedData', {x: 9-i, y: 9-j, color: app.color, room:app.room})   
+        }
         //Listen for new board
 
     },
@@ -332,13 +366,6 @@ const app = new Vue({
       
       return tempMoves
     },
-
-    exportClick: function(clientCoordinates){
-      var x = clientCoordinates[0]
-      var y = clientCoordinates[1]
-      return [x, 9-y]
-    }
-
   } 
 })
 

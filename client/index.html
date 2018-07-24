@@ -48,9 +48,10 @@
 
               <!-- Game Board -->
               <v-flex s6 >
-                <v-card class="white_b"  >
+                <v-card class="white_b" >
                   <v-card row flat class="nums" >
                     <v-layout wrap row align-center justify-center>
+
                       <div class="letts" >
                         <h2>a</h2>
                         <h2>b</h2>
@@ -76,8 +77,9 @@
                         <v-card class="tile" v-for="j in 8" dark tile v-bind:color="getColor(i, j)">
                           <div>
                           <div v-if = "getMoves(i,j)" class="overlay">Moveable</div> 
-                          <v-btn flat fab @click= "sendClick(i,j)">                       
-                            <img v-bind:src = "getImage(i, j)">
+                          <v-btn flat fab @click= "sendClick(i,j)">                  
+                            <img v-bind:src = "getImage(i, j)" >
+                            <!--img v-bind:src = "getImage(i, j)" v-if="dragging(i,j)" v-bind:style="[dragable]"-->
                           </v-btn>
                           </div>
                         </v-card>
