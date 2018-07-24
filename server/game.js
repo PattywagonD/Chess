@@ -27,11 +27,11 @@ class Game{
      */
 	this.gameState = 0
 	/**
-         * Let turn be defined as
-         * 0 = White's turn
-         * 1 = Black's turn
-         */
-	this.turn = 0;
+    * Let turn be defined as
+	* white - it is the "white" players' turn
+	* black - it is the "black" players' turn
+    */
+	this.turn = "white";
 	this.players =  []
 	this.gameId = id
 	this.movesArray = []
@@ -187,67 +187,85 @@ class Game{
 	checkGameOver(){
 
 	}
-	//TODO: Write helper function movePiece() for evaluate click
+	/**
+	 * FUNCTION: movePiece()
+	 * movePiece() accepts two "clicks". Clicks are just tiles that a client has clicked on. movePiece() then takes the piece that is at the
+	 * first click and moves it to the last click.
+	 *   
+	 */
 	movePiece(firstClick, lastClick) {
 		// Piece exists at its destination tile.
-		lastClick.setPiece(firstClick.getPiece());
+		this.logicalBoard[lastClick.getXCoordinate()][lastClick.getYCoordinate()].setPiece(firstClick.getPiece());
 		// Pieces' coordinates are updated to match its new parent tiles' coordinates.
-		lastClick.getPiece().setXCoordinate()
+		this.logicalBoard[lastClick.getXCoordinate()][lastClick.getYCoordinate()].getPiece().setXCoordinate(lastClick.getXCoordinate());
+		this.logicalBoard[lastClick.getXCoordinate()][lastClick.getYCoordinate()].getPiece().setYCoordinate(lastClick.getYCoordinate());
+		// The previous coordinate is "scrubbed" to show that it is no longer occupied.
+		this.logicalBoard[firstClick.getXCoordinate()][firstClick.getYCoordinate()].setPiece(new pieces.Blank(firstClick.getXCoordinate(), firstClick.getYCoordinate()));
+	}
+	/**
+	 * FUNCTION: capturePiece()
+	 *  
+	 */
+	capturePiece(firstClick, lastClick) {
+		// Inform the captureArray it has guests
+		if(this.turn == "white") {
+			this.whiteCaptures.push(lastClick.getPiece());
+		}
+		else if(this.turn == "black") {
+			this.blackCaptures.push(lastClick.getPiece());
+		}
+		// Replace the piece at the lastClick tile
+		this.logicalBoard[lastClick.getXCoordinate()][lastClick.getYCoordinate()].setPiece(firstClick.getPiece());
+		// Update the pieces' coordinates
+		this.logicalBoard[lastClick.getXCoordinate()][lastClick.getYCoordinate()].getPiece().setXCoordinate(lastClick.getXCoordinate());
+		this.logicalBoard[lastClick.getXCoordinate()][lastClick.getYCoordinate()].getPiece().setYCoordinate(lastClick.getYCoordinate());
+		// Leave no evidence that we were ever in the prior space
+		this.logicalBoard[firstClick.getXCoordinate()][firstClick.getYCoordinate()].setPiece(new pieces.Blank(firstClick.getXCoordinate(), firstClick.getYCoordinate()));
+
+		
 	}
 
 	//TODO: Update evaluateClick 
 	evaluateClick(x, y, color) {
+		//TODO: Check to make sure the click.color is equal to the player.color (an IF).
 		//Is this the opening or "alpha" click?
-		if( !(this.alphaClick.getXCoordinate()) && !(this.alphaClick.getYCoordinate())) {
-			this.alphaClick = (this.logicalBoard[x][y]);
-			var movesArray = this.getMoves(x, y, color);
-		}
-		// This must be the omega click!
-		else {
-			this.omegaClick = (this.logicalBoard[x][y]);
-			//Case 1. Check to see if the 2nd click is in our moves Array.
-			var isValidMove = false;
-			for(var i = 0; i < movesArray.length(); i++) {
-				if((movesArray[i][0] == this.omegaClick.getXCoordinate()) && (movesArray[i][1] == this.omegaClick.getYCoordinate())) {
-					isValidMove = true;
-					break;
+		var movesArray = new Array();
+		if(color == this.turn) {
+			if( !(this.alphaClick.getXCoordinate()) && !(this.alphaClick.getYCoordinate())) {
+				this.alphaClick = (this.logicalBoard[x][y]);
+				movesArray = this.getMoves(x, y, color);
+			}
+			// This must be the omega click!
+			else {
+				this.omegaClick = (this.logicalBoard[x][y]);
+				//Case 1. Check to see if the 2nd click is in our moves Array.
+				var isValidMove = false;
+				for(var i = 0; i < movesArray.length; i++) {
+					if((movesArray[i][0] == this.omegaClick.getXCoordinate()) && (movesArray[i][1] == this.omegaClick.getYCoordinate())) {
+						isValidMove = true;
+						break;
+					}
+					else {
+						isValidMove = false;
+					}
 				}
-				else {
-					isValidMove = false;
+				// If the omega tile is un-occupied, then we can move there.
+				if (!(this.omegaClick.getOccupied())  && (isValidMove)) {
+					this.movePiece(this.alphaClick, this.omegaClick);
 				}
+				// The omega tile is occupied! Capture it!
+				else if ((this.omegaClick.getOccupied()) && (isValidMove)) {
+					this.capturePiece(this.alphaClick, this.omegaClick);
+				}
+				// Once we have resolved all possible click cases, we can - nay, must! - reset our clicks.
+				this.alphaClick = new pieces.Tile(0, 0, 0);
+				this.omegaClick = new pieces.Tile(0, 0, 0);
 			}
-			// If the omega tile is un-occupied, then we can move there.
-			if (!(this.omegaClick.getOccupied())  && (isValidMove)) {
-				var swapSpace = new pieces.Tile(0, 0, 0);
-
-				// swapSpace = this.alphaClick.getPiece();
-				// this.alphaClick.setPiece(this.omegaClick.getPiece());
-				// this.omegaClick.setPiece(swapSpace.getPiece());
-				// this.logicalBoard[this.alphaClick.getXCoordinate()][this.alphaClick.getYCoordinate()] = this.omegaClick;
-				// this.logicalBoard[this.omegaClick.getXCoordinate()][this.omegaClick.getYCoordinate()] = this.alphaClick; 
-			}
-			else if ((this.omegaClick.getOccupied()) && (isValidMove)) {
-				var captured = this.omegaClick;
-				this.omegaClick = this.alphaClick;
-				this.alphaClick = new pieces.Tile(0, this.omegaClick.get)
-			}
-			
 		}
-
 
 		// }
 		this.exportBoard();
 		return this.displayBoard;
-		// return [
-        //       [2,3,4,6,5,4,3,2],
-        //       [1,1,1,1,1,1,1,1],
-        //       [0,0,0,0,0,0,0,0],
-        //       [0,1,0,0,0,0,0,0],
-        //       [0,0,0,0,0,0,0,0],
-        //       [0,0,0,0,0,0,0,0],
-        //       [11,11,11,11,11,11,11,11],
-        //       [12,13,14,16,15,14,13,12]
-        //   	]
 	} 
 	updateMoves(x, y, color){
 		return [[2,2], [6,8]];
@@ -306,22 +324,6 @@ class Game{
 		}
 		this.displayBoard.reverse();
 	}
-	/**
-	 * FUNCTION: exportBoard()
-	 * exportBoard converts the logical board pieces into the display board "piece codes".
-	 * The piece code is a number in the 0-16 range that represents a color and piece type.
-	 * F'rex a Black King has a piece code of 6.
-	 * IMPORTANT: DISPLAY BOARD INDEXING BEGINS AT ZERO (0). LOGICAL BOARD INDEXING BEGINS AT ONE (1).
-	 * I DON'T MAKE THE RULES I JUST INSTANTIATE THEM.
-	 */
-	exportBoard() {	
-		for(var y = 1; y < 9; y++) {
-			for(var x = 1; x < 9; x++) {
-				this.displayBoard[y - 1][x - 1] = this.pieceConverter(this.logicalBoard[x][y].getPiece());
-			}
-		}
-		this.displayBoard.reverse();
-	}
 	exportMoves(oldMovesArray){
 		var newMovesArray = [];
 		for(var i = 0; i < oldMovesArray.length; i++) {
@@ -337,8 +339,6 @@ class Game{
 	getId(){
 		return this.gameId
 	}
-
 }
-
 
 module.exports = {Game}

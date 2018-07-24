@@ -96,7 +96,7 @@ class Pawn extends Piece {
     getMoves(board){
         var movesArray = new Array();
         console.log(this.color);
-        if(this.color == "White") {
+        if (this.color == "White") {
             console.log("Inside Pawn IF statement for White")
             // Case 1.White : Capture a piece to your left
             if ((this.getXCoordinate() - 1 >= 1) && (this.getYCoordinate() + 1 <= 8)) {  
@@ -167,7 +167,7 @@ class Rook extends Piece {
         var xCurrent = this.getXCoordinate();
         var yCurrent = this.getYCoordinate();
         // Case One: Can the Rook move Forward? If so how far?
-        while (yCurrent <= 8) {
+        while ((yCurrent + 1) <= 8) {
             if (board[this.getXCoordinate()][yCurrent].getPiece().getColor() == this.getColor()) {
                 break;
             }
@@ -177,7 +177,7 @@ class Rook extends Piece {
             ++yCurrent;
         }
         // Case Two: How far Right can the Rook move?
-        while (xCurrent <= 8) {
+        while ((xCurrent + 1) <= 8) {
             if (board[this.getXCoordinate()][yCurrent].getPiece().getColor() == this.getColor()) {
                 break;
             }
@@ -189,7 +189,7 @@ class Rook extends Piece {
         xCurrent = this.getXCoordinate();
         yCurrent = this.getYCoordinate();
         // Case Three: Can the Rook move Backward? To what degree?
-        while (yCurrent >= 1) {
+        while ((yCurrent - 1) >= 1) {
             if (board[this.getXCoordinate()][yCurrent].getPiece().getColor() == this.getColor()) {
                 break;
             }
@@ -199,7 +199,7 @@ class Rook extends Piece {
             --yCurrent;
         }
         // Case Four: How far Left can our Rook move?
-        while (xCurrent >= 1) {
+        while ((xCurrent - 1) >= 1) {
 
             if (board[this.getXCoordinate()][yCurrent].getPiece().getColor() == this.getColor()) {
                 break;
@@ -304,7 +304,7 @@ class Bishop extends Piece {
             switch(i){
 
                 case 0: //Up-and-to-the-left
-                    while (xCurrent >= 1 && yCurrent <= 8) {
+                    while ((xCurrent - 1) >= 1 && (yCurrent + 1) <= 8) {
                         if(board[xCurrent][yCurrent].getOccupied()) {
                             if(board[xCurrent][yCurrent].getPiece().getColor() == this.getColor()) {
                                 break;
@@ -321,7 +321,7 @@ class Bishop extends Piece {
                     }
                 break;
                 case 1: //Up-and-to-the-Right   
-                    while (xCurrent <= 8 && yCurrent <= 8) {
+                    while ((xCurrent + 1) <= 8 && (yCurrent + 1) <= 8) {
                         if(board[xCurrent][yCurrent].getOccupied()) {
                             if(board[xCurrent][yCurrent].getPiece().getColor() == this.getColor()) {
                                 break;
@@ -338,7 +338,7 @@ class Bishop extends Piece {
                     }
                 break;
                 case 2: //Down-and-to-the-Right
-                    while (xCurrent <= 8 && yCurrent >= 1) {
+                    while ((xCurrent + 1) <= 8 && (yCurrent - 1) >= 1) {
                         if(board[xCurrent][yCurrent].getOccupied()) {
                             if(board[xCurrent][yCurrent].getPiece().getColor() == this.getColor()) {
                                 break;
@@ -355,7 +355,7 @@ class Bishop extends Piece {
                     }
                 break;
                 case 3: // Down-and-to-the-Left
-                    while (xCurrent >= 1 && yCurrent >= 1) {
+                    while ((xCurrent - 1) >= 1 && (yCurrent - 1) >= 1) {
                         if(board[xCurrent][yCurrent].getOccupied()) {
                             if(board[xCurrent][yCurrent].getPiece().getColor() == this.getColor()) {
                                 break;
