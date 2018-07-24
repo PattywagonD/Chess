@@ -39,7 +39,8 @@ const app = new Vue({
     unread: false,
     mouseX: 0,
     mouseY: 0,
-    drag: [1,1],
+    drag: [0,0],
+    mouseDown: false,
     read: true
   },
 
@@ -63,15 +64,29 @@ const app = new Vue({
         height: newWidth   + 'px'
       };
     },
+
+    down: function() {
+      if(app.mouseDown ){
+        return {
+            cursor: 'none',
+        }
+      }else{
+        return{
+          cursor: 'default'
+        }
+      }
+    },
+
     dragable: function(){
       var x = app.mouseX
       var y = app. mouseY
-      if(app.drag){
+      if(app.mouseDown && app.dragging(app.drag[0], app.drag[1])){
         return{
           position: 'fixed',
           top: y-25 + 'px',
           left: x-35 + 'px',
-          'z-index': 2
+          'z-index': 2,
+          cursor: 'none'
         }
       }
     },
@@ -113,9 +128,26 @@ const app = new Vue({
     })
     //keep track of the mouse x and y position
     addEventListener('mousemove', function(event){
+        if(event.stopPropagation) event.stopPropagation();
+        if(event.preventDefault) event.preventDefault();
+        event.cancelBubble=true;
+        event.returnValue=false;
         app.mouseX = event.clientX
-        app.mouseY = event.clientY
-        console.log("mouse moved", app.mouseX, app.mouseY)    
+        app.mouseY = event.clientY 
+    })
+
+    addEventListener('mousedown', function(){
+      app.mouseDown = true
+    })
+
+    addEventListener('mouseup', function(){
+      app.mouseDown = false
+      app.drag = [0,0]
+      if(app.color != ""){
+        //divide mouseX and mouseY to get click coordinate
+        //send new click on mouse up 
+        //app.sendClick(5,5)
+      }
     })
   },
 
@@ -229,11 +261,21 @@ const app = new Vue({
 
     },
 
+
     dragging: function(i, j){
-      if(i == app.drag[0] && j == app.drag[1]){
-        return true
+
+      var x = app.mouseX
+      var y = app. mouseY      
+      if(i == app.drag[0] && j == app.drag[1] && app.mouseDown){
+        console.log("conditions met",i,j)
+        return{
+          cursor: 'none',
+          position: 'fixed',
+          top: y-25 + 'px',
+          left: x-35 + 'px',
+          'z-index': 2,
+        }
       }
-      return false
     },
 
     getMoves: function(j, i){
@@ -327,14 +369,17 @@ const app = new Vue({
         console.log(app.color, "test")
         console.log("Client sending coordinates!", i, j, app.color)
         //set piece to mouse while mouse is clicked down
-        app.drag[0] = i
-        app.drag[1] = j
+
         // export blacks click differently 
         if(app.color == "white"){
           this.socket.emit('updatedData', {x: i, y: j, color: app.color, room:app.room})
         }else{
           this.socket.emit('updatedData', {x: 9-i, y: 9-j, color: app.color, room:app.room})   
         }
+
+        app.drag[0] = i
+        app.drag[1] = j
+        console.log("clicked!", app.drag[0], app.drag[1])
         //Listen for new board
 
     },
