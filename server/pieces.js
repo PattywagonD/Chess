@@ -65,15 +65,14 @@ class Piece {
     getNumberOfMoves() {
         return(this.numberOfMoves)
     }
-    // "Setter" Department
-    setXCoordinate(xCoordinate) {
-        this.x = xCoordinate;
+    addMove(){
+        this.numberOfMoves += 1
     }
-    setYCoordinate(yCoordinate) {
-        this.y = yCoordinate;
+    setXCoordinate(newX){
+        this.x = newX
     }
-    setColor(color) {
-        this.color = color;
+    setYCoordinate(newY){
+        this.y=newY
     }
 }
 

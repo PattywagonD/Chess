@@ -35,6 +35,7 @@ class Game{
 	this.players =  []
 	this.gameId = id
 	this.movesArray = []
+	this.history = []
 	/**
     * logical Board is an array of tiles representing the chess board. Used by the server for an "absolute" board
 	* that clients can access.
@@ -71,11 +72,11 @@ class Game{
 	 * PROPERTY: whiteCaptures[]
 	 * whiteCaptures is an array of pieces captured by the "White" player
 	 */
-	this.whiteCaptures = ["img/wpawn.png", "img/wbishop.png"]	/**
+	this.whiteCaptures = []	/**
 	 * PROPERTY: blackCaptures[]
 	 * blackCaptures is an array of pieces captured by the "Black" player
 	 */
-	this.blackCaptures = ["img/bpawn.png", "img/brook.png"];
+	this.blackCaptures = [];
 	this.logicalBoardInitialize();
 	this.setPieces();
 	}
@@ -161,28 +162,37 @@ class Game{
 					break;
 			}
 		}
-		//Set a piece for testing
-		this.logicalBoard[4][4].setPiece(new pieces.King(4, 4, "Black"));
-		this.logicalBoard[4][4].setOccupied(1);
+		// //Set a piece for testing
+		// this.logicalBoard[4][4].setPiece(new pieces.King(4, 4, "Black"));
+		// this.logicalBoard[4][4].setOccupied(1);
 
-		this.logicalBoard[4][5].setPiece(new pieces.Queen(4, 5, "Black"));
-		this.logicalBoard[4][5].setOccupied(1);
+		// this.logicalBoard[4][5].setPiece(new pieces.Queen(4, 5, "Black"));
+		// this.logicalBoard[4][5].setOccupied(1);
 
-		this.logicalBoard[6][5].setPiece(new pieces.Bishop(6, 5, "Black"));
-		this.logicalBoard[6][5].setOccupied(1);
+		// this.logicalBoard[6][5].setPiece(new pieces.Bishop(6, 5, "Black"));
+		// this.logicalBoard[6][5].setOccupied(1);
 
-		this.logicalBoard[2][2].setPiece(new pieces.Rook(2, 2, "Black"));
-		this.logicalBoard[2][2].setOccupied(1);	
+		// this.logicalBoard[2][2].setPiece(new pieces.Rook(2, 2, "Black"));
+		// this.logicalBoard[2][2].setOccupied(1);	
+
+		// this.logicalBoard[1][2].setPiece(new pieces.Blank(1, 2));
+		// this.logicalBoard[1][2].setOccupied(0);	
+
+		// this.logicalBoard[1][7].setPiece(new pieces.Blank(1, 7));
+		// this.logicalBoard[1][7].setOccupied(0);	
+
+		// this.logicalBoard[2][1].setPiece(new pieces.Blank(2, 1));
+		// this.logicalBoard[2][1].setOccupied(0);	
 	}
 
 	getMoves(xCoordinate, yCoordinate, color) {
 		var movesArray = [];
-		if (this.logicalBoard[xCoordinate][yCoordinate].getPiece() != pieces.Blank) {
-			movesArray = this.logicalBoard[xCoordinate][yCoordinate].getPiece().getMoves(this.logicalBoard);
-		}
+		// if (this.logicalBoard[xCoordinate][yCoordinate].getPiece() != pieces.Blank) {
+		// 	movesArray = this.logicalBoard[xCoordinate][yCoordinate].getPiece().getMoves(this.logicalBoard);
+		// }
 		console.log(this.movesArray, "before export")
 		movesArray = this.exportMoves(this.movesArray);
-		console.log(this.movesArray, "after export")
+		console.log(movesArray, "after export")
 		return movesArray;
 	}
 	addPlayer(username){
@@ -237,50 +247,187 @@ class Game{
 		
 	}
 
+	// First click is tranfored to last click 
+	movePiece(firstClick, lastClick) {
+		// Piece exists at its destination tile.
+		var lx = lastClick.getPiece().getXCoordinate()
+		var ly = lastClick.getPiece().getYCoordinate()
+		var fx = firstClick.getPiece().getXCoordinate()
+		var fy = firstClick.getPiece().getYCoordinate()
+		console.log("l", lx, ly, "f", fx, fy)
+
+		this.logicalBoard[lx][ly].setPiece(firstClick.getPiece());
+		// Pieces' coordinates are updated to match its new parent tiles' coordinates.
+		this.logicalBoard[lx][ly].getPiece().setXCoordinate(lx);
+		this.logicalBoard[lx][ly].getPiece().setYCoordinate(ly);
+		this.logicalBoard[lx][ly].setOccupied(1);
+		this.logicalBoard[lx][ly].getPiece().addMove();
+		// The previous coordinate is "scrubbed" to show that it is no longer occupied.
+		this.logicalBoard[fx][fy].setPiece(new pieces.Blank(fx, fy))
+		this.logicalBoard[fx][fy].setOccupied(0)
+
+		//push the chess notation move into the history
+		this.history.push(this.chessNotation(this.logicalBoard[lx][ly].getPiece().getType(), lx, ly, false, false))
+	}
+	/**
+	 * FUNCTION: capturePiece()
+	 *  
+	 */
+	capturePiece(firstClick, lastClick) { 
+		// Inform the captureArray it has guests
+		var capture = "img/"
+		console.log("CAPTURING")
+		if(this.turn == "white") {
+			capture = capture + "b" + lastClick.getPiece().getType().toLowerCase() + ".png"
+			console.log(capture)
+			this.blackCaptures.push(capture)
+		}
+		else if(this.turn == "black") {
+			capture = capture + "w" + lastClick.getPiece().getType().toLowerCase() + ".png"
+			console.log(capture)
+			this.whiteCaptures.push(capture);
+		}
+		var lx = lastClick.getPiece().getXCoordinate()
+		var ly = lastClick.getPiece().getYCoordinate()
+		var fx = firstClick.getPiece().getXCoordinate()
+		var fy = firstClick.getPiece().getYCoordinate()
+		console.log("l", lx, ly, "f", fx, fy)
+
+		this.logicalBoard[lx][ly].setPiece(firstClick.getPiece());
+		// Pieces' coordinates are updated to match its new parent tiles' coordinates.
+		this.logicalBoard[lx][ly].getPiece().setXCoordinate(lx);
+		this.logicalBoard[lx][ly].getPiece().setYCoordinate(ly);
+		this.logicalBoard[lx][ly].setOccupied(1);
+		this.logicalBoard[lx][ly].getPiece().addMove();
+		// The previous coordinate is "scrubbed" to show that it is no longer occupied.
+		this.logicalBoard[fx][fy].setPiece(new pieces.Blank(fx, fy))
+		this.logicalBoard[fx][fy].setOccupied(0)
+		//push the chess notation move into the history
+		this.history.push(this.chessNotation(this.logicalBoard[lx][ly].getPiece().getType(), lx, ly, true, false))
+		
+	}
+
 	//TODO: Update evaluateClick 
 	evaluateClick(x, y, color) {
-		//Is this the opening or "alpha" click?
-		//if(color == this.turn) {
-			if( !(this.alphaClick.getXCoordinate()) && !(this.alphaClick.getYCoordinate())) {
-				this.alphaClick = (this.logicalBoard[x][y]);
-				this.movesArray = this.getMoves(x, y, color);
-			}
+		if(this.turn == color){
+			console.log("recieved", x, y)
+			//Is this the opening or "alpha" click?
+			// if( !(this.alphaClick.getXCoordinate()) && !(this.alphaClick.getYCoordinate() && (this.logicalBoard[x][y].getOccupied))
+			// 	 || (this.logicalBoard[x][y].getPiece().getColor() == color)){
+			if(this.logicalBoard[x][y].getPiece().getColor().toLowerCase() == color){
+				console.log("set Alpha click", x, y)
+				this.alphaClick.setPiece(this.logicalBoard[x][y].getPiece())
+				this.alphaClick.setOccupied(1)
+				this.movesArray = this.logicalBoard[x][y].getPiece().getMoves(this.logicalBoard);
+			}else {
 			// This must be the omega click!
-			else {
-				this.omegaClick = (this.logicalBoard[x][y]);
+				console.log("set Omega click", x , y)
+				this.omegaClick.setPiece(this.logicalBoard[x][y].getPiece())
+				this.omegaClick.setOccupied(1)
 				//Case 1. Check to see if the 2nd click is in our moves Array.
 				var isValidMove = false;
 				for(var i = 0; i < this.movesArray.length; i++) {
-					if((this.movesArray[i][0] == this.omegaClick.getXCoordinate()) && (this.movesArray[i][1] == this.omegaClick.getYCoordinate())) {
+					console.log("Comparing X", this.movesArray[i][0] , this.omegaClick.getXCoordinate())
+					console.log("Comparing Y", this.movesArray[i][1] , this.omegaClick.getXCoordinate())
+					if(
+						(this.movesArray[i][0] == this.omegaClick.getPiece().getXCoordinate())
+						 && (this.movesArray[i][1] == this.omegaClick.getPiece().getYCoordinate())
+						 ) {
 						isValidMove = true;
+						console.log("is a valid move")
 						break;
-					}
-					else {
+					}else {
 						isValidMove = false;
 					}
 				}
 				// If the omega tile is un-occupied, then we can move there.
-				if (!(this.omegaClick.getOccupied())  && (isValidMove)) {
+				if ( (!(this.logicalBoard[x][y].getOccupied())  && (isValidMove))) {
+					console.log("moving piece!")
 					this.movePiece(this.alphaClick, this.omegaClick);
+					this.changeTurn()
 				}
 				// The omega tile is occupied! Capture it!
-				else if ((this.omegaClick.getOccupied()) && (isValidMove)) {
+				else if ((this.logicalBoard[x][y].getOccupied()) && (isValidMove)) {
+					(console.log("capturing a piece!"))
 					this.capturePiece(this.alphaClick, this.omegaClick);
+					this.changeTurn()
 				}
 				// Once we have resolved all possible click cases, we can - nay, must! - reset our clicks.
-				this.alphaClick = new pieces.Tile(0, 0, 0);
-				this.omegaClick = new pieces.Tile(0, 0, 0);
+				this.movesArray = []
+				this.alphaClick.setPiece(new pieces.Blank(0, 0, 0))
+				this.alphaClick.setOccupied(0)
+				this.omegaClick.setPiece(new pieces.Blank(0, 0, 0))
+				this.alphaClick.setOccupied(0)
+				
 			}
-		//}
+		}
 		this.exportBoard();
 		return this.displayBoard;
-	}
+	} 
 	/**
 	 * FUNCTION: pieceConverter()
 	 * pieceConverter accepts a piece from the logical board and returns a piece code
 	 * based on type and color of that piece. It is a helper function for the exportBoard()
 	 * function.
 	 */
+	changeTurn(){
+	 	if(this.turn == "white"){
+	 		this.turn = "black"
+	 	}else if(this.turn == "black"){
+	 		this.turn = "white"
+	 	}
+	 }
+
+	chessNotation(type, x, y, captured, check){
+		var move = ""
+		//get the letter
+		if(type == "King"){
+			move = move + "K"
+		}else if(type == "Queen"){
+			move = move + "Q"
+		}else if(type == "Rook"){
+			move = move + "R"
+		}else if(type == "Knight"){
+			move = move + 'N'
+		}else if(type == "Bishop"){
+			move = move + 'B'
+		}
+		console.log(captured, "captured")
+		//check to see if something was taken
+		if(captured == true){
+			console.log(captured, "captured")
+			move = move + 'x'
+		}
+
+		//add the coordinates
+		if(x == 1){
+			move = move + 'a'
+		}else if(x == 2){
+			move = move + 'b'
+		}else if(x == 3){
+			move = move + 'c'
+		}else if(x == 4){
+			move = move + 'd'
+		}else if(x == 5){
+			move = move + 'e'
+		}else if(x == 6){
+			move = move +'f'
+		}else if(x == 7){
+			move = move + 'g'
+		}else if(x == 8){
+			move = move + 'h'
+		}
+
+		move = move + y
+
+		if(check){
+			move  = move + '+'
+		}
+
+		console.log(move)
+		return move
+	}
+
 	pieceConverter(piece) {
 		var pieceNumber = 0;
 		if (piece instanceof pieces.Piece) {
@@ -344,6 +491,13 @@ class Game{
 	getId(){
 		return this.gameId
 	}
+	getWhiteCaptures(){
+		return this.whiteCaptures
+	}
+	getBlackCaptures(){
+		return this.blackCaptures
+	}
+
 }
 
 module.exports = {Game}

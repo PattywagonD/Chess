@@ -17,7 +17,7 @@ const app = new Vue({
               [11,11,11,11,11,11,11,11],
               [12,13,14,16,15,14,13,12]
           ],
-    history: ['a4','kg4', 'qxc4','a4','kg4', 'qxc4','a4','a4','kg4', 'qxc4','a4','kg4', 'qxc4'],
+    history: [],
     username: "",
     opponent: "finding match...",
     loader: 20,
@@ -33,7 +33,7 @@ const app = new Vue({
     message: "",
     dialog: false,
     chatMobile: false,
-    oppPieces: ["img/wbishop.png"],
+    oppPieces: [],
     pieces: [],
     awidth: 300,
     unread: false,
@@ -41,7 +41,9 @@ const app = new Vue({
     mouseY: 0,
     drag: [0,0],
     mouseDown: false,
-    read: true
+    read: true,
+    hovered: null,
+    coordinates: []
 
   },
 
@@ -78,19 +80,19 @@ const app = new Vue({
       }
     },
 
-    dragable: function(){
-      var x = app.mouseX
-      var y = app. mouseY
-      if(app.mouseDown && app.dragging(app.drag[0], app.drag[1])){
-        return{
-          position: 'fixed',
-          top: y-25 + 'px',
-          left: x-35 + 'px',
-          'z-index': 2,
-          cursor: 'none'
-        }
-      }
-    },
+    // dragable: function(){
+    //   var x = app.mouseX
+    //   var y = app. mouseY
+    //   if(app.mouseDown && app.dragging(app.drag[0], app.drag[1])){
+    //     return{
+    //       position: 'fixed',
+    //       top: y-25 + 'px',
+    //       left: x-35 + 'px',
+    //       'z-index': 2,
+    //       cursor: 'none'
+    //     }
+    //   }
+    // },
 
     footerHUD: function() {
       var newWidth = this.awidth;
@@ -260,9 +262,14 @@ const app = new Vue({
 
     dragging: function(i, j){
 
+
+
+
+
       var x = app.mouseX
       var y = app. mouseY      
       if(i == app.drag[0] && j == app.drag[1] && app.mouseDown){
+
         console.log("conditions met",i,j)
         return{
           cursor: 'none',
@@ -272,6 +279,7 @@ const app = new Vue({
           'z-index': 2,
         }
       }
+
     },
 
     getMoves: function(j, i){
@@ -323,12 +331,16 @@ const app = new Vue({
             app.moves = data.updatedmoves
             app.pieces = data.wPieces
             app.oppPieces = data.bPieces
+            app.history = data.history
+            console.log("pieces", app.pieces, app.oppPieces, data.wPieces, data.bPieces)
           //if the player is black then the board need translated for their viewing window
           }else if(app.color == "black"){
             app.board = app.translateBoard(data.updatedboard)
             app.moves = app.translateMoves(data.updatedmoves)
             app.pieces = data.bPieces
             app.oppPieces = data.wPieces
+            app.history = data.history
+            console.log("pieces", app.pieces, app.oppPieces, data.wPieces, data.bPieces)
           }
         })
 
@@ -364,8 +376,10 @@ const app = new Vue({
     },
 
     //send the server the x, y of clicked square
-    sendClick: function (i, j) {
-        //var coordinates = [i, j]
+    sendClick: function () {
+        var i = app.coordinates[0]
+        var j = app.coordinates[1]
+
         console.log(app.color, "test")
         console.log("Client sending coordinates!", i, j, app.color)
         //set piece to mouse while mouse is clicked down
@@ -376,17 +390,40 @@ const app = new Vue({
         }else{
           this.socket.emit('updatedData', {x: 9-i, y: 9-j, color: app.color, room:app.room})   
         }
+    },
 
+    newDrag: function(){
+        console.log("MOUSEDOWN")
+        var i = this.coordinates[0]
+        var j = this.coordinates[1]
         app.drag[0] = i
         app.drag[1] = j
-        console.log("clicked!", app.drag[0], app.drag[1])
-        //Listen for new board
+
+        console.log(app.drag[0], app.drag[1], "==?" , i, j , "and?", app.mouseDown)
+
+        if(app.color == "white"){
+          this.socket.emit('updatedData', {x: i, y: j, color: app.color, room:app.room})
+        }else{
+          this.socket.emit('updatedData', {x: 9-i, y: 9-j, color: app.color, room:app.room})   
+        }
+
+
 
     },
-    sendClick2: function(){
-      console.log(app.mouseX, app.mouseY)
-      console.log(app.$refs)
-      //app.$refs.myButton[5].click()
+
+    // sendClick2: function(){
+    //   console.log(app.mouseX, app.mouseY)
+    //   console.log(app.$refs[app.hovered])
+    //   app.$refs[app.hovered][0].click()
+    // },
+
+    setHovered: function(i, j){
+
+      this.hovered = String(i) + String(j)
+      this.coordinates = [i , j]
+      console.log(this.coordinates, "coordinates?")
+      console.log(this.hovered, "Hovered?")
+
     },
 
     sendMessage: function(){
@@ -397,6 +434,7 @@ const app = new Vue({
       })
       app.message=""
     },
+
 
 
     //Need to reflect board horizontally!!!!!
