@@ -37,7 +37,6 @@ img {
     align-content: center;
     display: inline-block;
     border-radius: 25px;
-
 }
 
 .tile {
@@ -58,7 +57,6 @@ img {
     justify-content: center;
     align-items: center;
     vertical-align: middle;
-    color: #263238;
 }
 
 .letts {
@@ -74,8 +72,8 @@ img {
     align-items: center;
     vertical-align: middle;
     align-content: center;
-    color: #263238;
 }
+
 .col {
     display: inline-flex;
     flex-direction: column;

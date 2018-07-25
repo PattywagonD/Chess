@@ -36,7 +36,8 @@ const app = new Vue({
     pieces: ["img/wpawn.png", "img/wbishop.png"],
     awidth: 300,
     unread: false,
-    read: true
+    read: true,
+    theme: 'dark',
 
   },
 
@@ -89,6 +90,9 @@ const app = new Vue({
         height: newWidth + 'px'
       };
     },
+    dark() {
+      return this.theme === 'dark'
+    },
   },
 
   created(){
@@ -98,6 +102,7 @@ const app = new Vue({
     })
 
   },
+
 
   watch: {
     board() {
@@ -117,6 +122,10 @@ const app = new Vue({
   },
 
   methods: {
+    setTheme(theme) {
+      this.theme = theme
+    },
+
     //display the correct colors for the tiles
     getGridNum: function(num){
       if(app.color == "white"){

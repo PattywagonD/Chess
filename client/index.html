@@ -10,17 +10,15 @@
 </head>
 <body>
   <div id="app">
-    <v-app>
+    <v-app :dark="dark">
     <div class="text-xs-center">
     <v-menu
-      v-model="menu"
       :close-on-content-click="false"
       :nudge-width="200"
       offset-x
     >
       <v-btn
         slot="activator"
-        dark
       >
         CHANGE THEME
       </v-btn>
@@ -29,8 +27,8 @@
         <v-list>
           <v-list-tile avatar>
             <v-list-tile-avatar>
-            <v-btn flat fab @click="">
-              <img src="img/bpawn.png" alt="black pawn">
+            <v-btn flat fab @click="setTheme('dark')">
+              <img src="img/bpawn.png" alt="black pawn" >
               </v-btn>
             </v-list-tile-avatar>
 
@@ -40,8 +38,8 @@
           </v-list-tile>
            <v-list-tile avatar>
             <v-list-tile-avatar>
-            <v-btn flat fab>
-              <img src="img/wpawn.png" alt="white pawn">
+            <v-btn flat fab @click="setTheme('light')">
+              <img src="img/wpawn.png" alt="white pawn" >
               </v-btn>
             </v-list-tile-avatar>
 
@@ -61,9 +59,9 @@
               <v-card-title>
               <h2>Start a Game of Chess</h2>
               </v-card-title>
-              <v-form ref="form" lazy-validation>
+              <v-form @keyup.native.enter="startGame">
                 <v-text-field v-model="username" label="Username" required></v-text-field>
-                <v-btn @click="startGame()"> PLAY </v-btn>
+                <v-btn @click="startGame"> PLAY </v-btn>
               </v-form>
             </v-card>
             </v-flex>
@@ -78,7 +76,7 @@
           <v-layout column>
         <!-- Opponent's Display -->
             <v-flex>
-              <v-card  color="primary">
+              <v-card color="primary">
                 <v-progress-linear color="blue darken-3" :active= 'opp' :indeterminate= 'opp' height = 10 ></v-progress-linear>
                 <v-card-title><h1>{{opponent}}</h1><v-spacer></v-spacer
                 ><div v-for="piece in oppPieces"> <img :src="piece"></div>
@@ -90,9 +88,8 @@
             <v-layout>
 
               <!-- Game Board -->
-              <v-flex s6 >
-                <v-card class="white_b"  >
-                  <v-card row flat class="nums" >
+              <v-flex s6>
+                  <v-card row class="nums white_b">
                     <v-layout wrap row align-center justify-center>
                       <div class="letts" >
                         <h2>a</h2>
@@ -146,7 +143,6 @@
                         <h2>&nbsp;</h2>
                       </div>
                      </v-layout>
-                  </v-card>
                 </v-card>
               </v-flex>
 
@@ -389,14 +385,12 @@
   <script src="vuetify.js"></script>
   <script src="index.js"></script>
   <script>
-  export default {
     data: () => ({
       fav: true,
       menu: false,
       message: false,
       hints: true
     })
-  }
 </script>
 </body>
 </html>
