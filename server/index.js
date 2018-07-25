@@ -99,7 +99,7 @@ io.on('connection', function(socket){
 		gameLogic(x, y, color, index)
 		console.log("Server now sending a new board! ", games[index].board)
 		console.log("server sending updated moves", games[index].moves)
-	    io.sockets.in(room).emit('board', {updatedboard: games[index].board, updatedmoves: games[index].moves })
+	    io.sockets.in(room).emit('board', {updatedboard: games[index].board, updatedmoves: games[index].moves, wPieces: games[index].whiteCaptures , bPieces: games[index].blackCaptures })
 	})
 
 	//Listen for new chats in each game room

@@ -33,8 +33,8 @@ const app = new Vue({
     message: "",
     dialog: false,
     chatMobile: false,
-    oppPieces: ["img/bpawn.png", "img/brook.png"],
-    pieces: ["img/wpawn.png", "img/wbishop.png"],
+    oppPieces: ["img/wbishop.png"],
+    pieces: [],
     awidth: 300,
     unread: false,
     mouseX: 0,
@@ -42,6 +42,7 @@ const app = new Vue({
     drag: [0,0],
     mouseDown: false,
     read: true
+
   },
 
   computed: {
@@ -143,12 +144,7 @@ const app = new Vue({
     addEventListener('mouseup', function(){
       app.mouseDown = false
       app.drag = [0,0]
-      if(app.color != ""){
-        //divide mouseX and mouseY to get click coordinate
-        //send new click on mouse up 
-        //app.sendClick(5,5)
-      }
-    })
+      })
   },
 
   watch: {
@@ -325,10 +321,14 @@ const app = new Vue({
           if(app.color == "white"){
             app.board = data.updatedboard
             app.moves = data.updatedmoves
+            app.pieces = data.wPieces
+            app.oppPieces = data.bPieces
           //if the player is black then the board need translated for their viewing window
           }else if(app.color == "black"){
             app.board = app.translateBoard(data.updatedboard)
             app.moves = app.translateMoves(data.updatedmoves)
+            app.pieces = data.bPieces
+            app.oppPieces = data.wPieces
           }
         })
 
@@ -382,6 +382,11 @@ const app = new Vue({
         console.log("clicked!", app.drag[0], app.drag[1])
         //Listen for new board
 
+    },
+    sendClick2: function(){
+      console.log(app.mouseX, app.mouseY)
+      console.log(app.$refs)
+      //app.$refs.myButton[5].click()
     },
 
     sendMessage: function(){
