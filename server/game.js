@@ -27,10 +27,10 @@ class Game{
      */
 	this.gameState = 0
 	/**
-    * Let turn be defined as
-	* white - it is the "white" players' turn
-	* black - it is the "black" players' turn
-    */
+         * Let turn be defined as
+         * "white" = White's turn
+         * "black" = Black's turn
+         */
 	this.turn = "white";
 	this.players =  []
 	this.gameId = id
@@ -71,12 +71,11 @@ class Game{
 	 * PROPERTY: whiteCaptures[]
 	 * whiteCaptures is an array of pieces captured by the "White" player
 	 */
-	this.whiteCaptures = [];
-	/**
+	this.whiteCaptures = ["img/wpawn.png", "img/wbishop.png"]	/**
 	 * PROPERTY: blackCaptures[]
 	 * blackCaptures is an array of pieces captured by the "Black" player
 	 */
-	this.blackCaptures = [];
+	this.blackCaptures = ["img/bpawn.png", "img/brook.png"];
 	this.logicalBoardInitialize();
 	this.setPieces();
 	}
@@ -162,7 +161,20 @@ class Game{
 					break;
 			}
 		}
+		//Set a piece for testing
+		this.logicalBoard[4][4].setPiece(new pieces.King(4, 4, "Black"));
+		this.logicalBoard[4][4].setOccupied(1);
+
+		this.logicalBoard[4][5].setPiece(new pieces.Queen(4, 5, "Black"));
+		this.logicalBoard[4][5].setOccupied(1);
+
+		this.logicalBoard[6][5].setPiece(new pieces.Bishop(6, 5, "Black"));
+		this.logicalBoard[6][5].setOccupied(1);
+
+		this.logicalBoard[2][2].setPiece(new pieces.Rook(2, 2, "Black"));
+		this.logicalBoard[2][2].setOccupied(1);	
 	}
+
 	getMoves(xCoordinate, yCoordinate, color) {
 		var movesArray = [];
 		if (this.logicalBoard[xCoordinate][yCoordinate].getPiece() != pieces.Blank) {
@@ -262,9 +274,6 @@ class Game{
 		//}
 		this.exportBoard();
 		return this.displayBoard;
-	} 
-	updateMoves(x, y, color){
-		return [[2,2], [6,8]];
 	}
 	/**
 	 * FUNCTION: pieceConverter()

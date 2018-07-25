@@ -10,14 +10,30 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "anymatch": "^2.0.0",
+    "async-each": "^1.0.1",
     "body-parser": "^1.18.3",
+    "braces": "^2.3.2",
+    "chokidar": "^2.0.4",
+    "debug": "^3.1.0",
+    "define-property": "^2.0.2",
     "express": "^4.16.3",
+    "is-descriptor": "^1.0.2",
+    "isobject": "^3.0.1",
+    "kind-of": "^6.0.2",
+    "micromatch": "^3.1.10",
     "moment": "^2.22.2",
-    "mongoose": "^5.1.6",
-    "socket.io": "^2.1.1"
+    "mongoose": "^5.2.5",
+    "ms": "^2.1.1",
+    "npm-install-all": "^1.1.21",
+    "ret": "^0.2.2",
+    "safe-regex": "^1.1.0",
+    "semver": "^5.5.0",
+    "socket.io": "^2.1.1",
+    "to-regex": "^3.0.2"
   },
   "devDependencies": {
-    "nodemon": "^1.18.1",
-    "morgan": "^1.9.0"
+    "morgan": "^1.9.0",
+    "nodemon": "^1.18.3"
   }
 }

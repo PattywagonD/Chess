@@ -33,11 +33,16 @@ const app = new Vue({
     message: "",
     dialog: false,
     chatMobile: false,
-    oppPieces: ["img/bpawn.png", "img/brook.png"],
-    pieces: ["img/wpawn.png", "img/wbishop.png"],
+    oppPieces: ["img/wbishop.png"],
+    pieces: [],
     awidth: 300,
     unread: false,
+    mouseX: 0,
+    mouseY: 0,
+    drag: [0,0],
+    mouseDown: false,
     read: true
+
   },
 
   computed: {
@@ -59,6 +64,32 @@ const app = new Vue({
         width: newWidth + 'px',
         height: newWidth   + 'px'
       };
+    },
+
+    down: function() {
+      if(app.mouseDown ){
+        return {
+            cursor: 'none',
+        }
+      }else{
+        return{
+          cursor: 'default'
+        }
+      }
+    },
+
+    dragable: function(){
+      var x = app.mouseX
+      var y = app. mouseY
+      if(app.mouseDown && app.dragging(app.drag[0], app.drag[1])){
+        return{
+          position: 'fixed',
+          top: y-25 + 'px',
+          left: x-35 + 'px',
+          'z-index': 2,
+          cursor: 'none'
+        }
+      }
     },
 
     footerHUD: function() {
@@ -96,7 +127,24 @@ const app = new Vue({
       app.awidth = window.innerWidth
       console.log(app.awidth)
     })
+    //keep track of the mouse x and y position
+    addEventListener('mousemove', function(event){
+        if(event.stopPropagation) event.stopPropagation();
+        if(event.preventDefault) event.preventDefault();
+        event.cancelBubble=true;
+        event.returnValue=false;
+        app.mouseX = event.clientX
+        app.mouseY = event.clientY 
+    })
 
+    addEventListener('mousedown', function(){
+      app.mouseDown = true
+    })
+
+    addEventListener('mouseup', function(){
+      app.mouseDown = false
+      app.drag = [0,0]
+      })
   },
 
   watch: {
@@ -209,6 +257,23 @@ const app = new Vue({
 
     },
 
+
+    dragging: function(i, j){
+
+      var x = app.mouseX
+      var y = app. mouseY      
+      if(i == app.drag[0] && j == app.drag[1] && app.mouseDown){
+        console.log("conditions met",i,j)
+        return{
+          cursor: 'none',
+          position: 'fixed',
+          top: y-25 + 'px',
+          left: x-35 + 'px',
+          'z-index': 2,
+        }
+      }
+    },
+
     getMoves: function(j, i){
       for(var x = 0; x < this.moves.length; x ++){
         if(this.moves[x][0] == i && this.moves[x][1] == j){
@@ -256,10 +321,14 @@ const app = new Vue({
           if(app.color == "white"){
             app.board = data.updatedboard
             app.moves = data.updatedmoves
+            app.pieces = data.wPieces
+            app.oppPieces = data.bPieces
           //if the player is black then the board need translated for their viewing window
           }else if(app.color == "black"){
             app.board = app.translateBoard(data.updatedboard)
             app.moves = app.translateMoves(data.updatedmoves)
+            app.pieces = data.bPieces
+            app.oppPieces = data.wPieces
           }
         })
 
@@ -299,10 +368,25 @@ const app = new Vue({
         //var coordinates = [i, j]
         console.log(app.color, "test")
         console.log("Client sending coordinates!", i, j, app.color)
-        // set 9-j if logic board is upside down
-        this.socket.emit('updatedData', {x: i, y: j, color: app.color, room:app.room})
+        //set piece to mouse while mouse is clicked down
+
+        // export blacks click differently 
+        if(app.color == "white"){
+          this.socket.emit('updatedData', {x: i, y: j, color: app.color, room:app.room})
+        }else{
+          this.socket.emit('updatedData', {x: 9-i, y: 9-j, color: app.color, room:app.room})   
+        }
+
+        app.drag[0] = i
+        app.drag[1] = j
+        console.log("clicked!", app.drag[0], app.drag[1])
         //Listen for new board
 
+    },
+    sendClick2: function(){
+      console.log(app.mouseX, app.mouseY)
+      console.log(app.$refs)
+      //app.$refs.myButton[5].click()
     },
 
     sendMessage: function(){
@@ -332,13 +416,6 @@ const app = new Vue({
       
       return tempMoves
     },
-
-    exportClick: function(clientCoordinates){
-      var x = clientCoordinates[0]
-      var y = clientCoordinates[1]
-      return [x, 9-y]
-    }
-
   } 
 })
 
