@@ -147,6 +147,11 @@ const app = new Vue({
       app.mouseDown = false
       app.drag = [0,0]
       })
+
+
+
+
+    //Event Listener for Mouse over?
   },
 
   watch: {
@@ -262,15 +267,13 @@ const app = new Vue({
 
     dragging: function(i, j){
 
-
-
-
-
       var x = app.mouseX
       var y = app. mouseY      
       if(i == app.drag[0] && j == app.drag[1] && app.mouseDown){
 
         console.log("conditions met",i,j)
+        //app.coordinates = [i, j-2]
+        console.log(app.hovered)
         return{
           cursor: 'none',
           position: 'fixed',
