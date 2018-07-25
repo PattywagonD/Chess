@@ -100,7 +100,7 @@ io.on('connection', function(socket){
 		console.log("Server now sending a new board! ", games[index].board)
 		console.log("server sending updated moves", games[index].moves)
 		console.log("server sending updated history", games[index].logic.history)
-	    io.sockets.in(room).emit('board', {updatedboard: games[index].board, updatedmoves: games[index].moves, wPieces: games[index].logic.whiteCaptures , bPieces: games[index].logic.blackCaptures, history:games[index].logic.history})
+	    io.sockets.in(room).emit('board', {updatedboard: games[index].board, updatedmoves: games[index].moves, wPieces: games[index].logic.getWhiteCaptures() , bPieces: games[index].logic.getBlackCaptures(), history:games[index].logic.history})
 	})
 
 	//Listen for new chats in each game room

@@ -41,7 +41,8 @@ const app = new Vue({
     mouseY: 0,
     drag: [0,0],
     mouseDown: false,
-    read: true
+    read: true,
+    hovered: null
 
   },
 
@@ -332,6 +333,7 @@ const app = new Vue({
             app.pieces = data.bPieces
             app.oppPieces = data.wPieces
             app.history = data.history
+            console.log("pieces", app.pieces, app.oppPieces, data.wPieces, data.bPieces)
           }
         })
 
@@ -388,8 +390,13 @@ const app = new Vue({
     },
     sendClick2: function(){
       console.log(app.mouseX, app.mouseY)
-      console.log(app.$refs)
-      //app.$refs.myButton[5].click()
+      console.log(app.$refs[app.hovered])
+      app.$refs[app.hovered][0].click()
+    },
+
+    setHovered: function(i, j){
+      this.hovered = String(i) + String(j)
+      console.log(this.hovered, "Hovered?")
     },
 
     sendMessage: function(){
