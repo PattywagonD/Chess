@@ -168,9 +168,9 @@ class Game{
 		if (this.logicalBoard[xCoordinate][yCoordinate].getPiece() != pieces.Blank) {
 			movesArray = this.logicalBoard[xCoordinate][yCoordinate].getPiece().getMoves(this.logicalBoard);
 		}
-		console.log(movesArray, "before export")
-		movesArray = this.exportMoves(movesArray);
-		console.log(movesArray, "after export")
+		console.log(this.movesArray, "before export")
+		movesArray = this.exportMoves(this.movesArray);
+		console.log(this.movesArray, "after export")
 		return movesArray;
 	}
 	addPlayer(username){
@@ -227,21 +227,19 @@ class Game{
 
 	//TODO: Update evaluateClick 
 	evaluateClick(x, y, color) {
-		//TODO: Check to make sure the click.color is equal to the player.color (an IF).
 		//Is this the opening or "alpha" click?
-		var movesArray = new Array();
-		if(color == this.turn) {
+		//if(color == this.turn) {
 			if( !(this.alphaClick.getXCoordinate()) && !(this.alphaClick.getYCoordinate())) {
 				this.alphaClick = (this.logicalBoard[x][y]);
-				movesArray = this.getMoves(x, y, color);
+				this.movesArray = this.getMoves(x, y, color);
 			}
 			// This must be the omega click!
 			else {
 				this.omegaClick = (this.logicalBoard[x][y]);
 				//Case 1. Check to see if the 2nd click is in our moves Array.
 				var isValidMove = false;
-				for(var i = 0; i < movesArray.length; i++) {
-					if((movesArray[i][0] == this.omegaClick.getXCoordinate()) && (movesArray[i][1] == this.omegaClick.getYCoordinate())) {
+				for(var i = 0; i < this.movesArray.length; i++) {
+					if((this.movesArray[i][0] == this.omegaClick.getXCoordinate()) && (this.movesArray[i][1] == this.omegaClick.getYCoordinate())) {
 						isValidMove = true;
 						break;
 					}
@@ -261,9 +259,7 @@ class Game{
 				this.alphaClick = new pieces.Tile(0, 0, 0);
 				this.omegaClick = new pieces.Tile(0, 0, 0);
 			}
-		}
-
-		// }
+		//}
 		this.exportBoard();
 		return this.displayBoard;
 	} 
