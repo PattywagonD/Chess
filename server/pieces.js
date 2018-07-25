@@ -64,6 +64,15 @@ class Piece {
     getNumberOfMoves() {
         return(this.numberOfMoves)
     }
+    addMove(){
+        this.numberOfMoves += 1
+    }
+    setXCoordinate(newX){
+        this.x = newX
+    }
+    setYCoordinate(newY){
+        this.y=newY
+    }
 }
 
 class Blank extends Piece {

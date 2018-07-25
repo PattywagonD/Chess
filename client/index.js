@@ -17,7 +17,7 @@ const app = new Vue({
               [11,11,11,11,11,11,11,11],
               [12,13,14,16,15,14,13,12]
           ],
-    history: ['a4','kg4', 'qxc4','a4','kg4', 'qxc4','a4','a4','kg4', 'qxc4','a4','kg4', 'qxc4'],
+    history: [],
     username: "",
     opponent: "finding match...",
     loader: 20,
@@ -33,7 +33,7 @@ const app = new Vue({
     message: "",
     dialog: false,
     chatMobile: false,
-    oppPieces: ["img/wbishop.png"],
+    oppPieces: [],
     pieces: [],
     awidth: 300,
     unread: false,
@@ -323,12 +323,15 @@ const app = new Vue({
             app.moves = data.updatedmoves
             app.pieces = data.wPieces
             app.oppPieces = data.bPieces
+            app.history = data.history
+            console.log("pieces", app.pieces, app.oppPieces, data.wPieces, data.bPieces)
           //if the player is black then the board need translated for their viewing window
           }else if(app.color == "black"){
             app.board = app.translateBoard(data.updatedboard)
             app.moves = app.translateMoves(data.updatedmoves)
             app.pieces = data.bPieces
             app.oppPieces = data.wPieces
+            app.history = data.history
           }
         })
 
