@@ -45,7 +45,6 @@ var gameId = ""
 
 io.on('connection', function(socket){
 	console.log('Made socket connection', socket.id)
-	console.log(ids)
 
 
 
@@ -56,7 +55,6 @@ io.on('connection', function(socket){
 			//Create new game with unique id 
 			gameId = newUsername.username
 
-			console.log(ids, "ids")
 			socket.join(gameId)
 			//This syntax sets games key to game Id games[gameId] = {}
 			games.push({logic: new gameClass.Game(gameId), board: startingBoard, moves: [], id:"random" })
@@ -65,17 +63,15 @@ io.on('connection', function(socket){
 
 			//Get the index with your gameId
 			index = ids.indexOf(gameId)
-			console.log(index)
+			//console.log(index)
 			games[index].logic.addPlayer(newUsername.username)
-			console.log(queue)
 		}else if(queue.length == 1){
 			index = ids.indexOf(gameId)
 			socket.join(gameId)
 			queue.push(newUsername.username)
 			games[index].logic.addPlayer(newUsername.username)
-			console.log(queue)
 
-			io.sockets.in(gameId).emit("color", {newBoard: games[index].board , opponent: [games[index].logic.getPlayers()[0], games[index].logic.getPlayers()[1]], room: gameId})
+			io.sockets.in(gameId).emit("color", {newBoard: games[index].board , opponent: [games[index].logic.getPlayers()[0], games[index].logic.getPlayers()[1]], room: gameId, gameState: games[index].logic.gameState})
 
 			//reset
 			queue = []
@@ -88,18 +84,16 @@ io.on('connection', function(socket){
 	socket.on('updatedData', function(newClick){
 		room = newClick.room
 		index = ids.indexOf(room)
-		console.log("socket data" , newClick)
-	    console.log(x, y, color, "Click before server import")
 		var logicClick = importMoves(newClick.x, newClick.y)
 		var x = logicClick[0]
 		var y = logicClick[1]
 		var color = newClick.color
-	    console.log(x, y, color, "click after server import")
+	    //console.log(x, y, color, "click after server import")
 	    //Update the board from the click and send new board
 		gameLogic(x, y, color, index)
-		console.log("Server now sending a new board! ", games[index].board)
-		console.log("server sending updated moves", games[index].moves)
-		console.log("server sending updated history", games[index].logic.history)
+		// console.log("Server now sending a new board! ", games[index].board)
+		// console.log("server sending updated moves", games[index].moves)
+		// console.log("server sending updated history", games[index].logic.history)
 	    io.sockets.in(room).emit('board', {updatedboard: games[index].board, updatedmoves: games[index].moves, wPieces: games[index].logic.getWhiteCaptures() , bPieces: games[index].logic.getBlackCaptures(), history:games[index].logic.history})
 	})
 
@@ -107,7 +101,7 @@ io.on('connection', function(socket){
 	socket.on('chat', function(newChat){
 		room = newChat.room
 		index = ids.indexOf(room)
-		console.log("Recieving new chat", newChat.message)
+
 		io.sockets.in(room).emit('chat', newChat)
 	})
 
@@ -122,10 +116,6 @@ importMoves = function(clickx, clicky) {
 }
 //Update the board and moves for each game 
 gameLogic = function(x, y, color, index){
-
-	//game.checkGameOver()
-	console.log(games[index]);
 	games[index].board = games[index].logic.evaluateClick(x, y, color)
 	games[index].moves = games[index].logic.getMoves(x, y, color)
-	//game.checkGameOver()
 }

@@ -258,6 +258,10 @@ const app = new Vue({
       }
       else if(this.board[i-1][j-1] == "16"){
         return 'img/wqueen.png'
+      }      else if(this.board[i-1][j-1] == "35"){
+        return 'img/wkingcheck.png'
+      }else if(this.board[i-1][j-1] == "25"){
+        return 'img/bkingcheck.png'
       }
       else
         return 'img/blank.png' 
@@ -271,9 +275,9 @@ const app = new Vue({
       var y = app. mouseY      
       if(i == app.drag[0] && j == app.drag[1] && app.mouseDown){
 
-        console.log("conditions met",i,j)
+        //console.log("conditions met",i,j)
         //app.coordinates = [i, j-2]
-        console.log(app.hovered)
+        //console.log(app.hovered)
         return{
           cursor: 'none',
           position: 'fixed',
@@ -424,8 +428,8 @@ const app = new Vue({
 
       this.hovered = String(i) + String(j)
       this.coordinates = [i , j]
-      console.log(this.coordinates, "coordinates?")
-      console.log(this.hovered, "Hovered?")
+      //console.log(this.coordinates, "coordinates?")
+      //console.log(this.hovered, "Hovered?")
 
     },
 

@@ -93,9 +93,7 @@ class Pawn extends Piece {
 
     getMoves(board){
         var movesArray = new Array();
-        console.log(this.color);
         if(this.color == "White") {
-            console.log("Inside Pawn IF statement for White")
             // Case 1.White : Capture a piece to your left
             if ((this.getXCoordinate() - 1 >= 1) && (this.getYCoordinate() + 1 <= 8)) {  
                 if (board[this.getXCoordinate() - 1][this.getYCoordinate() + 1].getPiece().getColor() == "Black") {
@@ -104,7 +102,6 @@ class Pawn extends Piece {
             }
             // Case 2.White Move forward
             if ((this.getYCoordinate() + 1) <= 8) {
-                console.log("Inside Pawn IF statement for Move Forward");
                 if (!(board[this.getXCoordinate()][this.getYCoordinate() + 1].getOccupied())) { // 2.a Move forward 1 space
                     movesArray.push([(this.getXCoordinate()) , (this.getYCoordinate() + 1)]);
                     // 2.b Move forward 2 spaces; only possibly true if case 2.a is also true
@@ -144,8 +141,6 @@ class Pawn extends Piece {
                 }
             }
         }
-
-        console.log(movesArray, "pawn moves")
         return movesArray;
     }
 }
@@ -166,7 +161,6 @@ class Rook extends Piece {
         var yCurrent = this.getYCoordinate();
         // Case One: Can the Rook move Forward? If so how far?
         while (yCurrent <= 7) {
-            console.log("trip case 1")
             if (board[this.getXCoordinate()][yCurrent+1].getPiece().getColor() != "Blank") {
                 if(board[this.getXCoordinate()][yCurrent+1].getPiece().getColor() == this.getColor()){
                     break;
@@ -177,14 +171,12 @@ class Rook extends Piece {
             }
 
             else {
-                console.log("adding")
                 movesArray.push([this.getXCoordinate(), yCurrent+1]);
             }
             ++yCurrent;
         }
         // Case Two: How far Right can the Rook move?
         while (xCurrent <= 7) {
-            console.log("trip case 2")
             if (board[xCurrent+1][this.getYCoordinate()].getPiece().getColor() != "Blank") {
                 if(board[xCurrent+1][this.getYCoordinate()].getPiece().getColor() == this.getColor()){
                     break;
@@ -194,7 +186,6 @@ class Rook extends Piece {
                 }
             }
             else {
-                console.log("adding")
                 movesArray.push([xCurrent+1, this.getYCoordinate()]);
             }
             ++xCurrent;
@@ -204,7 +195,6 @@ class Rook extends Piece {
         yCurrent = this.getYCoordinate();
         // Case Three: Can the Rook move Backward? To what degree?
         while (yCurrent >= 2) {
-            console.log("trip case 3")
             if (board[this.getXCoordinate()][yCurrent-1].getPiece().getColor() != "Blank") {
                 if(board[this.getXCoordinate()][yCurrent-1].getPiece().getColor() == this.getColor()){
                     break;
@@ -213,7 +203,6 @@ class Rook extends Piece {
                     break;
                 }
             }else {
-                console.log("adding")
                 movesArray.push([this.getXCoordinate(), yCurrent-1])
             }
             --yCurrent;
@@ -221,7 +210,6 @@ class Rook extends Piece {
 
         // Case Four: How far Left can our Rook move?
         while (xCurrent >= 2) {
-            console.log("trip case 4")
             if (board[xCurrent-1][this.getYCoordinate()].getPiece().getColor() != "Blank") {
                 if(board[xCurrent-1][this.getYCoordinate()].getPiece().getColor() == this.getColor()){
                     break;
@@ -230,12 +218,10 @@ class Rook extends Piece {
                     break;
                 }
             }else {
-                console.log("adding")
                 movesArray.push([xCurrent-1, this.getYCoordinate()]);
             }
             --xCurrent;
         }
-        console.log("rook moves")
         return movesArray;
     }
 }
@@ -263,7 +249,6 @@ class Knight extends Piece {
         var movesArray = new Array();
         //Case 1. 2 Up, 1 Left
         if ((this.getXCoordinate() - 1 >= 1) && (this.getYCoordinate() + 2 <= 8)) {
-            console.log("trip case one", this.getXCoordinate()-1, this.getYCoordinate() +2 )
             if (board[this.getXCoordinate() - 1][this.getYCoordinate() + 2].getPiece().getColor() != this.getColor()) {
                 movesArray.push([(this.getXCoordinate() - 1), (this.getYCoordinate() + 2)])
             }
@@ -310,7 +295,6 @@ class Knight extends Piece {
                 movesArray.push([(this.getXCoordinate() - 2), (this.getYCoordinate() + 1)])
             }
         }
-        console.log("knight moves")
         return movesArray
     }
 }
@@ -334,10 +318,7 @@ class Bishop extends Piece {
             switch(i){
 
                 case 0: //Up-and-to-the-left
-                    console.log("triggered case 0")
                     while (xCurrent >= 2 && yCurrent <= 7) {
-                        console.log(xCurrent, yCurrent)
-                         console.log(board[xCurrent][yCurrent].getOccupied(), "get occupied?")
                         if(board[xCurrent-1][yCurrent+1].getOccupied()) {
 
                             if(board[xCurrent-1][yCurrent+1].getPiece().getColor() == this.getColor()) {
@@ -412,7 +393,6 @@ class Bishop extends Piece {
                 break;
             }
         }
-        console.log("Bishop moves")
         return movesArray;
     }
 }
@@ -437,60 +417,103 @@ class King extends Piece {
 
     }
     getMoves(board) {
+
         var movesArray = new Array();
         // Case 1. Forward [White] / Backward [Black]
-
-
         if (this.getYCoordinate() + 1 <= 8) {
-            if (board[this.getXCoordinate()][this.getYCoordinate() + 1].getPiece().getColor() != this.getColor()) {
-                movesArray.push([this.getXCoordinate(),(this.getYCoordinate() + 1)]);
+            if ((board[this.getXCoordinate()][this.getYCoordinate() + 1].getPiece().getColor() != this.getColor())) {
+                if(!(this.getCheck(this.getXCoordinate(), this.getYCoordinate()+1, board))){
+                    movesArray.push([this.getXCoordinate(),(this.getYCoordinate() + 1)]);
+                }
             }
         }
         // Case 2. Up-and-to-the-Right [White] / Down-and-to-the-Left [Black]
         if ((this.getXCoordinate() + 1 <= 8) && (this.getYCoordinate() + 1 <= 8)) {
-            if (board[this.getXCoordinate() + 1][this.getYCoordinate() + 1].getPiece().getColor() != this.getColor()) {
-                movesArray.push([(this.getXCoordinate() + 1), (this.getYCoordinate() + 1)]);
+            if ((board[this.getXCoordinate() + 1][this.getYCoordinate() + 1].getPiece().getColor() != this.getColor())) {
+                if(!(this.getCheck(this.getXCoordinate()+1, this.getYCoordinate()+1, board))){
+                    movesArray.push([this.getXCoordinate()+1,(this.getYCoordinate() + 1)]);
+                }
             }
         }
         // Case 3. Right [White] / Left [Black]
         if (this.getXCoordinate() + 1 <= 8) {
-            if (board[this.getXCoordinate() + 1][this.getYCoordinate()].getPiece().getColor() != this.getColor()) {
-                movesArray.push([(this.getXCoordinate() + 1),(this.getYCoordinate())])
+            if ((board[this.getXCoordinate() + 1][this.getYCoordinate()].getPiece().getColor() != this.getColor())) {
+                if(!(this.getCheck(this.getXCoordinate()+1, this.getYCoordinate(), board))){
+                    movesArray.push([this.getXCoordinate()+1,(this.getYCoordinate())]);
+                }
             }
         }
         // Case 4. Down-and-to-the-Right [White] / Up-and-to-the-Left [Black]
         if ((this.getXCoordinate() + 1 <= 8) && (this.getYCoordinate() - 1 >= 1)) {
-            if (board[this.getXCoordinate() + 1][this.getYCoordinate() - 1].getPiece().getColor() != this.getColor()) {
-                movesArray.push([(this.getXCoordinate() + 1),(this.getYCoordinate() - 1)]);
+            if ((board[this.getXCoordinate() + 1][this.getYCoordinate() - 1].getPiece().getColor() != this.getColor())) {
+                if(!(this.getCheck(this.getXCoordinate()+1, this.getYCoordinate()-1, board))){
+                    movesArray.push([this.getXCoordinate()+1,(this.getYCoordinate() -1)]);
+                }
             }
         }
         // Case 5. Backward [White] / Forward [Black]
         if (this.getYCoordinate() - 1 >= 1) {
-            if (board[this.getXCoordinate()][this.getYCoordinate() - 1].getPiece().getColor() != this.getColor()) {
-                movesArray.push([(this.getXCoordinate()), (this.getYCoordinate() - 1)]);
+            if ((board[this.getXCoordinate()][this.getYCoordinate() - 1].getPiece().getColor())) {
+                if(!(this.getCheck(this.getXCoordinate(), this.getYCoordinate()-1, board))){
+                    movesArray.push([this.getXCoordinate(),(this.getYCoordinate() - 1)]);
+                }
             }
         }
         // Case 6. Down-and-to-the-Left [White] / Up-and-to-the-Right [Black]
         if ((this.getXCoordinate() - 1 >= 1) && (this.getYCoordinate() - 1 >= 1)) {
-            if (board[this.getXCoordinate() - 1][this.getYCoordinate() - 1].getPiece().getColor() != this.getColor()) {
-                movesArray.push([(this.getXCoordinate() - 1), (this.getYCoordinate() - 1)]);
+            if ((board[this.getXCoordinate() - 1][this.getYCoordinate() - 1].getPiece().getColor() != this.getColor())) {
+                if(!(this.getCheck(this.getXCoordinate()-1, this.getYCoordinate()-1, board))){
+                    movesArray.push([this.getXCoordinate()-1,(this.getYCoordinate() - 1)]);
+                }
             }
         }
         // Case 7. Left [White] / Right [Black]
         if (this.getXCoordinate() - 1 >= 1) {
-            if (board[this.getXCoordinate() - 1][this.getYCoordinate()].getPiece().getColor() != this.getColor()) {
-                movesArray.push([(this.getXCoordinate() - 1), (this.getYCoordinate())]);
+            if ((board[this.getXCoordinate() - 1][this.getYCoordinate()].getPiece().getColor() != this.getColor())) {
+                if(!(this.getCheck(this.getXCoordinate()-1, this.getYCoordinate(), board))){
+                    movesArray.push([this.getXCoordinate()-1,(this.getYCoordinate())]);
+                }
             }
         }
         // Case 8. Up-and-to-the-Left [White] / Down-and-to-the-Right [Black]
         if ((this.getXCoordinate() - 1 >= 1) && (this.getYCoordinate() + 1 <= 8)) {
-            if (board[this.getXCoordinate() - 1][this.getYCoordinate() + 1].getPiece().getColor() != this.getColor()) {
-                movesArray.push([(this.getXCoordinate() - 1), (this.getYCoordinate() + 1)])
+            if ((board[this.getXCoordinate() - 1][this.getYCoordinate() + 1].getPiece().getColor() != this.getColor())) {
+                if(!(this.getCheck(this.getXCoordinate()-1, this.getYCoordinate()+1, board))){
+                    movesArray.push([this.getXCoordinate()-1,(this.getYCoordinate() + 1)]);
+                }
             }
         }
 
-        console.log("king moves")
         return movesArray;
+    }
+
+    createCheckArray(x,y, refBoard){
+        var protoQueen = new Queen(x, y, this.getColor());
+        var protoKnight = new Knight(x, y, this.getColor());
+        var arrayQueen = protoQueen.getMoves(refBoard);
+        var arrayKnight = protoKnight.getMoves(refBoard);
+        var checkArray = (arrayQueen.concat(arrayKnight));
+        return checkArray
+    }
+
+    getCheck(x, y, refBoard){
+    /// Am I in check logic ///
+        var attacks = this.createCheckArray(x,y,refBoard)
+
+        for(var tile = 0; tile < attacks.length; tile++){
+            var currentPiece = refBoard[attacks[tile][0]][attacks[tile][1]].getPiece()
+            if(refBoard[attacks[tile][0]][attacks[tile][1]].getOccupied()){
+                if(currentPiece.getColor() != this.color){
+                    for(var m = 0; m < currentPiece.getMoves(refBoard).length; m++){
+                        if((currentPiece.getMoves(refBoard)[m][0]) == x && (currentPiece.getMoves(refBoard)[m][1] == y)){
+                            return true 
+                        }
+                    }
+                }
+            }
+
+        } 
+        return false   
     }
 }
 

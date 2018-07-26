@@ -21,10 +21,11 @@ class Game{
     * Let gameState be defined as
     * 0. Beginning of the game (implies we need to set-up the board)
     * 1. Middle of the game, let the players inform the board
-         * 2. Check: a King is in check, update move behavior to match
-         * 3. Stalemate: There is not enough material on the board for either player to make a 
+         * 2. Check: white king in check, update move behavior to match
+         * 3. Check: black king in check
+         * 4. Stalemate: There is not enough material on the board for either player to make a 
          * definitive play. This game is over by default. 
-         * 4. End: a King is in checkmate, inform the players and present them some options
+         * 5. End: a King is in checkmate, inform the players and present them some options
      */
 	this.gameState = 0
 	/**
@@ -37,6 +38,8 @@ class Game{
 	this.gameId = id
 	this.movesArray = []
 	this.history = []
+	this.whiteKing = [5,1]
+	this.blackKing = [5,8]
 	/**
     * logical Board is an array of tiles representing the chess board. Used by the server for an "absolute" board
 	* that clients can access.
@@ -164,8 +167,6 @@ class Game{
 			}
 		}
 		// //Set a piece for testing
-		// this.logicalBoard[4][4].setPiece(new pieces.King(4, 4, "Black"));
-		// this.logicalBoard[4][4].setOccupied(1);
 
 		// this.logicalBoard[4][5].setPiece(new pieces.Queen(4, 5, "Black"));
 		// this.logicalBoard[4][5].setOccupied(1);
@@ -188,12 +189,7 @@ class Game{
 
 	getMoves(xCoordinate, yCoordinate, color) {
 		var movesArray = [];
-		// if (this.logicalBoard[xCoordinate][yCoordinate].getPiece() != pieces.Blank) {
-		// 	movesArray = this.logicalBoard[xCoordinate][yCoordinate].getPiece().getMoves(this.logicalBoard);
-		// }
-		console.log(this.movesArray, "before export")
 		movesArray = this.exportMoves(this.movesArray);
-		console.log(movesArray, "after export")
 		return movesArray;
 	}
 	addPlayer(username){
@@ -207,23 +203,72 @@ class Game{
 		return this.players
 	}
 
-	checkGameOver(){
+	checkGameOver(color){
+		if(color.toLowerCase() == "white"){
+			var opponent = "black"
+		}else{
+			var opponent = "white"
+		}
+		//Color is the person who just moved
+		//Check to see if the opponent is in check
+		var inCheckBlack = this.logicalBoard[this.blackKing[0]][this.blackKing[1]].getPiece().getCheck(this.blackKing[0], this.blackKing[1], this.logicalBoard)
+		var inCheckWhite = this.logicalBoard[this.whiteKing[0]][this.whiteKing[1]].getPiece().getCheck(this.whiteKing[0], this.whiteKing[1], this.logicalBoard)
+		//check to see if the opponent can move out of check
+		if(opponent == "white"){
+			//in check
+			if(inCheckWhite){
+				console.log("Checked Opponent!")
+				//Changed the Notation to display the check
+				var histLength = this.history.length-1
+				this.history[histLength] = this.history[histLength]+"+"
+				//game state is 2 if he can still move
+				this.gameState = 2
+				//if he cant move it will be changed to a higher number
+			//not in check
+			}else{
+				this.gameState = 0
+				//Check for statelmate however
+			}
+		}else if(opponent == "black"){
+			if(inCheckBlack){
+				console.log("Checked Opponent!")
+				//Changed the Notation to display the check
+				var histLength = this.history.length-1
+				this.history[histLength] = this.history[histLength]+"+"
+				this.gameState = 3
+			}else{
+				this.gameState = 0
+				//Check for statelmate however
+			}
+		}
 
 	}
 
 	// First click is tranfored to last click 
 	movePiece(firstClick, lastClick) {
+
 		// Piece exists at its destination tile.
 		var lx = lastClick.getPiece().getXCoordinate()
 		var ly = lastClick.getPiece().getYCoordinate()
 		var fx = firstClick.getPiece().getXCoordinate()
 		var fy = firstClick.getPiece().getYCoordinate()
-		console.log("l", lx, ly, "f", fx, fy)
+
+
+		//update king pointers if needed
+		if(firstClick.getPiece().getType() == "King"){
+			if(firstClick.getPiece().getColor().toLowerCase() == "white"){
+				this.whiteKing = [lx,ly]
+			}else if(firstClick.getPiece().getColor().toLowerCase() == 'black'){
+				this.blackKing = [lx, ly]
+			}
+			console.log("Just moved a king!")
+		}
 
 		this.logicalBoard[lx][ly].setPiece(firstClick.getPiece());
 		// Pieces' coordinates are updated to match its new parent tiles' coordinates.
 		this.logicalBoard[lx][ly].getPiece().setXCoordinate(lx);
 		this.logicalBoard[lx][ly].getPiece().setYCoordinate(ly);
+		console.log(this.logicalBoard[lx][ly].getPiece().getColor(),"Moved Pieces color")		
 		this.logicalBoard[lx][ly].setOccupied(1);
 		this.logicalBoard[lx][ly].getPiece().addMove();
 		// The previous coordinate is "scrubbed" to show that it is no longer occupied.
@@ -274,10 +319,12 @@ class Game{
 	//TODO: Update evaluateClick 
 	evaluateClick(x, y, color) {
 		if(this.turn == color){
+			var inCheckBlack = this.logicalBoard[this.blackKing[0]][this.blackKing[1]].getPiece().getCheck(this.blackKing[0], this.blackKing[1], this.logicalBoard)
+			var inCheckWhite = this.logicalBoard[this.whiteKing[0]][this.whiteKing[1]].getPiece().getCheck(this.whiteKing[0], this.whiteKing[1], this.logicalBoard)
+			console.log(inCheckWhite, inCheckBlack, "currently in check?")
 			console.log("recieved", x, y)
+
 			//Is this the opening or "alpha" click?
-			// if( !(this.alphaClick.getXCoordinate()) && !(this.alphaClick.getYCoordinate() && (this.logicalBoard[x][y].getOccupied))
-			// 	 || (this.logicalBoard[x][y].getPiece().getColor() == color)){
 			if(this.logicalBoard[x][y].getPiece().getColor().toLowerCase() == color){
 				console.log("set Alpha click", x, y)
 				this.alphaClick.setPiece(this.logicalBoard[x][y].getPiece())
@@ -291,8 +338,6 @@ class Game{
 				//Case 1. Check to see if the 2nd click is in our moves Array.
 				var isValidMove = false;
 				for(var i = 0; i < this.movesArray.length; i++) {
-					console.log("Comparing X", this.movesArray[i][0] , this.omegaClick.getXCoordinate())
-					console.log("Comparing Y", this.movesArray[i][1] , this.omegaClick.getXCoordinate())
 					if(
 						(this.movesArray[i][0] == this.omegaClick.getPiece().getXCoordinate())
 						 && (this.movesArray[i][1] == this.omegaClick.getPiece().getYCoordinate())
@@ -308,13 +353,15 @@ class Game{
 				if ( (!(this.logicalBoard[x][y].getOccupied())  && (isValidMove))) {
 					console.log("moving piece!")
 					this.movePiece(this.alphaClick, this.omegaClick);
+					this.checkGameOver(color)
 					this.changeTurn()
 				}
 				// The omega tile is occupied! Capture it!
 				else if ((this.logicalBoard[x][y].getOccupied()) && (isValidMove)) {
 					(console.log("capturing a piece!"))
 					this.capturePiece(this.alphaClick, this.omegaClick);
-					this.changeTurn()
+					this.checkGameOver(color)
+					this.changeTurn()    
 				}
 				// Once we have resolved all possible click cases, we can - nay, must! - reset our clicks.
 				this.movesArray = []
@@ -437,9 +484,20 @@ class Game{
 			for(var x = 1; x < 9; x++) {
 				this.displayBoard[y - 1][x - 1] = this.pieceConverter(this.logicalBoard[x][y].getPiece());
 			}
+		}if(this.gameState == 0){
+			this.displayBoard[this.whiteKing[1]-1][this.whiteKing[0]-1] = 15
+			this.displayBoard[this.blackKing[1]-1][this.blackKing[0]-1] = 5
+		}else if(this.gameState == 2){
+			this.displayBoard[this.whiteKing[1]-1][this.whiteKing[0]-1] = 35
+		}else if(this.gameState == 3){
+			this.displayBoard[this.blackKing[1]-1][this.blackKing[0]-1] = 25
 		}
+
 		this.displayBoard.reverse();
+
+
 	}
+
 	exportMoves(oldMovesArray){
 		var newMovesArray = [];
 		for(var i = 0; i < oldMovesArray.length; i++) {
