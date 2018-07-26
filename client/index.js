@@ -5,7 +5,8 @@ const app = new Vue({
 	el: '#app',
 	data: {
 
-    socket: io.connect('http://localhost:3000'),
+   // socket: io.connect('localhost:3000'),
+    socket: io.connect('http://144.38.193.102:3000'),
     room: "",
     board: [
               [2,3,4,6,5,4,3,2],
@@ -43,7 +44,8 @@ const app = new Vue({
     mouseDown: false,
     read: true,
     hovered: null,
-    coordinates: []
+    coordinates: [],
+    theme: 'dark'
 
   },
 
@@ -71,11 +73,11 @@ const app = new Vue({
     down: function() {
       if(app.mouseDown ){
         return {
-            cursor: 'none',
+            //cursor: 'none',
         }
       }else{
         return{
-          cursor: 'default'
+          //cursor: 'default'
         }
       }
     },
@@ -122,6 +124,9 @@ const app = new Vue({
         height: newWidth + 'px'
       };
     },
+    dark(){
+      return this.theme === 'dark'
+    }
   },
 
   created(){
@@ -172,6 +177,9 @@ const app = new Vue({
   },
 
 	methods: {
+    setTheme: function(theme){
+      this.theme = theme
+    },
     //display the correct colors for the tiles
     getGridNum: function(num){
       if(app.color == "white"){
@@ -279,6 +287,7 @@ const app = new Vue({
         //app.coordinates = [i, j-2]
         //console.log(app.hovered)
         return{
+          'margin-top': 32+'px',
           cursor: 'none',
           position: 'fixed',
           top: y-25 + 'px',

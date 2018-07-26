@@ -28,9 +28,6 @@ img {
     height: 50px;
     width: 50px;
 }
-.dragable{
-
-}
 
 .white_b {
     height: auto; 
@@ -77,7 +74,7 @@ img {
     align-items: center;
     vertical-align: middle;
     align-content: center;
-    color: #263238;
+
 }
 .col {
     display: inline-flex;
@@ -143,8 +140,8 @@ img {
 @media only screen and (max-width: 1263px) {
 
 img {
-    height: 80px;
-    width: 80px;
+    height: 60px;
+    width: 60px;
 }
 
 .white_b {
@@ -169,11 +166,6 @@ img {
     margin-right: 20px;
 }
 
-.resizeDis{
-    width:1000px;
-    height: 80px;
-}
-
 .sidebars {
     height: 0px;
     width: 0px;
@@ -187,10 +179,47 @@ img {
 }
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 950px) {
+
+img {
+    height: 40px;
+    width: 40px;
+}
+
+.white_b {
+    height: 700px; 
+    width: 700px;
+    margin: 0;
+    position: relative;
+    top: 10%;
+    left: 10%;
+    margin-right: -10%;
+    transform: translate(-10%, -10%)
+
+}
+.tile {
+    min-width: 80px;
+    min-height: 80px;
+}
+
+.letts {
+    width: 680px;
+    margin-right: 30px;
+    margin-left: 30px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.col {
+    height: 600px;
+    margin-right: 10px;
+}
+
+}
+@media only screen and (max-width: 770px) {
 img{
-    width: 30px;
-    height: 30px;
+    width: 10px;
+    height: 10px;
 }
 
 .smallBtn{
