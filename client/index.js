@@ -5,8 +5,8 @@ const app = new Vue({
 	el: '#app',
 	data: {
 
-    //socket: io.connect('localhost:3000'),
-    socket: io.connect('http://144.38.193.102:3000'),
+    socket: io.connect('localhost:3000'),
+    //socket: io.connect('http://144.38.193.102:3000'),
     room: "",
     board: [
               [2,3,4,6,5,4,3,2],
@@ -33,6 +33,7 @@ const app = new Vue({
     handles: [],
     message: "",
     dialog: false,
+    gameOver: false,
     chatMobile: false,
     oppPieces: [],
     pieces: [],

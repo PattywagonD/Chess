@@ -13,6 +13,16 @@
       <!-- Change Theme -->
     <v-app :dark="dark">
       <div class="text-xs-center">
+          <v-dialog v-model="gameOver" persistent max-width="290">
+      <v-btn slot="activator" color="primary" dark>END GAME</v-btn>
+      <v-card>
+        <v-card-title class="headline">The Game Has Ended</v-card-title>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn flat @click.native="startGame()">START NEW GAME!</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
         <v-menu
           :close-on-content-click="false"
           :nudge-width="200"
@@ -23,7 +33,6 @@
           >
             CHANGE THEME
           </v-btn>
-
 
           <v-list>
             <v-list-tile avatar>
@@ -51,6 +60,7 @@
           </v-list>
         </v-menu>
       </div>
+
       <!--PLAY Button to Start Game-->
       <v-content v-if="noGame">
         <v-container>
@@ -60,10 +70,10 @@
               <v-card-title>
               <h2>Start a Game of Chess</h2>
               </v-card-title>
-              <v-form @keyup.native.enter="startGame">
-                <v-text-field v-model="username" label="Username" required></v-text-field>
-                <v-btn @click="startGame"> PLAY </v-btn>
-              </v-form>
+              <div>
+                <v-text-field v-model="username" label="Username" required @keypress.native.enter="startGame()"></v-text-field>
+                <v-btn @click="startGame()"> PLAY </v-btn>
+              </div>
             </v-card>
             </v-flex>
           </v-layout>
@@ -207,12 +217,12 @@
                 </v-card>
 
                 </v-card>
-              <!-- Layout for Chat window -->
+               <!-- Layout for Chat window -->
               <v-card class="sidebars">
                 <v-toolbar dark color = blue>
                     <v-toolbar-title class="white--text">Chat</v-toolbar-title>
                   </v-toolbar>
-                    <v-card>
+                    <v-card class="chat_overflow">
                       <v-card-text>
                         <v-list >
                           <v-list-tile v-for="item in messages" avatar>
@@ -228,7 +238,7 @@
                     </v-card>
                     <v-card><v-card-text>{{feedback}}</v-card-text></v-card>
                 <v-toolbar>
-                  <v-text-field v-model="message" placeholder="new message"></v-text-field>
+                  <v-text-field v-model="message" placeholder="new message" @keyup.enter="sendMessage()"></v-text-field>
                   <v-btn icon @click="sendMessage()">
                     <v-icon>send</v-icon>
                   </v-btn>
@@ -263,11 +273,11 @@
             </v-flex>
 
             <!-- Small Web Query for Chat Panel -->
-            <v-flex class ="mobile" xs12 color="blue-grey lighten-5">
+            <v-flex class ="mobile" xs12>
               <v-expansion-panel>
                 <v-expansion-panel-content>
                   <div slot="header"><h2>Chat</h2></div>
-                  <v-card>
+                  <v-card class="chat_overflow">
                     <v-card-text>
                       <v-list >
                         <v-list-tile v-for="item in messages" avatar @click="">
@@ -282,7 +292,7 @@
                     </v-card-text>
                   </v-card>
                   <v-toolbar>
-                    <v-text-field v-model="message" placeholder="new message"></v-text-field>
+                    <v-text-field v-model="message" placeholder="new message" @keyup.enter="sendMessage()"></v-text-field>
                     <v-btn icon @click="sendMessage">
                       <v-icon>send</v-icon>
                     </v-btn>
@@ -304,8 +314,9 @@
           <v-card>
             <v-card style='background-color: #303030' class="contain">
               <v-card-title class="white--text">
-                <h4>Game Opening: Something</h4>
+                <h4>Game Opening: {{opening}}</h4>
                 <v-spacer></v-spacer>
+                <b />
                 <p>{{history}}</p>
               </v-card-title>
             </v-card>
@@ -317,14 +328,15 @@
              </v-toolbar>
           </v-card>
 
+
           <!--Game Display (MOBILE)-->
           <v-card v-bind:style="[boardMobile]">
             <v-layout width=100% row green> 
               <v-card width=12.5%  center column v-for = "i in 8" >
-                <v-card v-bind:style="[tileMobile]"  dark v-for ="j in 8" v-bind:color= "getColor(i, j)" >
+                <v-card v-bind:style="[tileMobile]"  dark v-for ="j in 8" v-bind:color= "getColor(i, j)" @mouseover="setHovered(i,j)" >
                   <div v-if ="getMoves(i,j)" class='overlay' >Moveable</div> 
-                  <v-btn style="width:90%; height:90%; margin-left: 5%;" flat fab @click="sendClick(i,j)">                       
-                    <img style="width:90%; height:90%;" v-bind:src = "getImage(i, j)">
+                  <v-btn style="width:90%; height:90%; margin-left: 5%;" flat fab  @mousedown= "newDrag()"  @mouseup="sendClick()" flat fab>                       
+                    <img style="width:90%; height:90%;" v-bind:style="dragging(i,j)"  v-bind:src = "getImage(i, j)">
                   </v-btn>
                 </v-card>
               </v-card>
@@ -380,7 +392,7 @@
                     <v-spacer></v-spacer>
                     <!--Dialog Input Field and Send Btn-->
                     <v-toolbar class="stick" color= 'primary'>
-                      <v-text-field v-model="message" placeholder="new message"></v-text-field>
+                      <v-text-field v-model="message" placeholder="new message" @keyup.enter="sendMessage()" ></v-text-field>
                       <v-btn icon @click="sendMessage()">
                         <v-icon>send</v-icon>
                       </v-btn>
@@ -389,7 +401,7 @@
                 </v-dialog>
                 <!--Chat Input Outside Dialog-->
                 <v-card-title class="white--text"><h1>Chat</h1></v-card-title>
-                <v-text-field v-model="message" placeholder="new message"></v-text-field>
+                <v-text-field v-model="message" placeholder="new message"  @keyup.enter="sendMessage()"></v-text-field>
                 <v-btn icon @click="sendMessage()">
                   <v-icon>send</v-icon>
                 </v-btn>
