@@ -172,7 +172,25 @@
                           >
                             Chess Notation
                           </v-card-title>
-                            <v-card-text>example a3</v-card-text>
+                            <v-card-text>
+                              K          King <br /> 
+                              Q          Queen <br /> 
+                              R          Rook <br /> 
+                              N          Knight <br /> 
+                              B          Bishop <br /> 
+                                         Pawn's have no letter <br /> 
+                              x          Piece taken <br /> 
+                              e.p.       Piece taken en passant <br /> 
+                              +          Check <br /> 
+                              #          Checkmate <br /> 
+                              =          Pawn promotion * <br /> 
+                              0-0        Castle King-side <br /> 
+                              0-0-0      Castle Queen-side <br /> 
+                              1-0        White win <br /> 
+                              ½-½        Draw <br /> 
+                              0-1        Black win <br /> 
+                              (=)        Draw offered <br /> 
+                            </v-card-text>
                           <v-divider></v-divider>
                           <v-card-actions>
                             <v-spacer></v-spacer>
@@ -183,7 +201,7 @@
                 </v-toolbar>
                 <v-card>
                   <v-card-text>
-                    <h4>Game Opening: Something</h4>
+                    <h4>Game Opening: {{opening}}</h4>
                     <p>{{history}}</p>                
                   </v-card-text>
                 </v-card>
@@ -387,8 +405,10 @@
 
     </v-app>
   </div>
+  <script src="underscore.js"></script>
   <script src="vue.js"></script>
   <script src="vuetify.js"></script>
   <script src="index.js"></script>
+
 </body>
 </html>

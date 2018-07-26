@@ -5,7 +5,7 @@ const app = new Vue({
 	el: '#app',
 	data: {
 
-   // socket: io.connect('localhost:3000'),
+    //socket: io.connect('localhost:3000'),
     socket: io.connect('http://144.38.193.102:3000'),
     room: "",
     board: [
@@ -45,7 +45,8 @@ const app = new Vue({
     read: true,
     hovered: null,
     coordinates: [],
-    theme: 'dark'
+    theme: 'dark',
+    opening: ""
 
   },
 
@@ -348,6 +349,7 @@ const app = new Vue({
             app.pieces = data.wPieces
             app.oppPieces = data.bPieces
             app.history = data.history
+            app.getOpening()
             console.log("pieces", app.pieces, app.oppPieces, data.wPieces, data.bPieces)
           //if the player is black then the board need translated for their viewing window
           }else if(app.color == "black"){
@@ -356,6 +358,7 @@ const app = new Vue({
             app.pieces = data.bPieces
             app.oppPieces = data.wPieces
             app.history = data.history
+            app.getOpening()
             console.log("pieces", app.pieces, app.oppPieces, data.wPieces, data.bPieces)
           }
         })
@@ -470,6 +473,93 @@ const app = new Vue({
       
       return tempMoves
     },
+
+    arrayEqual: function(array1, array2){
+      console.log("getting array equal")
+      var l1 = array1.length
+      var l2 = array2.length 
+      console.log(l1, l2, "Lengths of arrays")    
+      if(l1 == l2){
+        return true
+      }
+    }, 
+
+    getOpening: function(){
+      var tempHist = app.history.slice()
+      //C4
+      if(_.isEqual(tempHist, ["e4","c5"])){
+        app.opening = "Sicilian Defence"
+      }else if(_.isEqual(tempHist, ["e4","e6"])){
+        app.opening = "French Defence"
+      }else if(_.isEqual(tempHist,["e4","e5","Nf3", "Nc6", "Bb5"])){
+        app.opening = "Ruy Lopez Opening"
+      }else if(_.isEqual(tempHist,["e4","c6"])){
+        app.opening = "Caro-Kann Defence"
+      }else if(_.isEqual(tempHist,["e4","e5","Nf3", "Nc6", "Bf4"])){
+        app.opening = "Italian Game"
+      }else if(_.isEqual(tempHist,["e4","c5","Nc3"])){
+        app.opening = "Sicilian Defence Closed"
+      }else if(_.isEqual(tempHist, ["e4","d5"])){
+        app.opening = "Scandinavian Defence"
+      }else if(_.isEqual(tempHist, ["e4","d6","d4","Nf6"])){
+        app.opening = "Pirc Defence"
+      }else if(_.isEqual(tempHist,["e4","c5","c3"])){
+        app.opening = "Sicilian Defence: Alapin Variation"
+      }else if(_.isEqual(tempHist,["e4","Nf6"])){
+        app.opening = "Alekhine Defence"
+      }else if(_.isEqual(tempHist, ["e4","e5","f4"])){
+        app.opening = "King's Gambit"
+      }else if(_.isEqual(tempHist, ["e4","e5","Nf3","Nc6","d4"])){
+        app.opening = "Scotch Game"
+      }
+      //D4
+      else if(_.isEqual(tempHist, ["d4","d5","c4"])){
+        app.opening = "Queen's Gambit"
+      }else if(_.isEqual(tempHist, ["d4","d5","c4", "c6"])){
+        app.opening = "Slav Defence"
+      }else if(_.isEqual(tempHist, ["d4","Nf6","c4","g6"])){
+        app.opening = "King's Indian Defence"
+      }else if(_.isEqual(tempHist, ["d4","e6","c4", "Nf6", "Nc3", "Bb4"])){
+        app.opening = "Nimzo-Indian Defence"
+      }else if(_.isEqual(tempHist, ["d4","e6","c4", "Nf6", "Nf3", "b6"])){
+        app.opening = "Queen's Indian Defence"
+      }else if(_.isEqual(tempHist, ["d4","e6","c4","Kf6", "Kf3", "Bb4"])){
+        app.opening = "Bogo-Indian Defence"
+      }else if(_.isEqual(tempHist, ["d4","d5","c4", "Kf6", "Kc3", "g6"])){
+        app.opening = "Gruenfeld Defence"
+      }else if(_.isEqual(tempHist, ["d4","f5"])){
+        app.opening = "Dutch Defence"
+      }else if(_.isEqual(tempHist, ["d4","Kf6","Bg5"])){
+        app.opening = "Trompowsky Attack"
+      }else if(_.isEqual(tempHist, ["d4","Kf6","c4","c5", "d5", "b5"])){
+        app.opening = "Benko Gambit"
+      }else if(_.isEqual(tempHist, ["d4","d5","Kf3", "Kf6", "Bf4"])){
+        app.opening = "Queen's Pawn Opening London System"
+      }else if(_.isEqual(tempHist, ["d4","Kf6","c4", "c5", "d5", "e6", "Kc3"])){
+        app.opening = "Benoni Defence: Modern Variation"
+      }
+      //Other
+      else if(_.isEqual(tempHist, ["d4", "Kf6", "c4", "e6"])){
+        app.opening = "Catalan Opening"
+      }else if(_.isEqual(tempHist, ["Kf3"])){
+        app.opening = "Reti Opening"
+      }else if(_.isEqual(tempHist, ["c4"])){
+        app.opening = "English Opening"
+      }else if(_.isEqual(tempHist, ["f4"])){
+        app.opening = "Bird's Opening"
+      }else if(_.isEqual(tempHist, ["Kf3", "d5", "g3"])){
+        app.opening = "King's Indian Attack"
+      }else if(_.isEqual(tempHist, ["g3"])){
+        app.opening = "Hungarian Opening"
+      }else if(_.isEqual(tempHist, ["b3"])){
+        app.opening = "Nimzowitsch-Larsen Attack"
+      }else if(_.isEqual(tempHist, ["b4"])){
+        app.opening = "Polish Opening"
+      }else if(_.isEqual(tempHist, ["g4"])){
+        app.opening = "Grob Opening"
+      }
+
+    }
   } 
 })
 
