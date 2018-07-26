@@ -10,20 +10,62 @@
 </head>
 <body>
   <div id="app" ref = "winapp">
-    <v-app theme dark>
+      <!-- Change Theme -->
+    <v-app :dark="dark">
+      <div class="text-xs-center">
+        <v-menu
+          :close-on-content-click="false"
+          :nudge-width="200"
+          offset-x
+        >
+          <v-btn
+            slot="activator"
+          >
+            CHANGE THEME
+          </v-btn>
+
+
+          <v-list>
+            <v-list-tile avatar>
+              <v-list-tile-avatar>
+              <v-btn flat fab @click="setTheme('dark')">
+                <img src="img/bpawn.png" alt="black pawn" >
+                </v-btn>
+              </v-list-tile-avatar>
+
+              <v-list-tile-content>
+                <v-list-tile-title>Dark</v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+             <v-list-tile avatar>
+              <v-list-tile-avatar>
+              <v-btn flat fab @click="setTheme('light')">
+                <img src="img/wpawn.png" alt="white pawn" >
+                </v-btn>
+              </v-list-tile-avatar>
+
+              <v-list-tile-content>
+                <v-list-tile-title>Light</v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+          </v-list>
+        </v-menu>
+      </div>
       <!--PLAY Button to Start Game-->
       <v-content v-if="noGame">
         <v-container>
           <v-layout wrap row align-center justify-center>
-            <v-card color="blue">
+          <v-flex s6>
+            <v-card color="blue" class="start_screen">
               <v-card-title>
               <h2>Start a Game of Chess</h2>
               </v-card-title>
-              <v-form ref="form" lazy-validation>
+              <v-form @keyup.native.enter="startGame">
                 <v-text-field v-model="username" label="Username" required></v-text-field>
-                <v-btn @click="startGame()"> PLAY </v-btn>
+                <v-btn @click="startGame"> PLAY </v-btn>
               </v-form>
             </v-card>
+            </v-flex>
           </v-layout>
         </v-container>
       </v-content>

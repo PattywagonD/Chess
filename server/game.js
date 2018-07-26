@@ -316,7 +316,6 @@ class Game{
 		
 	}
 
-	//TODO: Update evaluateClick 
 	evaluateClick(x, y, color) {
 		if(this.turn == color){
 			var inCheckBlack = this.logicalBoard[this.blackKing[0]][this.blackKing[1]].getPiece().getCheck(this.blackKing[0], this.blackKing[1], this.logicalBoard)

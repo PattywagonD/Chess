@@ -155,7 +155,7 @@ class Rook extends Piece {
      * This mean moves are added Up, Right, Down, and then Left. Important to keep in mind for other objects
      * that will be using these pieces.
      */
-    getMoves(board) {
+    getMoves(board, kx, ky) {
         var movesArray = new Array();
         var xCurrent = this.getXCoordinate();
         var yCurrent = this.getYCoordinate();
@@ -245,7 +245,7 @@ class Knight extends Piece {
      * 2 Left, 1 Down; 
      * 2 Left, 1 Up;
      */
-    getMoves(board) {
+    getMoves(board, kx, ky) {
         var movesArray = new Array();
         //Case 1. 2 Up, 1 Left
         if ((this.getXCoordinate() - 1 >= 1) && (this.getYCoordinate() + 2 <= 8)) {
