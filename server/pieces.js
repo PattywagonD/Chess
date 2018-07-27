@@ -1,3 +1,10 @@
+/**
+ * WELCOME TO...
+ * P I E C E S . J S
+ * pieces.js contains class declarations for each individual chess piece. For our implementation,
+ * a "blank" is as much a piece as any rook or king or queen. Individual methods and properties pertaining to
+ * each individual piece is also defined here, on the server side.
+ */
 class Tile {
     constructor(occupationStatus, xCoordinate, yCoordinate) {
         this.occupied = occupationStatus;
@@ -21,7 +28,16 @@ class Tile {
     // "Setter" Department
     setOccupied(occupationStatus) {
         this.occupied = occupationStatus;
-    }     
+    }
+    setXCoordinate(xCoordinate) {
+        this.x = xCoordinate;
+    }
+    setYCoordinate(yCoordinate) {
+        this.y = yCoordinate;
+    }
+    setPiece(newPiece) {
+        this.piece = newPiece;
+    }
 }
 
 
@@ -48,68 +64,80 @@ class Piece {
     getNumberOfMoves() {
         return(this.numberOfMoves)
     }
+    addMove(){
+        this.numberOfMoves += 1
+    }
+    setXCoordinate(newX){
+        this.x = newX
+    }
+    setYCoordinate(newY){
+        this.y=newY
+    }
 }
 
 class Blank extends Piece {
     constructor(xCoordinate, yCoordinate){
         super(xCoordinate, yCoordinate, "Blank", "Empty");
     }
+    getMoves(board) {
+        return []
+    }
 }
 
 class Pawn extends Piece {
     constructor(xCoordinate, yCoordinate, color) {
-        super(1, xCoordinate, yCoordinate, color);
+        super(xCoordinate, yCoordinate, color);
         this.type = "Pawn";
-        this.numberMoves = 0;
+        this.numberOfMoves = 0;
     }
 
     getMoves(board){
-        movesArray = new Array();
+        var movesArray = new Array();
         if(this.color == "White") {
             // Case 1.White : Capture a piece to your left
             if ((this.getXCoordinate() - 1 >= 1) && (this.getYCoordinate() + 1 <= 8)) {  
-                if (board[this.getXCoordinate() - 1][this.getYCoordinate() + 1].piece.color == "Black") {
-                    movesArray.push({x : (this.getXCoordinate() - 1), y : (this.getYCoordinate() + 1)});
+                if (board[this.getXCoordinate() - 1][this.getYCoordinate() + 1].getPiece().getColor() == "Black") {
+                    movesArray.push([(this.getXCoordinate() - 1) , (this.getYCoordinate() + 1)]);
                 }
             }
             // Case 2.White Move forward
-            if ((this.getYCoordinate() + 1) >= 1) { 
+            if ((this.getYCoordinate() + 1) <= 8) {
                 if (!(board[this.getXCoordinate()][this.getYCoordinate() + 1].getOccupied())) { // 2.a Move forward 1 space
-                    movesArray.push({x : (this.getXCoordinate()), y : (this.getYCoordinate() + 1)});
+                    movesArray.push([(this.getXCoordinate()) , (this.getYCoordinate() + 1)]);
                     // 2.b Move forward 2 spaces; only possibly true if case 2.a is also true
-                    if ((this.getNumberOfMoves() < 1) && !(board[this.getXCoordinate()][this.getYCoordinate() - 2].getOccupied())) {
-                        movesArray.push({x : (this.getXCoordinate()), y : (this.getYCoordinate() + 2)});
+                    if ((this.getNumberOfMoves() < 1) && !(board[this.getXCoordinate()][this.getYCoordinate() + 2].getOccupied())) {
+                        movesArray.push([(this.getXCoordinate()), (this.getYCoordinate() + 2)]);
                     }
                 }
             }
-            // Case 3.White : Capture a piece to your right
+            // // Case 3.White : Capture a piece to your right
             if ((this.getXCoordinate() + 1 <= 8) && (this.getYCoordinate() + 1 <= 8)) {
-                if (board[this.getXCoordinate() + 1][this.getYCoordinate() + 1].piece.color == "Black") {
-                    movesArray.push({x : (this.getXCoordinate() + 1), y : (this.getYCoordinate() + 1)});
+                if (board[this.getXCoordinate() + 1][this.getYCoordinate() + 1].getPiece().getColor() == "Black") {
+                    movesArray.push([(this.getXCoordinate() + 1), (this.getYCoordinate() + 1)]);
                 }
             }
         }
         else if (this.color == "Black") {
             // Case 1.Black : Capture a piece to your left
             if((this.x - 1 >= 1) && (this.y - 1 >= 1)) {  
-                if (board[this.x - 1][this.y - 1].piece.color == "White") {
-                    movesArray.push({x : (this.x - 1), y : (this.y - 1)});
+                if (board[this.getXCoordinate() - 1][this.getYCoordinate() - 1].getPiece().getColor() == "White") {
+                    movesArray.push([(this.getXCoordinate() - 1), (this.getYCoordinate() - 1)]);
                 }
             }
             // Case 2.Black Move forward
             if ((this.getYCoordinate() - 1) >= 1) { 
                 if (!(board[this.getXCoordinate()][this.getYCoordinate() - 1].getOccupied())) { // 2.a Move forward 1 space
-                    movesArray.push({x : (this.getXCoordinate()), y : (this.getYCoordinate() - 1)});
+                    movesArray.push([(this.getXCoordinate()), (this.getYCoordinate() - 1)]);
                     // 2.b Move forward 2 spaces; only true if case 2.a is also true
                     if ((this.getNumberOfMoves() < 1) && !(board[this.getXCoordinate()][this.getYCoordinate() - 2].getOccupied())) {
-                        movesArray.push({x : (this.getXCoordinate()), y : (this.getYCoordinate() - 1)});
+                        movesArray.push([(this.getXCoordinate()), (this.getYCoordinate() - 2)]);
                     }
                 }
             }
             // Case 3. Capture a piece to your right
             if ((this.getXCoordinate() + 1 <= 8) && (this.getYCoordinate() - 1 >= 1)) {
-                if (board[this.getXCoordinate() + 1][this.getYCoordinate() - 1].piece.color == "White") {
-                    movesArray.push({x : (this.getXCoordinate() + 1), y : (this.getYCoordinate() - 1)});
+                if (board[this.getXCoordinate() + 1][this.getYCoordinate() - 1].getPiece().getColor() == "White") {
+                    movesArray.push([(this.getXCoordinate() + 1), (this.getYCoordinate() - 1)]);
                 }
             }
         }
@@ -118,7 +146,7 @@ class Pawn extends Piece {
 }
 class Rook extends Piece {
     constructor (xCoordinate, yCoordinate, color) {
-        super(1, xCoordinate, yCoordinate, color);
+        super(xCoordinate, yCoordinate, color);
         this.type = "Rook";
     }
     /**
@@ -127,58 +155,79 @@ class Rook extends Piece {
      * This mean moves are added Up, Right, Down, and then Left. Important to keep in mind for other objects
      * that will be using these pieces.
      */
-    getMyMoves(board) {
-        movesArray = new Array();
-        let xCurrent = this.getXCoordinate();
-        let yCurrent = this.getYCoordinate();
+    getMoves(board, kx, ky) {
+        var movesArray = new Array();
+        var xCurrent = this.getXCoordinate();
+        var yCurrent = this.getYCoordinate();
         // Case One: Can the Rook move Forward? If so how far?
-        while (yCurrent <= 8) {
-            ++yCurrent;
-            if (board[this.getXCoordinate()][yCurrent].getOccupied()) {
-                break;
+        while (yCurrent <= 7) {
+            if (board[this.getXCoordinate()][yCurrent+1].getPiece().getColor() != "Blank") {
+                if(board[this.getXCoordinate()][yCurrent+1].getPiece().getColor() == this.getColor()){
+                    break;
+                }else{
+                    movesArray.push([this.getXCoordinate(), yCurrent+1])
+                    break;
+                }
             }
+
             else {
-                movesArray.push({x : this.getXCoordinate(), y : yCurrent});
+                movesArray.push([this.getXCoordinate(), yCurrent+1]);
             }
+            ++yCurrent;
         }
         // Case Two: How far Right can the Rook move?
-        while (xCurrent <= 8) {
+        while (xCurrent <= 7) {
+            if (board[xCurrent+1][this.getYCoordinate()].getPiece().getColor() != "Blank") {
+                if(board[xCurrent+1][this.getYCoordinate()].getPiece().getColor() == this.getColor()){
+                    break;
+                }else{
+                    movesArray.push([xCurrent+1, this.getYCoordinate()])
+                    break;
+                }
+            }
+            else {
+                movesArray.push([xCurrent+1, this.getYCoordinate()]);
+            }
             ++xCurrent;
-            if (board[xCurrent][this.getYCoordinate()].getOccupied()) {
-                break;
-            }
-            else {
-                movesArray.push({x : xCurrent, y : this.getYCoordinate()});
-            }
         }
-        let xCurrent = this.getXCoordinate();
-        let yCurrent = this.getYCoordinate();
+
+        xCurrent = this.getXCoordinate();
+        yCurrent = this.getYCoordinate();
         // Case Three: Can the Rook move Backward? To what degree?
-        while (yCurrent >= 1) {
+        while (yCurrent >= 2) {
+            if (board[this.getXCoordinate()][yCurrent-1].getPiece().getColor() != "Blank") {
+                if(board[this.getXCoordinate()][yCurrent-1].getPiece().getColor() == this.getColor()){
+                    break;
+                }else{
+                    movesArray.push([this.getXCoordinate(), yCurrent-1])
+                    break;
+                }
+            }else {
+                movesArray.push([this.getXCoordinate(), yCurrent-1])
+            }
             --yCurrent;
-            if (board[this.getXCoordinate()][yCurrent].getOccupied()) {
-                break;
-            }
-            else {
-                movesArray.push({x : this.getXCoordinate(), y : yCurrent});
-            }
         }
+
         // Case Four: How far Left can our Rook move?
-        while (xCurrent >= 1) {
+        while (xCurrent >= 2) {
+            if (board[xCurrent-1][this.getYCoordinate()].getPiece().getColor() != "Blank") {
+                if(board[xCurrent-1][this.getYCoordinate()].getPiece().getColor() == this.getColor()){
+                    break;
+                }else{
+                    movesArray.push([xCurrent-1, this.getYCoordinate()]);
+                    break;
+                }
+            }else {
+                movesArray.push([xCurrent-1, this.getYCoordinate()]);
+            }
             --xCurrent;
-            if (board[xCurrent][this.getYCoordinate()].getOccupied()) {
-                break;
-            }
-            else {
-                movesArray.push({x : xCurrent, y : this.getYCoordinate()});
-            }
         }
         return movesArray;
     }
 }
 class Knight extends Piece {
     constructor(xCoordinate, yCoordinate, color) {
-        super(1, xCoordinate, yCoordinate, color);
+        super(xCoordinate, yCoordinate, color);
         this.type = "Knight";
     }
     /**
@@ -196,61 +245,62 @@ class Knight extends Piece {
      * 2 Left, 1 Down; 
      * 2 Left, 1 Up;
      */
-    getMoves(board) {
-        movesArray = new Array();
-        // Case 1. 2 Up, 1 Left
+    getMoves(board, kx, ky) {
+        var movesArray = new Array();
+        //Case 1. 2 Up, 1 Left
         if ((this.getXCoordinate() - 1 >= 1) && (this.getYCoordinate() + 2 <= 8)) {
-            if (board[this.getXCoordinate() - 1][this.getYCoordinate() + 2].getColor() != this.getColor()) {
-                movesArray.push({x : (this.getXCoordinate() - 1), y : (this.getYCoordinate() + 2)})
+            if (board[this.getXCoordinate() - 1][this.getYCoordinate() + 2].getPiece().getColor() != this.getColor()) {
+                movesArray.push([(this.getXCoordinate() - 1), (this.getYCoordinate() + 2)])
             }
         }
         // Case 2. 2 Up, 1 Right
         if ((this.getXCoordinate() + 1 <= 8) && (this.getYCoordinate() + 2 <= 8)) {
-            if (board[this.getXCoordinate() + 1][this.getYCoordinate() + 2].getColor() != this.getColor()) {
-                movesArray.push({x : (this.getXCoordinate() + 1), y : (this.getYCoordinate() + 2)})
+            if (board[this.getXCoordinate() + 1][this.getYCoordinate() + 2].getPiece().getColor() != this.getColor()) {
+                movesArray.push([(this.getXCoordinate() + 1),(this.getYCoordinate() + 2)])
             }
         }
         // Case 3. 2 Right, 1 Up
         if ((this.getXCoordinate() + 2 <= 8) && (this.getYCoordinate() + 1 <= 8)) {
-            if (board[this.getXCoordinate() + 2][this.getYCoordinate() + 1].getColor() != this.getColor()) {
-                movesArray.push({x : (this.getXCoordinate() + 2), y : (this.getYCoordinate() + 1)})
+            if (board[this.getXCoordinate() + 2][this.getYCoordinate() + 1].getPiece().getColor() != this.getColor()) {
+                movesArray.push([(this.getXCoordinate() + 2), (this.getYCoordinate() + 1)])
             }
         }
         // Case 4. 2 Right, 1 Down
         if ((this.getXCoordinate() + 2 <= 8) && (this.getYCoordinate() - 1 >= 1)) {
-            if (board[this.getXCoordinate() + 2][this.getYCoordinate() - 1].getColor() != this.getColor()) {
-                movesArray.push({x : (this.getXCoordinate() + 2), y : (this.getYCoordinate() - 1)})
+            if (board[this.getXCoordinate() + 2][this.getYCoordinate() - 1].getPiece().getColor() != this.getColor()) {
+                movesArray.push([(this.getXCoordinate() + 2),(this.getYCoordinate() - 1)])
             }
         }
         // Case 5. 2 Down, 1 Right
         if ((this.getXCoordinate() + 1 <= 8) && (this.getYCoordinate() - 2 >= 1)) {
-            if (board[this.getXCoordinate() + 1][this.getYCoordinate() - 2].getColor() != this.getColor()) {
-                movesArray.push({x : (this.getXCoordinate() + 1), y : (this.getYCoordinate() - 2)})
+            if (board[this.getXCoordinate() + 1][this.getYCoordinate() - 2].getPiece().getColor() != this.getColor()) {
+                movesArray.push([(this.getXCoordinate() + 1),(this.getYCoordinate() - 2)])
             }
         }
         // Case 6. 2 Down, 1 Left
         if ((this.getXCoordinate() - 1 >= 1) && (this.getYCoordinate() - 2 >= 1)) {
-            if (board[this.getXCoordinate() - 1][this.getYCoordinate() - 2].getColor() != this.getColor()) {
-                movesArray.push({x : (this.getXCoordinate() - 1), y : (this.getYCoordinate() - 2)})
+            if (board[this.getXCoordinate() - 1][this.getYCoordinate() - 2].getPiece().getColor() != this.getColor()) {
+                movesArray.push([(this.getXCoordinate() - 1),(this.getYCoordinate() - 2)])
             }
         }
         // Case 7. 2 Left, 1 Down
         if ((this.getXCoordinate() - 2 >= 1) && (this.getYCoordinate() - 1 >= 1)) {
-            if (board[this.getXCoordinate() - 2][this.getYCoordinate() - 1].getColor() != this.getColor()) {
-                movesArray.push({x : (this.getXCoordinate() - 2), y : (this.getYCoordinate() - 1)})
+            if (board[this.getXCoordinate() - 2][this.getYCoordinate() - 1].getPiece().getColor() != this.getColor()) {
+                movesArray.push([(this.getXCoordinate() - 2), (this.getYCoordinate() - 1)])
             }
         }
         // Case 8. 2 Left, 1 Up
         if ((this.getXCoordinate() - 2 >= 1) && (this.getYCoordinate() + 1 <= 8)) {
-            if (board[this.getXCoordinate() - 2][this.getYCoordinate() + 1].getColor() != this.getColor()) {
-                movesArray.push({x : (this.getXCoordinate() - 2), y : (this.getYCoordinate() + 1)})
+            if (board[this.getXCoordinate() - 2][this.getYCoordinate() + 1].getPiece().getColor() != this.getColor()) {
+                movesArray.push([(this.getXCoordinate() - 2), (this.getYCoordinate() + 1)])
             }
         }
+        return movesArray
     }
 }
 class Bishop extends Piece {
     constructor(xCoordinate, yCoordinate, color) {
-        super(1, xCoordinate, yCoordinate, color);
+        super(xCoordinate, yCoordinate, color);
         this.type = "Bishop";
     }
     /**
@@ -259,7 +309,7 @@ class Bishop extends Piece {
      * Up-and-to-the-left, Up-and-to-the-Right, Down-and-to-the-Right, and Down-and-to-the-Left.
      */
     getMoves(board){
-        movesArray = new Array();
+        var movesArray = new Array();
         
         for(var i = 0; i < 4; i++) {
             let xCurrent = this.x;
@@ -268,51 +318,79 @@ class Bishop extends Piece {
             switch(i){
 
                 case 0: //Up-and-to-the-left
-                    while (xCurrent >= 1 && yCurrent <= 8) {
-                        --xCurrent;
-                        ++yCurrent;
-                        if(board[xCurrent][yCurrent].getOccupied()) {
-                            break;
+                    while (xCurrent >= 2 && yCurrent <= 7) {
+                        if(board[xCurrent-1][yCurrent+1].getOccupied()) {
+
+                            if(board[xCurrent-1][yCurrent+1].getPiece().getColor() == this.getColor()) {
+                                break;
+                            }
+                            else {
+                                movesArray.push([xCurrent-1, yCurrent+1]);
+                                break;
+                            }
                         }
                         else {
-                            movesArray.push({x : xCurrent, y : yCurrent})
+                            movesArray.push([xCurrent-1, yCurrent+1]);
                         }
+                        --xCurrent;
+                        ++yCurrent;
                     }
                 break;
                 case 1: //Up-and-to-the-Right   
-                    while (xCurrent <= 8 && yCurrent <= 8) {
-                        ++xCurrent;
-                        ++yCurrent;
-                        if(board[xCurrent][yCurrent].getOccupied()) {
-                            break;
+                    while (xCurrent <= 7 && yCurrent <= 7) {
+                        if(board[xCurrent+1][yCurrent+1].getOccupied()) {
+                            if(board[xCurrent+1][yCurrent+1].getPiece().getColor() == this.getColor()) {
+                                break;
+                            }
+                            else {
+                                movesArray.push([xCurrent+1, yCurrent+1]);
+                                break;
+                            }
                         }
                         else {
-                            movesArray.push({x : xCurrent, y : yCurrent})
+                            movesArray.push([xCurrent+1, yCurrent+1]);
                         }
+                        ++xCurrent;
+                        ++yCurrent;
                     }
                 break;
                 case 2: //Down-and-to-the-Right
-                    while (xCurrent <= 8 && yCurrent >= 1) {
-                        ++xCurrent;
-                        --yCurrent;
-                        if(board[xCurrent][yCurrent].getOccupied()) {
-                            break;
+                    while (xCurrent <= 7 && yCurrent >= 2) {
+                        if(board[xCurrent+1][yCurrent-1].getOccupied()) {
+                            if(board[xCurrent+1][yCurrent-1].getPiece().getColor() == this.getColor()) {
+                                break;
+                            }
+                            else {
+                                movesArray.push([xCurrent+1, yCurrent-1]);
+                                break;
+                            }
                         }
                         else {
-                            movesArray.push({x : xCurrent, y : yCurrent})
-                        }                    }
+                            movesArray.push([xCurrent+1, yCurrent-1])
+                        }
+                        ++xCurrent;
+                        --yCurrent;     
+                    }
                 break;
                 case 3: // Down-and-to-the-Left
-                while (xCurrent >= 1 && yCurrent >= 1) {
-                    --xCurrent;
-                    --yCurrent;
-                    if(board[xCurrent][yCurrent].getOccupied()) {
-                        break;
+                    while (xCurrent >= 2 && yCurrent >= 2) {
+                        if(board[xCurrent-1][yCurrent-1].getOccupied()) {
+                            if(board[xCurrent-1][yCurrent-1].getPiece().getColor() == this.getColor()) {
+                                break;
+                            }
+                            else {
+                                movesArray.push([xCurrent-1, yCurrent-1]);
+                                break;
+                            }
+                        }
+                        else {
+                            movesArray.push([xCurrent-1, yCurrent-1])
+
+                        }
+                        --xCurrent;
+                        --yCurrent;
                     }
-                    else {
-                        movesArray.push({x : xCurrent, y : yCurrent})
-                    }                
-                }
+                break;
             }
         }
         return movesArray;
@@ -320,74 +398,122 @@ class Bishop extends Piece {
 }
 class Queen extends Piece {
     constructor(xCoordinate, yCoordinate, color) {
-        super(1, xCoordinate, yCoordinate, color);
+        super(xCoordinate, yCoordinate, color);
         this.type = "Queen";
     }
     getMoves(board) {
-        protoRook = new Rook(this.getXCoordinate(), this.getYCoordinate(), this.getColor());
-        protoBishop = new Bishop(this.getXCoordinate(), this.getYCoordinate(), this.getColor());
-        arrayRook = protoRook.getMoves(board);
-        arrayBishop = protoBishop.getMoves(board);
-        movesArray = (arrayRook.concat(arrayBishop));
+        var protoRook = new Rook(this.getXCoordinate(), this.getYCoordinate(), this.getColor());
+        var protoBishop = new Bishop(this.getXCoordinate(), this.getYCoordinate(), this.getColor());
+        var arrayRook = protoRook.getMoves(board);
+        var arrayBishop = protoBishop.getMoves(board);
+        var movesArray = (arrayRook.concat(arrayBishop));
         return movesArray;
     }
 }
 class King extends Piece {
     constructor(xCoordinate, yCoordinate, color) {
-        super(1, xCoordinate, yCoordinate, color);
+        super(xCoordinate, yCoordinate, color);
         this.type = "King";
 
     }
     getMoves(board) {
+
+        var movesArray = new Array();
         // Case 1. Forward [White] / Backward [Black]
         if (this.getYCoordinate() + 1 <= 8) {
-            if (board[this.getXCoordinate()][this.getYCoordinate() + 1].getColor() != this.getColor()) {
-                movesArray.push({x : this.getXCoordinate(), y : (this.getYCoordinate() + 1)})
+            if ((board[this.getXCoordinate()][this.getYCoordinate() + 1].getPiece().getColor() != this.getColor())) {
+                if(!(this.getCheck(this.getXCoordinate(), this.getYCoordinate()+1, board))){
+                    movesArray.push([this.getXCoordinate(),(this.getYCoordinate() + 1)]);
+                }
             }
         }
         // Case 2. Up-and-to-the-Right [White] / Down-and-to-the-Left [Black]
         if ((this.getXCoordinate() + 1 <= 8) && (this.getYCoordinate() + 1 <= 8)) {
-            if (board[this.getXCoordinate() + 1][this.getYCoordinate() + 1].getColor() != this.getColor()) {
-                movesArray.push({x : (this.getXCoordinate() + 1), y : (this.getYCoordinate() + 1)})
+            if ((board[this.getXCoordinate() + 1][this.getYCoordinate() + 1].getPiece().getColor() != this.getColor())) {
+                if(!(this.getCheck(this.getXCoordinate()+1, this.getYCoordinate()+1, board))){
+                    movesArray.push([this.getXCoordinate()+1,(this.getYCoordinate() + 1)]);
+                }
             }
         }
         // Case 3. Right [White] / Left [Black]
         if (this.getXCoordinate() + 1 <= 8) {
-            if (board[this.getXCoordinate() + 1][this.getYCoordinate()].getColor() != this.getColor()) {
-                movesArray.push({x : (this.getXCoordinate() + 1), y : (this.getYCoordinate())})
+            if ((board[this.getXCoordinate() + 1][this.getYCoordinate()].getPiece().getColor() != this.getColor())) {
+                if(!(this.getCheck(this.getXCoordinate()+1, this.getYCoordinate(), board))){
+                    movesArray.push([this.getXCoordinate()+1,(this.getYCoordinate())]);
+                }
             }
         }
         // Case 4. Down-and-to-the-Right [White] / Up-and-to-the-Left [Black]
         if ((this.getXCoordinate() + 1 <= 8) && (this.getYCoordinate() - 1 >= 1)) {
-            if (board[this.getXCoordinate() + 1][this.getYCoordinate() - 1].getColor() != this.getColor()) {
-                movesArray.push({x : (this.getXCoordinate() + 1), y : (this.getYCoordinate() - 1)});
+            if ((board[this.getXCoordinate() + 1][this.getYCoordinate() - 1].getPiece().getColor() != this.getColor())) {
+                if(!(this.getCheck(this.getXCoordinate()+1, this.getYCoordinate()-1, board))){
+                    movesArray.push([this.getXCoordinate()+1,(this.getYCoordinate() -1)]);
+                }
             }
         }
         // Case 5. Backward [White] / Forward [Black]
         if (this.getYCoordinate() - 1 >= 1) {
-            if (board[this.getXCoordinate()][this.getYCoordinate() - 1].getColor() != this.getColor()) {
-                movesArray.push({x : (this.getXCoordinate() + 1), y : (this.getYCoordinate() - 1)});
+            if ((board[this.getXCoordinate()][this.getYCoordinate() - 1].getPiece().getColor())) {
+                if(!(this.getCheck(this.getXCoordinate(), this.getYCoordinate()-1, board))){
+                    movesArray.push([this.getXCoordinate(),(this.getYCoordinate() - 1)]);
+                }
             }
         }
         // Case 6. Down-and-to-the-Left [White] / Up-and-to-the-Right [Black]
         if ((this.getXCoordinate() - 1 >= 1) && (this.getYCoordinate() - 1 >= 1)) {
-            if (board[this.getXCoordinate() - 1][this.getYCoordinate() - 1].getColor() != this.getColor()) {
-                movesArray.push({x : (this.getXCoordinate() - 1), y : (this.getYCoordinate() - 1)});
+            if ((board[this.getXCoordinate() - 1][this.getYCoordinate() - 1].getPiece().getColor() != this.getColor())) {
+                if(!(this.getCheck(this.getXCoordinate()-1, this.getYCoordinate()-1, board))){
+                    movesArray.push([this.getXCoordinate()-1,(this.getYCoordinate() - 1)]);
+                }
             }
         }
         // Case 7. Left [White] / Right [Black]
         if (this.getXCoordinate() - 1 >= 1) {
-            if (board[this.getXCoordinate() - 1][this.getYCoordinate()].getColor() != this.getColor()) {
-                movesArray.push({x : (this.getXCoordinate() - 1), y : (this.getYCoordinate())});
+            if ((board[this.getXCoordinate() - 1][this.getYCoordinate()].getPiece().getColor() != this.getColor())) {
+                if(!(this.getCheck(this.getXCoordinate()-1, this.getYCoordinate(), board))){
+                    movesArray.push([this.getXCoordinate()-1,(this.getYCoordinate())]);
+                }
             }
         }
         // Case 8. Up-and-to-the-Left [White] / Down-and-to-the-Right [Black]
         if ((this.getXCoordinate() - 1 >= 1) && (this.getYCoordinate() + 1 <= 8)) {
-            if (board[this.getXCoordinate() - 1][this.getYCoordinate() + 1].getColor() != this.getColor()) {
-                movesArray.push({x : (this.getXCoordinate() - 1), y : (this.getYCoordinate() + 1)})
+            if ((board[this.getXCoordinate() - 1][this.getYCoordinate() + 1].getPiece().getColor() != this.getColor())) {
+                if(!(this.getCheck(this.getXCoordinate()-1, this.getYCoordinate()+1, board))){
+                    movesArray.push([this.getXCoordinate()-1,(this.getYCoordinate() + 1)]);
+                }
             }
         }
+
         return movesArray;
+    }
+
+    createCheckArray(x,y, refBoard){
+        var protoQueen = new Queen(x, y, this.getColor());
+        var protoKnight = new Knight(x, y, this.getColor());
+        var arrayQueen = protoQueen.getMoves(refBoard);
+        var arrayKnight = protoKnight.getMoves(refBoard);
+        var checkArray = (arrayQueen.concat(arrayKnight));
+        return checkArray
+    }
+
+    getCheck(x, y, refBoard){
+    /// Am I in check logic ///
+        var attacks = this.createCheckArray(x,y,refBoard)
+
+        for(var tile = 0; tile < attacks.length; tile++){
+            var currentPiece = refBoard[attacks[tile][0]][attacks[tile][1]].getPiece()
+            if(refBoard[attacks[tile][0]][attacks[tile][1]].getOccupied()){
+                if(currentPiece.getColor() != this.color){
+                    for(var m = 0; m < currentPiece.getMoves(refBoard).length; m++){
+                        if((currentPiece.getMoves(refBoard)[m][0]) == x && (currentPiece.getMoves(refBoard)[m][1] == y)){
+                            return true 
+                        }
+                    }
+                }
+            }
+
+        } 
+        return false   
     }
 }
 
